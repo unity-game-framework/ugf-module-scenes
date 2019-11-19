@@ -35,9 +35,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     - `com.ugf.module`: from `0.1.0-preview` to `2.0.0-preview`.
 - Rework module to work with async / await instead of coroutines.
 
-### Deprecated
-- Nothing.
-
 ### Removed
 - Package dependencies:
     - `com.ugf.coroutines`: from `0.1.0-preview`.
