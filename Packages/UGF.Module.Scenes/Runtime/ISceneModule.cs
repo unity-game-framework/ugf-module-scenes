@@ -1,12 +1,14 @@
+using System.Threading.Tasks;
 using UGF.Application.Runtime;
-using UGF.Coroutines.Runtime;
 using UnityEngine.SceneManagement;
 
 namespace UGF.Module.Scenes.Runtime
 {
     public interface ISceneModule : IApplicationModule
     {
-        ISceneLoadCoroutine LoadSceneAsync(string sceneName, SceneLoadParameters parameters);
-        ICoroutine UnloadSceneAsync(Scene scene, SceneUnloadParameters parameters);
+        void LoadScene(string sceneName, LoadSceneParameters parameters);
+        Task<Scene> LoadSceneAsync(string sceneName, LoadSceneParameters parameters);
+        void UnloadScene(Scene scene, UnloadSceneOptions unloadOptions);
+        Task UnloadSceneAsync(Scene scene, UnloadSceneOptions unloadOptions);
     }
 }
