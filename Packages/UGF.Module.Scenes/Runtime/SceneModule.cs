@@ -13,14 +13,10 @@ namespace UGF.Module.Scenes.Runtime
 
         static SceneModule()
         {
-            MethodInfo methodInfo = typeof(SceneManager).GetMethod("UnloadSceneInternal", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Static);
-
-            if (methodInfo == null)
-            {
-                throw new Exception("SceneManager.UnloadSceneInternal method not found.");
-            }
-
-            m_unloadSceneInternal = (Action<Scene, UnloadSceneOptions>)methodInfo.CreateDelegate(typeof(Action<Scene, UnloadSceneOptions>));
+            m_unloadSceneInternal = (Action<Scene, UnloadSceneOptions>)typeof(SceneManager)
+                                        .GetMethod("UnloadSceneInternal", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Static)?
+                                        .CreateDelegate(typeof(Action<Scene, UnloadSceneOptions>))
+                                    ?? throw new Exception("SceneManager.UnloadSceneInternal method not found.");
         }
 
         public Scene LoadScene(string sceneName, LoadSceneParameters parameters)
