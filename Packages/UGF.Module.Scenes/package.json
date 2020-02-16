@@ -9,6 +9,7 @@
         "url": "https://github.com/unity-game-framework"
     },
     "dependencies": {
-        "com.ugf.application": "3.0.0-preview"
+        "com.ugf.application": "4.1.0-preview",
+        "com.ugf.initialize": "2.2.0-preview"
     }
 }
