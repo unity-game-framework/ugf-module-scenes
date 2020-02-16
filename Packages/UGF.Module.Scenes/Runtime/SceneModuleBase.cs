@@ -26,6 +26,32 @@ namespace UGF.Module.Scenes.Runtime
             Controllers = new ReadOnlyDictionary<Scene, SceneController>(m_controllers);
         }
 
+        protected override void OnPostInitialize()
+        {
+            base.OnPostInitialize();
+
+            int count = SceneManager.sceneCount;
+
+            for (int i = 0; i < count; i++)
+            {
+                Scene scene = SceneManager.GetSceneAt(i);
+
+                AddController(scene);
+            }
+        }
+
+        protected override void OnPreUninitialize()
+        {
+            base.OnPreUninitialize();
+
+            foreach (KeyValuePair<Scene, SceneController> pair in m_controllers)
+            {
+                pair.Value.Uninitialize();
+            }
+
+            m_controllers.Clear();
+        }
+
         public Scene LoadScene(string sceneName, SceneLoadParameters parameters)
         {
             if (string.IsNullOrEmpty(sceneName)) throw new ArgumentException("Value cannot be null or empty.", nameof(sceneName));
