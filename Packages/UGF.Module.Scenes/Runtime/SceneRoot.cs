@@ -101,9 +101,9 @@ namespace UGF.Module.Scenes.Runtime
 
         public bool TryGetComponent<T>(out T component)
         {
-            if (TryGetComponent(typeof(T), out Component value) && value is T cast)
+            if (TryGetComponent(typeof(T), out Component value))
             {
-                component = cast;
+                component = (T)(object)value;
                 return true;
             }
 
