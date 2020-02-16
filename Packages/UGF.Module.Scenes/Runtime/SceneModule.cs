@@ -23,11 +23,11 @@ namespace UGF.Module.Scenes.Runtime
             m_unloadSceneInternal = (Action<Scene, UnloadSceneOptions>)methodInfo.CreateDelegate(typeof(Action<Scene, UnloadSceneOptions>));
         }
 
-        public void LoadScene(string sceneName, LoadSceneParameters parameters)
+        public Scene LoadScene(string sceneName, LoadSceneParameters parameters)
         {
             if (string.IsNullOrEmpty(sceneName)) throw new ArgumentException("Value cannot be null or empty.", nameof(sceneName));
 
-            SceneManager.LoadScene(sceneName, parameters);
+            return SceneManager.LoadScene(sceneName, parameters);
         }
 
         public async Task<Scene> LoadSceneAsync(string sceneName, LoadSceneParameters parameters)
