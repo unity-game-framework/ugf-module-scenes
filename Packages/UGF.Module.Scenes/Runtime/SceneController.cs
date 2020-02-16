@@ -8,7 +8,6 @@ namespace UGF.Module.Scenes.Runtime
     public class SceneController : InitializeBase
     {
         public Scene Scene { get; }
-        public ISceneDescription Description { get; }
         public SceneRoot Root { get; }
         public IElementCollection Elements { get { return m_parent.Children; } }
         public SceneContainer Container { get { return m_container ? m_container : throw new ArgumentException("Container not specified."); } }
@@ -17,20 +16,12 @@ namespace UGF.Module.Scenes.Runtime
         private readonly SceneContainer m_container;
         private readonly ElementParent<IElement> m_parent = new ElementParent<IElement>();
 
-        public SceneController(Scene scene, ISceneDescription description, IElementContext context)
+        public SceneController(Scene scene, IElementContext context)
         {
             if (!scene.IsValid()) throw new ArgumentException("Scene not valid.");
 
             Scene = scene;
-            Description = description ?? throw new ArgumentNullException(nameof(description));
             Root = new SceneRoot(scene);
-
-            foreach (IElementBuilder builder in Description.Elements)
-            {
-                IElement element = builder.Build(context);
-
-                m_parent.Children.Add(element);
-            }
 
             if (Root.TryGetComponent(out m_container))
             {

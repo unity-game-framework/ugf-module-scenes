@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using UGF.Application.Runtime;
 using UnityEngine.SceneManagement;
@@ -6,6 +7,8 @@ namespace UGF.Module.Scenes.Runtime
 {
     public interface ISceneModule : IApplicationModule
     {
+        IReadOnlyDictionary<Scene, SceneController> Controllers { get; }
+
         event SceneLoadingHandler Loading;
         event SceneLoadHandler Loaded;
         event SceneUnloadHandler Unloading;

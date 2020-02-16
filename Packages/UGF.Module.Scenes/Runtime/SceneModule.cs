@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using UGF.Elements.Runtime;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -6,6 +7,10 @@ namespace UGF.Module.Scenes.Runtime
 {
     public class SceneModule : SceneModuleBase
     {
+        public SceneModule(IElementContext context) : base(context)
+        {
+        }
+
         protected override Scene OnLoadScene(string sceneName, SceneLoadParameters parameters)
         {
             var loadSceneParameters = new LoadSceneParameters

@@ -1,4 +1,5 @@
 using UGF.Application.Runtime;
+using UGF.Elements.Runtime;
 using UnityEngine;
 
 namespace UGF.Module.Scenes.Runtime
@@ -8,7 +9,9 @@ namespace UGF.Module.Scenes.Runtime
     {
         protected override IApplicationModule OnBuild(IApplication application)
         {
-            return new SceneModule();
+            var context = new ElementContext { application };
+
+            return new SceneModule(context);
         }
     }
 }
