@@ -26,6 +26,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Security
 - Nothing.
 
+## 0.4.0-preview - 2019-02-17
+- [Commits](https://github.com/unity-game-framework/ugf-module-scenes/compare/0.3.0-preview...0.4.0-preview)
+- [Milestone](https://github.com/unity-game-framework/ugf-module-scenes/milestone/4?closed=1)
+
+### Added
+- Package dependencies:
+    - `com.ugf.module.elements`: `0.3.0-preview`.
+- Add `ISceneModule` loading events such as `Loading`, `Loaded`, `Unloading` and `Unloaded`.
+- Add `SceneLoadParameters` and `SceneUnloadParameters` to setup loading and unloading of a scene.
+- Add `SceneDescription` to store scene settings as asset.
+- Add `SceneModuleUtility.UnloadScene` method to `SceneManager` immediate scene unloading.
+- Add `SceneRoot` to get gameobjects and components from scene.
+- Add `SceneContainer` component to store collection containers of any type.
+- Add `SceneController` with children elements creation using `SceneContainer` as `ElementBuilder` storage.
+
+### Changed
+- Change `ISceneModule` loading and unloading scene methods signature to use `SceneLoadParameters` and `SceneUnloadParameters`.
+
+### Removed
+- Package dependencies:
+    - `com.ugf.application`: `3.0.0-preview`.
+
+### Fixed
+- Fix `ISceneModule.LoadScene` does not return `Scene`.
+
 ## 0.3.0-preview - 2019-12-09
 - [Commits](https://github.com/unity-game-framework/ugf-module-scenes/compare/0.2.0-preview...0.3.0-preview)
 - [Milestone](https://github.com/unity-game-framework/ugf-module-scenes/milestone/3?closed=1)
