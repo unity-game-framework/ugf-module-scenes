@@ -1,0 +1,19 @@
+{
+    "name": "UGF.Module.Scenes.Runtime.Tests",
+    "references": [
+        "GUID:e95b3da452542ae4b995fb0ece7e6d10"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "nunit.framework.dll"
+    ],
+    "autoReferenced": true,
+    "defineConstraints": [
+        "UNITY_INCLUDE_TESTS"
+    ],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
