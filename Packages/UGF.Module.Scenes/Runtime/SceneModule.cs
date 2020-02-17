@@ -1,40 +1,36 @@
-using System;
-using System.Reflection;
 using System.Threading.Tasks;
-using UGF.Application.Runtime;
+using UGF.Elements.Runtime;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace UGF.Module.Scenes.Runtime
 {
-    public class SceneModule : ApplicationModuleBase, ISceneModule
+    public class SceneModule : SceneModuleBase
     {
-        private static readonly Action<Scene, UnloadSceneOptions> m_unloadSceneInternal;
-
-        static SceneModule()
+        public SceneModule(IElementContext context) : base(context)
         {
-            MethodInfo methodInfo = typeof(SceneManager).GetMethod("UnloadSceneInternal", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Static);
+        }
 
-            if (methodInfo == null)
+        protected override Scene OnLoadScene(string sceneName, SceneLoadParameters parameters)
+        {
+            var loadSceneParameters = new LoadSceneParameters
             {
-                throw new Exception("SceneManager.UnloadSceneInternal method not found.");
-            }
+                loadSceneMode = parameters.AddMode,
+                localPhysicsMode = parameters.PhysicsMode
+            };
 
-            m_unloadSceneInternal = (Action<Scene, UnloadSceneOptions>)methodInfo.CreateDelegate(typeof(Action<Scene, UnloadSceneOptions>));
+            return SceneManager.LoadScene(sceneName, loadSceneParameters);
         }
 
-        public void LoadScene(string sceneName, LoadSceneParameters parameters)
+        protected override async Task<Scene> OnLoadSceneAsync(string sceneName, SceneLoadParameters parameters)
         {
-            if (string.IsNullOrEmpty(sceneName)) throw new ArgumentException("Value cannot be null or empty.", nameof(sceneName));
+            var loadSceneParameters = new LoadSceneParameters
+            {
+                loadSceneMode = parameters.AddMode,
+                localPhysicsMode = parameters.PhysicsMode
+            };
 
-            SceneManager.LoadScene(sceneName, parameters);
-        }
-
-        public async Task<Scene> LoadSceneAsync(string sceneName, LoadSceneParameters parameters)
-        {
-            if (string.IsNullOrEmpty(sceneName)) throw new ArgumentException("Value cannot be null or empty.", nameof(sceneName));
-
-            AsyncOperation operation = SceneManager.LoadSceneAsync(sceneName, parameters);
+            AsyncOperation operation = SceneManager.LoadSceneAsync(sceneName, loadSceneParameters);
             Scene scene = SceneManager.GetSceneAt(SceneManager.sceneCount - 1);
 
             while (operation.isDone)
@@ -45,14 +41,22 @@ namespace UGF.Module.Scenes.Runtime
             return scene;
         }
 
-        public void UnloadScene(Scene scene, UnloadSceneOptions unloadOptions)
+        protected override void OnUnloadScene(Scene scene, SceneUnloadParameters parameters)
         {
-            m_unloadSceneInternal(scene, unloadOptions);
+            UnloadSceneOptions options = parameters.UnloadAllEmbeddedSceneObjects
+                ? UnloadSceneOptions.UnloadAllEmbeddedSceneObjects
+                : UnloadSceneOptions.None;
+
+            SceneModuleUtility.UnloadScene(scene, options);
         }
 
-        public async Task UnloadSceneAsync(Scene scene, UnloadSceneOptions unloadOptions)
+        protected override async Task OnUnloadSceneAsync(Scene scene, SceneUnloadParameters parameters)
         {
-            AsyncOperation operation = SceneManager.UnloadSceneAsync(scene, unloadOptions);
+            UnloadSceneOptions options = parameters.UnloadAllEmbeddedSceneObjects
+                ? UnloadSceneOptions.UnloadAllEmbeddedSceneObjects
+                : UnloadSceneOptions.None;
+
+            AsyncOperation operation = SceneManager.UnloadSceneAsync(scene, options);
 
             while (operation.isDone)
             {

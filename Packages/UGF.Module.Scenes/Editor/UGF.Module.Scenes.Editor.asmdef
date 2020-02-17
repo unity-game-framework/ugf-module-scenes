@@ -1,0 +1,17 @@
+{
+    "name": "UGF.Module.Scenes.Editor",
+    "references": [
+        "GUID:e95b3da452542ae4b995fb0ece7e6d10"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
