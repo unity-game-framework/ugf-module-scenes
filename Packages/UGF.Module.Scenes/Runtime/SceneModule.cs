@@ -11,7 +11,7 @@ namespace UGF.Module.Scenes.Runtime
         {
         }
 
-        protected override Scene OnLoadScene(string sceneName, SceneLoadParameters parameters)
+        protected override Scene OnLoad(string sceneName, SceneLoadParameters parameters)
         {
             var loadSceneParameters = new LoadSceneParameters
             {
@@ -22,7 +22,7 @@ namespace UGF.Module.Scenes.Runtime
             return SceneManager.LoadScene(sceneName, loadSceneParameters);
         }
 
-        protected override async Task<Scene> OnLoadSceneAsync(string sceneName, SceneLoadParameters parameters)
+        protected override async Task<Scene> OnLoadAsync(string sceneName, SceneLoadParameters parameters)
         {
             var loadSceneParameters = new LoadSceneParameters
             {
@@ -41,7 +41,7 @@ namespace UGF.Module.Scenes.Runtime
             return scene;
         }
 
-        protected override void OnUnloadScene(Scene scene, SceneUnloadParameters parameters)
+        protected override void OnUnload(Scene scene, SceneUnloadParameters parameters)
         {
             UnloadSceneOptions options = parameters.UnloadAllEmbeddedSceneObjects
                 ? UnloadSceneOptions.UnloadAllEmbeddedSceneObjects
@@ -50,7 +50,7 @@ namespace UGF.Module.Scenes.Runtime
             SceneModuleUtility.UnloadScene(scene, options);
         }
 
-        protected override async Task OnUnloadSceneAsync(Scene scene, SceneUnloadParameters parameters)
+        protected override async Task OnUnloadAsync(Scene scene, SceneUnloadParameters parameters)
         {
             UnloadSceneOptions options = parameters.UnloadAllEmbeddedSceneObjects
                 ? UnloadSceneOptions.UnloadAllEmbeddedSceneObjects

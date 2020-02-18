@@ -52,13 +52,13 @@ namespace UGF.Module.Scenes.Runtime
             m_controllers.Clear();
         }
 
-        public Scene LoadScene(string sceneName, SceneLoadParameters parameters)
+        public Scene Load(string sceneName, SceneLoadParameters parameters)
         {
             if (string.IsNullOrEmpty(sceneName)) throw new ArgumentException("Value cannot be null or empty.", nameof(sceneName));
 
             Loading?.Invoke(sceneName, parameters);
 
-            Scene scene = OnLoadScene(sceneName, parameters);
+            Scene scene = OnLoad(sceneName, parameters);
 
             AddController(scene);
 
@@ -67,13 +67,13 @@ namespace UGF.Module.Scenes.Runtime
             return scene;
         }
 
-        public async Task<Scene> LoadSceneAsync(string sceneName, SceneLoadParameters parameters)
+        public async Task<Scene> LoadAsync(string sceneName, SceneLoadParameters parameters)
         {
             if (string.IsNullOrEmpty(sceneName)) throw new ArgumentException("Value cannot be null or empty.", nameof(sceneName));
 
             Loading?.Invoke(sceneName, parameters);
 
-            Scene scene = await OnLoadSceneAsync(sceneName, parameters);
+            Scene scene = await OnLoadAsync(sceneName, parameters);
 
             AddController(scene);
 
@@ -82,32 +82,40 @@ namespace UGF.Module.Scenes.Runtime
             return scene;
         }
 
-        public void UnloadScene(Scene scene, SceneUnloadParameters parameters)
+        public void Unload(Scene scene, SceneUnloadParameters parameters)
         {
             Unloading?.Invoke(scene, parameters);
 
             RemoveController(scene);
 
-            OnUnloadScene(scene, parameters);
+            OnUnload(scene, parameters);
 
             Unloaded?.Invoke(scene, parameters);
         }
 
-        public async Task UnloadSceneAsync(Scene scene, SceneUnloadParameters parameters)
+        public async Task UnloadAsync(Scene scene, SceneUnloadParameters parameters)
         {
             Unloading?.Invoke(scene, parameters);
 
             RemoveController(scene);
 
-            await OnUnloadSceneAsync(scene, parameters);
+            await OnUnloadAsync(scene, parameters);
 
             Unloaded?.Invoke(scene, parameters);
         }
 
-        protected abstract Scene OnLoadScene(string sceneName, SceneLoadParameters parameters);
-        protected abstract Task<Scene> OnLoadSceneAsync(string sceneName, SceneLoadParameters parameters);
-        protected abstract void OnUnloadScene(Scene scene, SceneUnloadParameters parameters);
-        protected abstract Task OnUnloadSceneAsync(Scene scene, SceneUnloadParameters parameters);
+        protected abstract Scene OnLoad(string sceneName, SceneLoadParameters parameters);
+        protected abstract Task<Scene> OnLoadAsync(string sceneName, SceneLoadParameters parameters);
+        protected abstract void OnUnload(Scene scene, SceneUnloadParameters parameters);
+        protected abstract Task OnUnloadAsync(Scene scene, SceneUnloadParameters parameters);
+
+        protected virtual void OnControllerAdded(SceneController controller)
+        {
+        }
+
+        protected virtual void OnControllerRemove(SceneController controller)
+        {
+        }
 
         private void AddController(Scene scene)
         {
@@ -116,12 +124,16 @@ namespace UGF.Module.Scenes.Runtime
             m_controllers.Add(scene, controller);
 
             controller.Initialize();
+
+            OnControllerAdded(controller);
         }
 
         private void RemoveController(Scene scene)
         {
             if (m_controllers.TryGetValue(scene, out SceneController controller))
             {
+                OnControllerRemove(controller);
+
                 controller.Uninitialize();
 
                 m_controllers.Remove(scene);
