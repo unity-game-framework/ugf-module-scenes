@@ -146,7 +146,7 @@ namespace UGF.Module.Scenes.Runtime
         protected abstract void OnUnload(Scene scene, SceneUnloadParameters parameters);
         protected abstract Task OnUnloadAsync(Scene scene, SceneUnloadParameters parameters);
 
-        protected virtual void OnControllerAdded(SceneController controller)
+        protected virtual void OnControllerAdd(SceneController controller)
         {
         }
 
@@ -160,9 +160,9 @@ namespace UGF.Module.Scenes.Runtime
 
             m_controllers.Add(scene, controller);
 
-            controller.Initialize();
+            OnControllerAdd(controller);
 
-            OnControllerAdded(controller);
+            controller.Initialize();
         }
 
         private void RemoveController(Scene scene)
