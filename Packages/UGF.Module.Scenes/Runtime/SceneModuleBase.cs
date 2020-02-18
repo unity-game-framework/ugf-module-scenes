@@ -104,6 +104,46 @@ namespace UGF.Module.Scenes.Runtime
             Unloaded?.Invoke(scene, parameters);
         }
 
+        public SceneController GetController(string sceneName)
+        {
+            if (!TryGetController(sceneName, out SceneController controller))
+            {
+                throw new ArgumentException($"Scene controller by the specified scene name not found: '{sceneName}'.");
+            }
+
+            return controller;
+        }
+
+        public SceneController GetController(Scene scene)
+        {
+            if (!TryGetController(scene, out SceneController controller))
+            {
+                throw new ArgumentException($"Scene controller by the specified scene not found: '{scene}'.");
+            }
+
+            return controller;
+        }
+
+        public bool TryGetController(string sceneName, out SceneController controller)
+        {
+            foreach (KeyValuePair<Scene, SceneController> pair in m_controllers)
+            {
+                if (pair.Key.name == sceneName)
+                {
+                    controller = pair.Value;
+                    return true;
+                }
+            }
+
+            controller = null;
+            return false;
+        }
+
+        public bool TryGetController(Scene scene, out SceneController controller)
+        {
+            return m_controllers.TryGetValue(scene, out controller);
+        }
+
         protected abstract Scene OnLoad(string sceneName, SceneLoadParameters parameters);
         protected abstract Task<Scene> OnLoadAsync(string sceneName, SceneLoadParameters parameters);
         protected abstract void OnUnload(Scene scene, SceneUnloadParameters parameters);

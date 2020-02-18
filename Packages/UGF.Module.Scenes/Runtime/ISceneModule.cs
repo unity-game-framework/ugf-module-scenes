@@ -18,5 +18,9 @@ namespace UGF.Module.Scenes.Runtime
         Task<Scene> LoadAsync(string sceneName, SceneLoadParameters parameters);
         void Unload(Scene scene, SceneUnloadParameters parameters);
         Task UnloadAsync(Scene scene, SceneUnloadParameters parameters);
+        SceneController GetController(string sceneName);
+        SceneController GetController(Scene scene);
+        bool TryGetController(string sceneName, out SceneController controller);
+        bool TryGetController(Scene scene, out SceneController controller);
     }
 }
