@@ -3,14 +3,12 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using UGF.Application.Runtime;
-using UGF.Elements.Runtime;
 using UnityEngine.SceneManagement;
 
 namespace UGF.Module.Scenes.Runtime
 {
     public abstract class SceneModuleBase : ApplicationModuleBase, ISceneModule
     {
-        public IElementContext Context { get; }
         public IReadOnlyDictionary<Scene, SceneController> Controllers { get; }
 
         public event SceneLoadingHandler Loading;
@@ -20,9 +18,8 @@ namespace UGF.Module.Scenes.Runtime
 
         private readonly Dictionary<Scene, SceneController> m_controllers = new Dictionary<Scene, SceneController>();
 
-        protected SceneModuleBase(IElementContext context)
+        protected SceneModuleBase()
         {
-            Context = context ?? throw new ArgumentNullException(nameof(context));
             Controllers = new ReadOnlyDictionary<Scene, SceneController>(m_controllers);
         }
 
@@ -159,7 +156,7 @@ namespace UGF.Module.Scenes.Runtime
 
         private void AddController(Scene scene)
         {
-            var controller = new SceneController(scene, Context);
+            var controller = new SceneController(scene);
 
             m_controllers.Add(scene, controller);
 
