@@ -4,13 +4,14 @@ UGF.Module.Scenes
 
 ## Info
 
-- **Version**: `0.4.0-preview`
+- **Version**: `0.5.0-preview`
 - **Unity Version**: `2019.3.0`
 - **Api Compatibility Level**: `.NET Standard 2.0`
 
 ### Dependencies
 
-- [UGF.Module.Elements](https://github.com/unity-game-framework/ugf-module-elements): `0.3.0-preview`
+- [UGF.Application](https://github.com/unity-game-framework/ugf-application): `4.1.0-preview`
+- [UGF.EditorTools](https://github.com/unity-game-framework/ugf-editortools): `0.6.0-preview`
 
 ### Changelog
 
