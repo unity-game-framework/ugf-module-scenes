@@ -10,6 +10,7 @@
     },
     "dependencies": {
         "com.ugf.application": "4.1.0-preview",
+        "com.ugf.initialize": "2.3.0-preview",
         "com.ugf.editortools": "0.6.0-preview"
     }
 }
