@@ -15,6 +15,8 @@ namespace UGF.Module.Scenes.Runtime
         public event SceneLoadHandler Loaded;
         public event SceneUnloadHandler Unloading;
         public event SceneUnloadHandler Unloaded;
+        public event SceneControllerHandler ControllerAdd;
+        public event SceneControllerHandler ControllerRemove;
 
         private readonly Dictionary<Scene, SceneController> m_controllers = new Dictionary<Scene, SceneController>();
 
@@ -161,6 +163,7 @@ namespace UGF.Module.Scenes.Runtime
             m_controllers.Add(scene, controller);
 
             OnControllerAdd(controller);
+            ControllerAdd?.Invoke(controller);
 
             controller.Initialize();
         }
@@ -170,6 +173,7 @@ namespace UGF.Module.Scenes.Runtime
             if (m_controllers.TryGetValue(scene, out SceneController controller))
             {
                 OnControllerRemove(controller);
+                ControllerRemove?.Invoke(controller);
 
                 controller.Uninitialize();
 
