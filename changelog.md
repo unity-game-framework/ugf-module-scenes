@@ -26,6 +26,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Security
 - Nothing.
 
+## 0.5.0-preview - 2019-02-19
+- [Commits](https://github.com/unity-game-framework/ugf-module-scenes/compare/0.4.0-preview...0.5.0-preview)
+- [Milestone](https://github.com/unity-game-framework/ugf-module-scenes/milestone/5?closed=1)
+
+### Added
+- Package dependencies:
+    - `com.ugf.application`: `4.1.0-preview`.
+    - `com.ugf.editortools`: `0.6.0-preview`.
+- Add `ISceneModule.GetController` and `ISceneModule.GetController`.
+- Add `ISceneModule.ControllerAdd` and `ISceneModule.ControllerRemove` events
+
+### Changed
+- Rename load and unload methods in `SceneModule`.
+
+### Removed
+- Package dependencies:
+    - `com.ugf.module.elements`: `0.3.0-preview`.
+- Remove elements from `SceneController`, replaced by collection of `IInitialize` items.
+
 ## 0.4.0-preview - 2019-02-17
 - [Commits](https://github.com/unity-game-framework/ugf-module-scenes/compare/0.3.0-preview...0.4.0-preview)
 - [Milestone](https://github.com/unity-game-framework/ugf-module-scenes/milestone/4?closed=1)
