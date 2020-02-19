@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## Unreleased - 2019-01-01
+## Unreleased - 2020-01-01
 - [Commits](https://github.com/unity-game-framework/ugf-module-scenes/compare/0.0.0...0.0.0)
 - [Milestone](https://github.com/unity-game-framework/ugf-module-scenes/milestone/0?closed=1)
 
@@ -26,7 +26,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Security
 - Nothing.
 
-## 0.5.0-preview - 2019-02-19
+## 0.5.0-preview - 2020-02-19
 - [Commits](https://github.com/unity-game-framework/ugf-module-scenes/compare/0.4.0-preview...0.5.0-preview)
 - [Milestone](https://github.com/unity-game-framework/ugf-module-scenes/milestone/5?closed=1)
 
@@ -45,7 +45,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     - `com.ugf.module.elements`: `0.3.0-preview`.
 - Remove elements from `SceneController`, replaced by collection of `IInitialize` items.
 
-## 0.4.0-preview - 2019-02-17
+## 0.4.0-preview - 2020-02-17
 - [Commits](https://github.com/unity-game-framework/ugf-module-scenes/compare/0.3.0-preview...0.4.0-preview)
 - [Milestone](https://github.com/unity-game-framework/ugf-module-scenes/milestone/4?closed=1)
 
