@@ -13,8 +13,8 @@ namespace UGF.Module.Scenes.Runtime
         event SceneLoadHandler Loaded;
         event SceneUnloadHandler Unloading;
         event SceneUnloadHandler Unloaded;
-        event SceneControllerHandler ControllerAdd;
-        event SceneControllerHandler ControllerRemove;
+        event SceneControllerHandler ControllerAdded;
+        event SceneControllerHandler ControllerBeforeRemove;
 
         Scene Load(string sceneName, SceneLoadParameters parameters);
         Task<Scene> LoadAsync(string sceneName, SceneLoadParameters parameters);

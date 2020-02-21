@@ -6,18 +6,18 @@ namespace UGF.Module.Scenes.Runtime
 {
     public class SceneContainer : MonoBehaviour
     {
-        [SerializeField] private List<MonoBehaviour> m_containers = new List<MonoBehaviour>();
+        [SerializeField] private List<Component> m_containers = new List<Component>();
 
-        public List<MonoBehaviour> Containers { get { return m_containers; } }
+        public List<Component> Containers { get { return m_containers; } }
 
         public T Get<T>()
         {
             return (T)(object)Get(typeof(T));
         }
 
-        public MonoBehaviour Get(Type type)
+        public Component Get(Type type)
         {
-            if (!TryGet(type, out MonoBehaviour container))
+            if (!TryGet(type, out Component container))
             {
                 throw new ArgumentException($"Container by the specified type not found: '{type}'.");
             }
@@ -27,7 +27,7 @@ namespace UGF.Module.Scenes.Runtime
 
         public bool TryGet<T>(out T container)
         {
-            if (TryGet(typeof(T), out MonoBehaviour value))
+            if (TryGet(typeof(T), out Component value))
             {
                 container = (T)(object)value;
                 return true;
@@ -37,7 +37,7 @@ namespace UGF.Module.Scenes.Runtime
             return false;
         }
 
-        public bool TryGet(Type type, out MonoBehaviour container)
+        public bool TryGet(Type type, out Component container)
         {
             if (type == null) throw new ArgumentNullException(nameof(type));
 
