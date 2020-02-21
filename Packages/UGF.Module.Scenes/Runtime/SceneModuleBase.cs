@@ -15,8 +15,8 @@ namespace UGF.Module.Scenes.Runtime
         public event SceneLoadHandler Loaded;
         public event SceneUnloadHandler Unloading;
         public event SceneUnloadHandler Unloaded;
-        public event SceneControllerHandler ControllerAdd;
-        public event SceneControllerHandler ControllerRemove;
+        public event SceneControllerHandler ControllerAdded;
+        public event SceneControllerHandler ControllerBeforeRemove;
 
         private readonly Dictionary<Scene, SceneController> m_controllers = new Dictionary<Scene, SceneController>();
 
@@ -148,11 +148,11 @@ namespace UGF.Module.Scenes.Runtime
         protected abstract void OnUnload(Scene scene, SceneUnloadParameters parameters);
         protected abstract Task OnUnloadAsync(Scene scene, SceneUnloadParameters parameters);
 
-        protected virtual void OnControllerAdd(SceneController controller)
+        protected virtual void OnControllerAdded(SceneController controller)
         {
         }
 
-        protected virtual void OnControllerRemove(SceneController controller)
+        protected virtual void OnControllerBeforeRemove(SceneController controller)
         {
         }
 
@@ -162,18 +162,18 @@ namespace UGF.Module.Scenes.Runtime
 
             m_controllers.Add(scene, controller);
 
-            OnControllerAdd(controller);
-            ControllerAdd?.Invoke(controller);
-
             controller.Initialize();
+
+            OnControllerAdded(controller);
+            ControllerAdded?.Invoke(controller);
         }
 
         private void RemoveController(Scene scene)
         {
             if (m_controllers.TryGetValue(scene, out SceneController controller))
             {
-                OnControllerRemove(controller);
-                ControllerRemove?.Invoke(controller);
+                OnControllerBeforeRemove(controller);
+                ControllerBeforeRemove?.Invoke(controller);
 
                 controller.Uninitialize();
 
