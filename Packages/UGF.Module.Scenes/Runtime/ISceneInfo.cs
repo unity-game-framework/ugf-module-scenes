@@ -2,6 +2,7 @@
 {
     public interface ISceneInfo
     {
+        string LoaderId { get; }
         string Address { get; }
     }
 }
