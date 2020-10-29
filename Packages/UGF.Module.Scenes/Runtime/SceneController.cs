@@ -9,7 +9,7 @@ namespace UGF.Module.Scenes.Runtime
         public Scene Scene { get; }
         public SceneRoot Root { get; }
         public IInitializeCollection Children { get { return m_children; } }
-        public SceneContainer Container { get { return m_container ? m_container : throw new ArgumentException("Container not specified."); } }
+        public SceneContainer Container { get { return m_container ? m_container : throw new ArgumentException("Scene container not specified."); } }
         public bool HasContainer { get { return m_container != null; } }
 
         private readonly InitializeCollection<IInitialize> m_children = new InitializeCollection<IInitialize>();
@@ -17,7 +17,7 @@ namespace UGF.Module.Scenes.Runtime
 
         public SceneController(Scene scene)
         {
-            if (!scene.IsValid()) throw new ArgumentException("Scene not valid.");
+            if (!scene.IsValid()) throw new ArgumentException($"Specified scene is not valid: '{scene.name}'.");
 
             Scene = scene;
             Root = new SceneRoot(scene);

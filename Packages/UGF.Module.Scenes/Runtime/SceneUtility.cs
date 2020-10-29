@@ -4,11 +4,11 @@ using UnityEngine.SceneManagement;
 
 namespace UGF.Module.Scenes.Runtime
 {
-    public static class SceneModuleUtility
+    public static class SceneUtility
     {
         private static readonly Action<Scene, UnloadSceneOptions> m_unloadSceneInternal;
 
-        static SceneModuleUtility()
+        static SceneUtility()
         {
             MethodInfo method = typeof(SceneManager).GetMethod("UnloadSceneInternal", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Static)
                                 ?? throw new Exception("SceneManager.UnloadSceneInternal method not found.");
