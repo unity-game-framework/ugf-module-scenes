@@ -5,24 +5,22 @@ using UnityEngine.SceneManagement;
 
 namespace UGF.Module.Scenes.Runtime
 {
-    public interface ISceneModule : IApplicationModule
+    public interface ISceneModule : IApplicationModuleDescribed
     {
-        IReadOnlyDictionary<Scene, SceneController> Controllers { get; }
+        new ISceneModuleDescription Description { get; }
+        ISceneProvider Provider { get; }
+        IReadOnlyDictionary<Scene, SceneInstance> Scenes { get; }
 
-        event SceneLoadingHandler Loading;
-        event SceneLoadHandler Loaded;
+        event SceneLoadHandler Loading;
+        event SceneLoadedHandler Loaded;
         event SceneUnloadHandler Unloading;
-        event SceneUnloadHandler Unloaded;
-        event SceneControllerHandler ControllerAdded;
-        event SceneControllerHandler ControllerBeforeRemove;
+        event SceneUnloadedHandler Unloaded;
 
-        Scene Load(string sceneName, SceneLoadParameters parameters);
-        Task<Scene> LoadAsync(string sceneName, SceneLoadParameters parameters);
-        void Unload(Scene scene, SceneUnloadParameters parameters);
-        Task UnloadAsync(Scene scene, SceneUnloadParameters parameters);
-        SceneController GetController(string sceneName);
-        SceneController GetController(Scene scene);
-        bool TryGetController(string sceneName, out SceneController controller);
-        bool TryGetController(Scene scene, out SceneController controller);
+        Scene Load(string id, SceneLoadParameters parameters);
+        Task<Scene> LoadAsync(string id, SceneLoadParameters parameters);
+        void Unload(string id, Scene scene, SceneUnloadParameters parameters);
+        Task UnloadAsync(string id, Scene scene, SceneUnloadParameters parameters);
+        SceneInstance GetScene(Scene scene);
+        bool TryGetScene(Scene scene, out SceneInstance controller);
     }
 }
