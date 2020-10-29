@@ -7,5 +7,6 @@ namespace UGF.Module.Scenes.Runtime
     {
         IReadOnlyDictionary<string, ISceneLoader> Loaders { get; }
         IReadOnlyDictionary<string, ISceneInfo> Scenes { get; }
+        bool UnloadTrackedScenesOnUninitialize { get; }
     }
 }

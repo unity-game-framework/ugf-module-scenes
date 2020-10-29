@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 using UGF.Application.Runtime;
 using UnityEngine.SceneManagement;
@@ -21,7 +22,7 @@ namespace UGF.Module.Scenes.Runtime
 
         private readonly Dictionary<Scene, SceneInstance> m_scenes = new Dictionary<Scene, SceneInstance>();
 
-        public SceneModule(IApplication application, SceneModuleDescription description, ISceneProvider provider) : base(application, description)
+        public SceneModule(IApplication application, SceneModuleDescription description, ISceneProvider provider = null) : base(application, description)
         {
             Provider = provider ?? new SceneProvider();
             Scenes = new ReadOnlyDictionary<Scene, SceneInstance>(m_scenes);
@@ -46,6 +47,16 @@ namespace UGF.Module.Scenes.Runtime
         {
             base.OnUninitialize();
 
+            if (Description.UnloadTrackedScenesOnUninitialize)
+            {
+                while (m_scenes.Count > 0)
+                {
+                    KeyValuePair<Scene, SceneInstance> pair = m_scenes.First();
+
+                    Unload(pair.Value.Id, pair.Key, SceneUnloadParameters.Default);
+                }
+            }
+
             m_scenes.Clear();
 
             foreach (KeyValuePair<string, ISceneLoader> pair in Description.Loaders)
@@ -66,6 +77,9 @@ namespace UGF.Module.Scenes.Runtime
             Loading?.Invoke(id, parameters);
 
             Scene scene = OnLoad(id, parameters);
+            SceneInstance instance = OnAddScene(id, scene, parameters);
+
+            m_scenes.Add(scene, instance);
 
             Loaded?.Invoke(id, scene, parameters);
 
@@ -80,6 +94,10 @@ namespace UGF.Module.Scenes.Runtime
 
             Scene scene = await OnLoadAsync(id, parameters);
 
+            SceneInstance instance = OnAddScene(id, scene, parameters);
+
+            m_scenes.Add(scene, instance);
+
             Loaded?.Invoke(id, scene, parameters);
 
             return scene;
@@ -91,7 +109,10 @@ namespace UGF.Module.Scenes.Runtime
 
             Unloading?.Invoke(id, scene, parameters);
 
+            OnRemoveScene(id, scene, parameters);
             OnUnload(id, scene, parameters);
+
+            m_scenes.Remove(scene);
 
             Unloaded?.Invoke(id, parameters);
         }
@@ -102,7 +123,11 @@ namespace UGF.Module.Scenes.Runtime
 
             Unloading?.Invoke(id, scene, parameters);
 
+            OnRemoveScene(id, scene, parameters);
+
             await OnUnloadAsync(id, scene, parameters);
+
+            m_scenes.Remove(scene);
 
             Unloaded?.Invoke(id, parameters);
         }
@@ -115,6 +140,15 @@ namespace UGF.Module.Scenes.Runtime
         public bool TryGetScene(Scene scene, out SceneInstance controller)
         {
             return m_scenes.TryGetValue(scene, out controller);
+        }
+
+        protected virtual SceneInstance OnAddScene(string id, Scene scene, SceneLoadParameters parameters)
+        {
+            return new SceneInstance(scene, id);
+        }
+
+        protected virtual void OnRemoveScene(string id, Scene scene, SceneUnloadParameters parameters)
+        {
         }
 
         protected virtual Scene OnLoad(string id, SceneLoadParameters parameters)
