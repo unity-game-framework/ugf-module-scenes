@@ -21,9 +21,42 @@ namespace UGF.Module.Scenes.Runtime
 
         private readonly Dictionary<Scene, SceneInstance> m_scenes = new Dictionary<Scene, SceneInstance>();
 
-        public SceneModule(IApplication application, SceneModuleDescription description) : base(application, description)
+        public SceneModule(IApplication application, SceneModuleDescription description, ISceneProvider provider) : base(application, description)
         {
+            Provider = provider ?? new SceneProvider();
             Scenes = new ReadOnlyDictionary<Scene, SceneInstance>(m_scenes);
+        }
+
+        protected override void OnInitialize()
+        {
+            base.OnInitialize();
+
+            foreach (KeyValuePair<string, ISceneLoader> pair in Description.Loaders)
+            {
+                Provider.AddLoader(pair.Key, pair.Value);
+            }
+
+            foreach (KeyValuePair<string, ISceneInfo> pair in Description.Scenes)
+            {
+                Provider.AddScene(pair.Key, pair.Value);
+            }
+        }
+
+        protected override void OnUninitialize()
+        {
+            base.OnUninitialize();
+
+            m_scenes.Clear();
+
+            foreach (KeyValuePair<string, ISceneLoader> pair in Description.Loaders)
+            {
+                Provider.RemoveLoader(pair.Key);
+            }
+
+            foreach (KeyValuePair<string, ISceneInfo> pair in Description.Scenes)
+            {
+                Provider.RemoveScene(pair.Key);
+            }
         }
 
         public Scene Load(string id, SceneLoadParameters parameters)
