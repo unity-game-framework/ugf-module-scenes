@@ -1,5 +1,6 @@
 {
     "name": "UGF.Module.Scenes.Editor",
+    "rootNamespace": "UGF.Module.Scenes.Editor",
     "references": [
         "GUID:e95b3da452542ae4b995fb0ece7e6d10"
     ],
