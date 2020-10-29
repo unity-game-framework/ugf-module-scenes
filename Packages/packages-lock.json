@@ -1,0 +1,84 @@
+{
+  "dependencies": {
+    "com.ugf.application": {
+      "version": "4.1.0-preview",
+      "depth": 1,
+      "source": "registry",
+      "dependencies": {
+        "com.ugf.initialize": "2.1.0-preview",
+        "com.ugf.customsettings": "2.0.0"
+      },
+      "url": "https://api.bintray.com/npm/unity-game-framework/dev"
+    },
+    "com.ugf.customsettings": {
+      "version": "2.0.0",
+      "depth": 2,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://api.bintray.com/npm/unity-game-framework/dev"
+    },
+    "com.ugf.editortools": {
+      "version": "0.6.0-preview",
+      "depth": 1,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://api.bintray.com/npm/unity-game-framework/dev"
+    },
+    "com.ugf.initialize": {
+      "version": "2.3.0-preview",
+      "depth": 1,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://api.bintray.com/npm/unity-game-framework/dev"
+    },
+    "com.ugf.module.scenes": {
+      "version": "file:UGF.Module.Scenes",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {
+        "com.ugf.application": "4.1.0-preview",
+        "com.ugf.initialize": "2.3.0-preview",
+        "com.ugf.editortools": "0.6.0-preview"
+      }
+    },
+    "com.unity.ext.nunit": {
+      "version": "1.0.0",
+      "depth": 1,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.ide.rider": {
+      "version": "2.0.7",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.test-framework": "1.1.1"
+      },
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.test-framework": {
+      "version": "1.1.18",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.ext.nunit": "1.0.0",
+        "com.unity.modules.imgui": "1.0.0",
+        "com.unity.modules.jsonserialize": "1.0.0"
+      },
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.modules.imgui": {
+      "version": "1.0.0",
+      "depth": 1,
+      "source": "builtin",
+      "dependencies": {}
+    },
+    "com.unity.modules.jsonserialize": {
+      "version": "1.0.0",
+      "depth": 1,
+      "source": "builtin",
+      "dependencies": {}
+    }
+  }
+}
