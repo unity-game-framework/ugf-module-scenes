@@ -15,7 +15,7 @@ namespace UGF.Module.Scenes.Runtime
 
         public SceneRoot(Scene scene)
         {
-            if (!scene.IsValid()) throw new ArgumentException($"Specified scene is not valid: '{scene.name}'.");
+            if (!scene.IsValid()) throw new ArgumentException("Value should be valid.", nameof(scene));
 
             Scene = scene;
 

@@ -11,7 +11,7 @@ namespace UGF.Module.Scenes.Runtime
 
         public SceneInstance(Scene scene, string id)
         {
-            if (!scene.IsValid()) throw new ArgumentException($"Specified scene is not valid: '{scene.name}'.");
+            if (!scene.IsValid()) throw new ArgumentException("Value should be valid.", nameof(scene));
             if (string.IsNullOrEmpty(id)) throw new ArgumentException("Value cannot be null or empty.", nameof(id));
 
             Scene = scene;
