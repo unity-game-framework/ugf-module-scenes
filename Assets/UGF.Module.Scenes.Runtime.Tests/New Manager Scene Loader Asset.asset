@@ -9,9 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5920f56a922a4829909d3cc5e325c28f, type: 3}
-  m_Name: New Scene Info Asset
+  m_Script: {fileID: 11500000, guid: 869877dcdceb4129bbea1fa939c7b71b, type: 3}
+  m_Name: New Manager Scene Loader Asset
   m_EditorClassIdentifier: 
-  m_loader: 
-  m_scene: 9fc0d4010bbf28b4594072e72b8655ab
-  m_path: Assets/Scenes/SampleScene.unity
+  m_unloadUnusedAfterUnload: 0
