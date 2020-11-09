@@ -8,4 +8,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/SampleScene.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
+  - enabled: 1
+    path: Assets/UGF.Module.Scenes.Runtime.Tests/Resources/SceneTest.unity
+    guid: d39a9027b65879843ab7fc2c1a4a22af
   m_configObjects: {}
