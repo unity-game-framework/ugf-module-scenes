@@ -3,7 +3,8 @@
     "rootNamespace": "UGF.Module.Scenes.Editor",
     "references": [
         "GUID:e95b3da452542ae4b995fb0ece7e6d10",
-        "GUID:abdd615e45137c74ca2ce9c636c78c15"
+        "GUID:abdd615e45137c74ca2ce9c636c78c15",
+        "GUID:0a8cfea8c226a8041bc7a5979811d462"
     ],
     "includePlatforms": [
         "Editor"
