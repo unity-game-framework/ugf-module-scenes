@@ -6,19 +6,21 @@ namespace UGF.Module.Scenes.Runtime
 {
     public static class SceneUtility
     {
-        private static readonly Action<Scene, UnloadSceneOptions> m_unloadSceneInternal;
+        private static readonly Func<Scene, UnloadSceneOptions, bool> m_unloadSceneInternal;
 
         static SceneUtility()
         {
             MethodInfo method = typeof(SceneManager).GetMethod("UnloadSceneInternal", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Static)
                                 ?? throw new Exception("SceneManager.UnloadSceneInternal method not found.");
 
-            m_unloadSceneInternal = (Action<Scene, UnloadSceneOptions>)method.CreateDelegate(typeof(Action<Scene, UnloadSceneOptions>));
+            m_unloadSceneInternal = (Func<Scene, UnloadSceneOptions, bool>)method.CreateDelegate(typeof(Func<Scene, UnloadSceneOptions, bool>));
         }
 
-        public static void UnloadScene(Scene scene, UnloadSceneOptions unloadOptions)
+        public static bool UnloadScene(Scene scene, UnloadSceneOptions unloadOptions)
         {
-            m_unloadSceneInternal.Invoke(scene, unloadOptions);
+            if (!scene.IsValid()) throw new ArgumentException("Value should be valid.", nameof(scene));
+
+            return m_unloadSceneInternal.Invoke(scene, unloadOptions);
         }
     }
 }
