@@ -2,14 +2,14 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace UGF.Module.Scenes.Runtime
+namespace UGF.Module.Scenes.Runtime.Loaders.Manager
 {
-    [CreateAssetMenu(menuName = "UGF/Scenes/Scene Info", order = 2000)]
-    public class SceneInfoAsset : SceneInfoAssetBase
+    [CreateAssetMenu(menuName = "UGF/Scenes/Manager Scene Info", order = 2000)]
+    public class ManagerSceneInfoAsset : SceneInfoAssetBase
     {
         [AssetGuid(typeof(SceneLoaderAssetBase))]
         [SerializeField] private string m_loader;
-        [AssetPath(typeof(Scene))]
+        [AssetGuid(typeof(Scene))]
         [SerializeField] private string m_scene;
 
         public string Loader { get { return m_loader; } set { m_loader = value; } }
@@ -17,7 +17,7 @@ namespace UGF.Module.Scenes.Runtime
 
         protected override ISceneInfo OnBuild()
         {
-            return new SceneInfo(m_loader, m_scene);
+            return new ManagerSceneInfo(m_loader, m_scene);
         }
     }
 }
