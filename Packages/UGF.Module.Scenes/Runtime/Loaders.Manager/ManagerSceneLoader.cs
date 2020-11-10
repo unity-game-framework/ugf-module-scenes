@@ -15,7 +15,7 @@ namespace UGF.Module.Scenes.Runtime.Loaders.Manager
 
         protected override Scene OnLoad(ISceneProvider provider, string id, ManagerSceneInfo info, SceneLoadParameters parameters)
         {
-            string scenePath = info.SceneId;
+            string scenePath = ManagerSceneSettings.GetScenePath(info.SceneId);
             var options = new LoadSceneParameters(parameters.AddMode, parameters.PhysicsMode);
 
             Scene scene = SceneManager.LoadScene(scenePath, options);
@@ -25,7 +25,7 @@ namespace UGF.Module.Scenes.Runtime.Loaders.Manager
 
         protected override async Task<Scene> OnLoadAsync(ISceneProvider provider, string id, ManagerSceneInfo info, SceneLoadParameters parameters)
         {
-            string scenePath = info.SceneId;
+            string scenePath = ManagerSceneSettings.GetScenePath(info.SceneId);
             var options = new LoadSceneParameters(parameters.AddMode, parameters.PhysicsMode);
 
             AsyncOperation operation = SceneManager.LoadSceneAsync(scenePath, options);
