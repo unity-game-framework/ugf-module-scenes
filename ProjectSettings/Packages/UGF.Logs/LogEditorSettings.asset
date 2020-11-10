@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &11400000
+--- !u!114 &1
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -9,8 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d009aaa9aa5b455992ebcbf5ee989c3d, type: 3}
-  m_Name: SceneTestInfo
+  m_Script: {fileID: 11500000, guid: c2bc204a131968e4c88a804a522600ff, type: 3}
+  m_Name: 
   m_EditorClassIdentifier: 
-  m_loader: 9fadd5c60f34fee42acd011bc692d89b
-  m_scene: d39a9027b65879843ab7fc2c1a4a22af
+  m_editorEnabled: 1
+  m_settings:
+    m_groups: []
+  references:
+    version: 1

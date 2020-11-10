@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using JetBrains.Annotations;
 using NUnit.Framework;
 using UGF.Application.Runtime;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
@@ -14,7 +15,7 @@ namespace UGF.Module.Scenes.Runtime.Tests
         [UnityTearDown, UsedImplicitly]
         public IEnumerator Teardown()
         {
-            SceneManager.LoadScene("SampleScene", LoadSceneMode.Single);
+            EditorSceneManager.LoadSceneInPlayMode("Assets/Scenes/SampleScene.unity", new LoadSceneParameters(LoadSceneMode.Single));
 
             yield return null;
         }
@@ -35,7 +36,7 @@ namespace UGF.Module.Scenes.Runtime.Tests
 
             Assert.True(scene.IsValid(), "Load: scene.IsValid()");
             Assert.True(scene.isLoaded, "Load: scene.isLoaded");
-            Assert.AreEqual(module.Provider.GetScene(id).Address, scene.path);
+            Assert.AreEqual(module.Provider.GetScene(id).Address, SceneUtility.GetSceneGuid(scene));
 
             if (unload)
             {
@@ -69,7 +70,7 @@ namespace UGF.Module.Scenes.Runtime.Tests
 
             Assert.True(scene.IsValid(), "Load: scene.IsValid()");
             Assert.True(scene.isLoaded, "Load: scene.isLoaded");
-            Assert.AreEqual(module.Provider.GetScene(id).Address, scene.path);
+            Assert.AreEqual(module.Provider.GetScene(id).Address, SceneUtility.GetSceneGuid(scene));
 
             if (unload)
             {

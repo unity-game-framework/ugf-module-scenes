@@ -9,8 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d009aaa9aa5b455992ebcbf5ee989c3d, type: 3}
-  m_Name: SceneTestInfo
+  m_Script: {fileID: 11500000, guid: 9488722b2eb8482c86553b429576ea37, type: 3}
+  m_Name: ApplicationSettings
   m_EditorClassIdentifier: 
-  m_loader: 9fadd5c60f34fee42acd011bc692d89b
-  m_scene: d39a9027b65879843ab7fc2c1a4a22af
+  m_config: {fileID: 0}
