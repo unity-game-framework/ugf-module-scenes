@@ -7,28 +7,28 @@ namespace UGF.Module.Scenes.Runtime
     {
         protected override Scene OnLoad(ISceneProvider provider, string id, SceneLoadParameters parameters)
         {
-            var info = (TInfo)provider.GetScene(id);
+            var info = provider.GetScene<TInfo>(id);
 
             return OnLoad(provider, id, info, parameters);
         }
 
         protected override Task<Scene> OnLoadAsync(ISceneProvider provider, string id, SceneLoadParameters parameters)
         {
-            var info = (TInfo)provider.GetScene(id);
+            var info = provider.GetScene<TInfo>(id);
 
             return OnLoadAsync(provider, id, info, parameters);
         }
 
         protected override void OnUnload(ISceneProvider provider, string id, Scene scene, SceneUnloadParameters parameters)
         {
-            var info = (TInfo)provider.GetScene(id);
+            var info = provider.GetScene<TInfo>(id);
 
             OnUnload(provider, id, scene, info, parameters);
         }
 
         protected override Task OnUnloadAsync(ISceneProvider provider, string id, Scene scene, SceneUnloadParameters parameters)
         {
-            var info = (TInfo)provider.GetScene(id);
+            var info = provider.GetScene<TInfo>(id);
 
             return OnUnloadAsync(provider, id, scene, info, parameters);
         }

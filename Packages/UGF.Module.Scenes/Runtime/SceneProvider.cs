@@ -70,9 +70,26 @@ namespace UGF.Module.Scenes.Runtime
             return m_loaders.TryGetValue(id, out loader);
         }
 
+        public T GetScene<T>(string id) where T : class, ISceneInfo
+        {
+            return (T)GetScene(id);
+        }
+
         public ISceneInfo GetScene(string id)
         {
             return TryGetScene(id, out ISceneInfo scene) ? scene : throw new ArgumentException($"Scene info not found by the specified id: '{id}'.");
+        }
+
+        public bool TryGetScene<T>(string id, out T scene) where T : class, ISceneInfo
+        {
+            if (TryGetScene(id, out ISceneInfo value))
+            {
+                scene = (T)value;
+                return true;
+            }
+
+            scene = default;
+            return false;
         }
 
         public bool TryGetScene(string id, out ISceneInfo scene)
