@@ -36,5 +36,31 @@ namespace UGF.Module.Scenes.Runtime.Loaders.Manager
             path = default;
             return false;
         }
+
+        public static string GetSceneId(string path)
+        {
+            return TryGetSceneId(path, out string id) ? id : throw new ArgumentException($"Scene id not found by the specified path: '{path}'.");
+        }
+
+        public static bool TryGetSceneId(string path, out string id)
+        {
+            if (string.IsNullOrEmpty(path)) throw new ArgumentException("Value cannot be null or empty.", nameof(path));
+
+            ManagerSceneSettingsAsset data = Settings.Data;
+
+            for (int i = 0; i < data.Scenes.Count; i++)
+            {
+                ManagerSceneSettingsAsset.SceneData scene = data.Scenes[i];
+
+                if (scene.Path == path)
+                {
+                    id = scene.Id;
+                    return true;
+                }
+            }
+
+            id = default;
+            return false;
+        }
     }
 }
