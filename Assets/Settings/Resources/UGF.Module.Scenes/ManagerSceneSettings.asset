@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c8125d981054f4b9d339d6ec7769b4d, type: 3}
   m_Name: ManagerSceneSettings
   m_EditorClassIdentifier: 
+  m_scenesAutoUpdate: 1
   m_scenes:
   - m_id: d39a9027b65879843ab7fc2c1a4a22af
     m_path: Assets/UGF.Module.Scenes.Runtime.Tests/Resources/SceneTest.unity

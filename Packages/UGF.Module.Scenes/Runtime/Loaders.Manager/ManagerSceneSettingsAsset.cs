@@ -7,8 +7,10 @@ namespace UGF.Module.Scenes.Runtime.Loaders.Manager
 {
     public class ManagerSceneSettingsAsset : CustomSettingsData
     {
+        [SerializeField] private bool m_scenesAutoUpdate = true;
         [SerializeField] private List<SceneData> m_scenes = new List<SceneData>();
 
+        public bool ScenesAutoUpdate { get { return m_scenesAutoUpdate; } set { m_scenesAutoUpdate = value; } }
         public List<SceneData> Scenes { get { return m_scenes; } }
 
         [Serializable]

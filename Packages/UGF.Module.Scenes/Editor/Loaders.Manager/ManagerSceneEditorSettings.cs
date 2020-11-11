@@ -1,13 +1,22 @@
 ﻿using UGF.CustomSettings.Editor;
 using UGF.Module.Scenes.Runtime.Loaders.Manager;
 using UnityEditor;
-using UnityEngine;
 
 namespace UGF.Module.Scenes.Editor.Loaders.Manager
 {
     [InitializeOnLoad]
     public static class ManagerSceneEditorSettings
     {
+        public static bool ScenesAutoUpdate
+        {
+            get { return ManagerSceneSettings.Settings.Data.ScenesAutoUpdate; }
+            set
+            {
+                ManagerSceneSettings.Settings.Data.ScenesAutoUpdate = value;
+                ManagerSceneSettings.Settings.SaveSettings();
+            }
+        }
+
         static ManagerSceneEditorSettings()
         {
             EditorBuildSettings.sceneListChanged += OnEditorBuildSettingsSceneListChanged;
@@ -39,7 +48,10 @@ namespace UGF.Module.Scenes.Editor.Loaders.Manager
 
         private static void OnEditorBuildSettingsSceneListChanged()
         {
-            UpdateScenesFromBuildSettings();
+            if (ScenesAutoUpdate)
+            {
+                UpdateScenesFromBuildSettings();
+            }
         }
 
         [SettingsProvider]
