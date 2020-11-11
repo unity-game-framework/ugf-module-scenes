@@ -14,5 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_scenesAutoUpdate: 1
   m_scenes:
+  - m_id: 9fc0d4010bbf28b4594072e72b8655ab
+    m_path: Assets/Scenes/SampleScene.unity
   - m_id: d39a9027b65879843ab7fc2c1a4a22af
     m_path: Assets/UGF.Module.Scenes.Runtime.Tests/Resources/SceneTest.unity
