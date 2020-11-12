@@ -10,22 +10,17 @@ namespace UGF.Module.Scenes.Runtime
 
         public List<Component> Containers { get { return m_containers; } }
 
-        public T Get<T>()
+        public T Get<T>() where T : class
         {
             return (T)(object)Get(typeof(T));
         }
 
         public Component Get(Type type)
         {
-            if (!TryGet(type, out Component container))
-            {
-                throw new ArgumentException($"Container by the specified type not found: '{type}'.");
-            }
-
-            return container;
+            return TryGet(type, out Component container) ? container : throw new ArgumentException($"Container not found by the specified type: '{type}'.");
         }
 
-        public bool TryGet<T>(out T container)
+        public bool TryGet<T>(out T container) where T : class
         {
             if (TryGet(typeof(T), out Component value))
             {
