@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -9,41 +10,45 @@ namespace UGF.Module.Scenes.Runtime
     {
         public Scene Scene { get; }
 
-        private readonly List<GameObject> m_buffer = new List<GameObject>();
+        private readonly List<GameObject> m_roots = new List<GameObject>();
+        private readonly IReadOnlyList<GameObject> m_rootsReadOnly;
 
         public SceneRoot(Scene scene)
         {
+            if (!scene.IsValid()) throw new ArgumentException("Value should be valid.", nameof(scene));
+
             Scene = scene;
+
+            m_rootsReadOnly = new ReadOnlyCollection<GameObject>(m_roots);
+        }
+
+        public IReadOnlyList<GameObject> GetRootGameObjects()
+        {
+            Scene.GetRootGameObjects(m_roots);
+
+            return m_rootsReadOnly;
         }
 
         public GameObject GetGameObject(string name)
         {
-            if (!TryGetGameObject(name, out GameObject gameObject))
-            {
-                throw new ArgumentException($"Root gameobject by the specified name not found: '{name}'.");
-            }
-
-            return gameObject;
+            return TryGetGameObject(name, out GameObject gameObject) ? gameObject : throw new ArgumentException($"Root gameobject not found by the specified name: '{name}'.");
         }
 
         public bool TryGetGameObject(string name, out GameObject gameObject)
         {
-            if (name == null) throw new ArgumentNullException(nameof(name));
+            if (string.IsNullOrEmpty(name)) throw new ArgumentException("Value cannot be null or empty.", nameof(name));
 
-            Scene.GetRootGameObjects(m_buffer);
+            IReadOnlyList<GameObject> roots = GetRootGameObjects();
 
-            for (int i = 0; i < m_buffer.Count; i++)
+            for (int i = 0; i < roots.Count; i++)
             {
-                gameObject = m_buffer[i];
+                gameObject = roots[i];
 
                 if (gameObject.name == name)
                 {
-                    m_buffer.Clear();
                     return true;
                 }
             }
-
-            m_buffer.Clear();
 
             gameObject = null;
             return false;
@@ -51,55 +56,40 @@ namespace UGF.Module.Scenes.Runtime
 
         public GameObject GetGameObjectByTag(string tag)
         {
-            if (!TryGetGameObjectByTag(tag, out GameObject gameObject))
-            {
-                throw new ArgumentException($"Root gameobject by the specified tag not found: '{tag}'.");
-            }
-
-            return gameObject;
+            return TryGetGameObjectByTag(tag, out GameObject gameObject) ? gameObject : throw new ArgumentException($"Root gameobject not found by the specified tag: '{tag}'.");
         }
 
         public bool TryGetGameObjectByTag(string tag, out GameObject gameObject)
         {
             if (string.IsNullOrEmpty(tag)) throw new ArgumentException("Value cannot be null or empty.", nameof(tag));
 
-            Scene.GetRootGameObjects(m_buffer);
+            IReadOnlyList<GameObject> roots = GetRootGameObjects();
 
-            for (int i = 0; i < m_buffer.Count; i++)
+            for (int i = 0; i < roots.Count; i++)
             {
-                gameObject = m_buffer[i];
+                gameObject = roots[i];
 
                 if (gameObject.CompareTag(tag))
                 {
-                    m_buffer.Clear();
                     return true;
                 }
             }
-
-            m_buffer.Clear();
 
             gameObject = null;
             return false;
         }
 
-        public T GetComponent<T>()
+        public T GetComponent<T>() where T : class
         {
             return (T)(object)GetComponent(typeof(T));
         }
 
         public Component GetComponent(Type type)
         {
-            if (type == null) throw new ArgumentNullException(nameof(type));
-
-            if (!TryGetComponent(type, out Component component))
-            {
-                throw new ArgumentException($"Root component by the specified type not found: '{type}'.");
-            }
-
-            return component;
+            return TryGetComponent(type, out Component component) ? component : throw new ArgumentException($"Component not found in root gameobjects by the specified type: '{type}'.");
         }
 
-        public bool TryGetComponent<T>(out T component)
+        public bool TryGetComponent<T>(out T component) where T : class
         {
             if (TryGetComponent(typeof(T), out Component value))
             {
@@ -115,20 +105,17 @@ namespace UGF.Module.Scenes.Runtime
         {
             if (type == null) throw new ArgumentNullException(nameof(type));
 
-            Scene.GetRootGameObjects(m_buffer);
+            IReadOnlyList<GameObject> roots = GetRootGameObjects();
 
-            for (int i = 0; i < m_buffer.Count; i++)
+            for (int i = 0; i < roots.Count; i++)
             {
-                GameObject gameObject = m_buffer[i];
+                GameObject gameObject = roots[i];
 
                 if (gameObject.TryGetComponent(type, out component))
                 {
-                    m_buffer.Clear();
                     return true;
                 }
             }
-
-            m_buffer.Clear();
 
             component = null;
             return false;

@@ -1,13 +1,21 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace UGF.Module.Scenes.Runtime
 {
     [Serializable]
     public struct SceneUnloadParameters
     {
-        [SerializeField] private bool m_unloadAllEmbeddedSceneObjects;
+        [SerializeField] private UnloadSceneOptions m_options;
 
-        public bool UnloadAllEmbeddedSceneObjects { get { return m_unloadAllEmbeddedSceneObjects; } set { m_unloadAllEmbeddedSceneObjects = value; } }
+        public UnloadSceneOptions Options { get { return m_options; } set { m_options = value; } }
+
+        public static SceneUnloadParameters Default { get; } = new SceneUnloadParameters(UnloadSceneOptions.UnloadAllEmbeddedSceneObjects);
+
+        public SceneUnloadParameters(UnloadSceneOptions options)
+        {
+            m_options = options;
+        }
     }
 }

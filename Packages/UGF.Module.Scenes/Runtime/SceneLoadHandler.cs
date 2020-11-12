@@ -1,6 +1,4 @@
-﻿using UnityEngine.SceneManagement;
-
-namespace UGF.Module.Scenes.Runtime
+﻿namespace UGF.Module.Scenes.Runtime
 {
-    public delegate void SceneLoadHandler(Scene scene, SceneLoadParameters parameters);
+    public delegate void SceneLoadHandler(string id, SceneLoadParameters parameters);
 }
