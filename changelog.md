@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0](https://github.com/unity-game-framework/ugf-module-scenes/releases/tag/1.1.0) - 2020-11-12  
+
+### Release Notes
+
+- [Milestone](https://github.com/unity-game-framework/ugf-module-scenes/milestone/8?closed=1)  
+    
+
+### Added
+
+- Add scene module runtime debug logs ([#25](https://github.com/unity-game-framework/ugf-module-scenes/pull/25))  
+    - Add logs for `SceneModule` initialize and uninitialize events.
+    - Add logs for `SceneModule` and `ManagerSceneLoader` of loading and unloading events.
+
 ## [1.0.0](https://github.com/unity-game-framework/ugf-module-scenes/releases/tag/1.0.0) - 2020-11-12  
 
 ### Release Notes
@@ -14,6 +27,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Rework module to support updated UGF.Application package ([#21](https://github.com/unity-game-framework/ugf-module-scenes/pull/21))
+  - Add scene loaders and scene information.
+  - Add scene provider to manager scene loaders and scene information.
+  - Add runtime settings for scene build list.
+  - Add scene loader implementation to load and unload scene using `SceneManager` for scenes from build settings.
+  - Change module and module creation to support updated `UGF.Application` package.
 - Update to Unity 2020.2 ([#19](https://github.com/unity-game-framework/ugf-module-scenes/pull/19))
 
 ## [0.6.0-preview](https://github.com/unity-game-framework/ugf-module-scenes/releases/tag/0.6.0-preview) - 2020-02-21  
