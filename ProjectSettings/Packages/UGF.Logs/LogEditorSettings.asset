@@ -14,6 +14,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_editorEnabled: 1
   m_settings:
-    m_groups: []
+    m_groups:
+    - m_name: Standalone
+      m_settings:
+        id: 0
   references:
     version: 1
+    00000000:
+      type: {class: DefinesSettings, ns: UGF.Defines.Editor, asm: UGF.Defines.Editor}
+      data:
+        m_includeInBuild: 1
+        m_defines:
+        - m_enabled: 0
+          m_value: UGF_LOG_INFO
+        - m_enabled: 1
+          m_value: UGF_LOG_DEBUG
+        - m_enabled: 0
+          m_value: UGF_LOG_WARNING
+        - m_enabled: 0
+          m_value: UGF_LOG_ERROR
+        - m_enabled: 0
+          m_value: UGF_LOG_EXCEPTION
