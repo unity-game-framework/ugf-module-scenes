@@ -4,11 +4,12 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using UGF.Application.Runtime;
+using UGF.Logs.Runtime;
 using UnityEngine.SceneManagement;
 
 namespace UGF.Module.Scenes.Runtime
 {
-    public class SceneModule : ApplicationModuleDescribed<SceneModuleDescription>, ISceneModule
+    public partial class SceneModule : ApplicationModuleDescribed<SceneModuleDescription>, ISceneModule
     {
         public ISceneProvider Provider { get; }
         public IReadOnlyDictionary<Scene, SceneInstance> Scenes { get; }
@@ -41,6 +42,12 @@ namespace UGF.Module.Scenes.Runtime
             {
                 Provider.AddScene(pair.Key, pair.Value);
             }
+
+            Log.Debug("Scene Module initialized", new
+            {
+                loadersCount = Provider.Loaders.Count,
+                scenesCount = Provider.Scenes.Count
+            });
         }
 
         protected override void OnUninitialize()
@@ -49,6 +56,11 @@ namespace UGF.Module.Scenes.Runtime
 
             if (Description.UnloadTrackedScenesOnUninitialize)
             {
+                Log.Debug("Scene Module unload tracked scenes on uninitialize", new
+                {
+                    count = m_scenes.Count
+                });
+
                 while (m_scenes.Count > 0)
                 {
                     KeyValuePair<Scene, SceneInstance> pair = m_scenes.First();
@@ -74,6 +86,8 @@ namespace UGF.Module.Scenes.Runtime
         {
             if (string.IsNullOrEmpty(id)) throw new ArgumentException("Value cannot be null or empty.", nameof(id));
 
+            LogSceneLoad(id, parameters);
+
             Loading?.Invoke(id, parameters);
 
             Scene scene = OnLoad(id, parameters);
@@ -83,6 +97,8 @@ namespace UGF.Module.Scenes.Runtime
 
             Loaded?.Invoke(id, scene, parameters);
 
+            LogSceneLoaded(id, scene, parameters);
+
             return scene;
         }
 
@@ -90,15 +106,18 @@ namespace UGF.Module.Scenes.Runtime
         {
             if (string.IsNullOrEmpty(id)) throw new ArgumentException("Value cannot be null or empty.", nameof(id));
 
+            LogSceneLoad(id, parameters, true);
+
             Loading?.Invoke(id, parameters);
 
             Scene scene = await OnLoadAsync(id, parameters);
-
             SceneInstance instance = OnAddScene(id, scene, parameters);
 
             m_scenes.Add(scene, instance);
 
             Loaded?.Invoke(id, scene, parameters);
+
+            LogSceneLoaded(id, scene, parameters, true);
 
             return scene;
         }
@@ -106,6 +125,8 @@ namespace UGF.Module.Scenes.Runtime
         public void Unload(string id, Scene scene, SceneUnloadParameters parameters)
         {
             if (string.IsNullOrEmpty(id)) throw new ArgumentException("Value cannot be null or empty.", nameof(id));
+
+            LogSceneUnload(id, scene, parameters);
 
             Unloading?.Invoke(id, scene, parameters);
 
@@ -115,21 +136,26 @@ namespace UGF.Module.Scenes.Runtime
             m_scenes.Remove(scene);
 
             Unloaded?.Invoke(id, parameters);
+
+            LogSceneUnloaded(id, parameters);
         }
 
         public async Task UnloadAsync(string id, Scene scene, SceneUnloadParameters parameters)
         {
             if (string.IsNullOrEmpty(id)) throw new ArgumentException("Value cannot be null or empty.", nameof(id));
 
+            LogSceneUnload(id, scene, parameters, true);
+
             Unloading?.Invoke(id, scene, parameters);
 
             OnRemoveScene(id, scene, parameters);
-
             await OnUnloadAsync(id, scene, parameters);
 
             m_scenes.Remove(scene);
 
             Unloaded?.Invoke(id, parameters);
+
+            LogSceneUnloaded(id, parameters, true);
         }
 
         public SceneInstance GetScene(Scene scene)
