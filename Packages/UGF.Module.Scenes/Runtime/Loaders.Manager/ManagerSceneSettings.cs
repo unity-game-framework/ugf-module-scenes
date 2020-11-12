@@ -20,7 +20,7 @@ namespace UGF.Module.Scenes.Runtime.Loaders.Manager
         {
             if (string.IsNullOrEmpty(id)) throw new ArgumentException("Value cannot be null or empty.", nameof(id));
 
-            ManagerSceneSettingsAsset data = Settings.Data;
+            ManagerSceneSettingsAsset data = Settings.GetData();
 
             for (int i = 0; i < data.Scenes.Count; i++)
             {
@@ -46,7 +46,7 @@ namespace UGF.Module.Scenes.Runtime.Loaders.Manager
         {
             if (string.IsNullOrEmpty(path)) throw new ArgumentException("Value cannot be null or empty.", nameof(path));
 
-            ManagerSceneSettingsAsset data = Settings.Data;
+            ManagerSceneSettingsAsset data = Settings.GetData();
 
             for (int i = 0; i < data.Scenes.Count; i++)
             {

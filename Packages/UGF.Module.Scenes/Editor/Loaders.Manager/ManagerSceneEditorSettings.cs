@@ -9,10 +9,10 @@ namespace UGF.Module.Scenes.Editor.Loaders.Manager
     {
         public static bool ScenesAutoUpdate
         {
-            get { return ManagerSceneSettings.Settings.Data.ScenesAutoUpdate; }
+            get { return ManagerSceneSettings.Settings.GetData().ScenesAutoUpdate; }
             set
             {
-                ManagerSceneSettings.Settings.Data.ScenesAutoUpdate = value;
+                ManagerSceneSettings.Settings.GetData().ScenesAutoUpdate = value;
                 ManagerSceneSettings.Settings.SaveSettings();
             }
         }
@@ -24,7 +24,7 @@ namespace UGF.Module.Scenes.Editor.Loaders.Manager
 
         public static void UpdateScenesFromBuildSettings()
         {
-            ManagerSceneSettingsAsset data = ManagerSceneSettings.Settings.Data;
+            ManagerSceneSettingsAsset data = ManagerSceneSettings.Settings.GetData();
             EditorBuildSettingsScene[] scenes = EditorBuildSettings.scenes;
 
             data.Scenes.Clear();

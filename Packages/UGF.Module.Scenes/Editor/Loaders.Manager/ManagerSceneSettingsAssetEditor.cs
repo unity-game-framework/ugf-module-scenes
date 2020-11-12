@@ -48,7 +48,7 @@ namespace UGF.Module.Scenes.Editor.Loaders.Manager
             }
 
             EditorGUILayout.Space();
-            EditorGUILayout.HelpBox("The Scenes list represents runtime information about scenes in built player, and updated automatically after build settings scene list changed and when player built.", MessageType.Info);
+            EditorGUILayout.HelpBox("The Scenes list represents runtime information about scenes in player build, and updates automatically after build settings scene list changed and before player build.", MessageType.Info);
         }
     }
 }
