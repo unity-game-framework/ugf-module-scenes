@@ -1,19 +1,8 @@
-﻿using UnityEngine;
+﻿using UGF.Builder.Runtime;
 
 namespace UGF.Module.Scenes.Runtime
 {
-    public abstract class SceneInfoAssetBase : ScriptableObject
+    public abstract class SceneInfoAssetBase : BuilderAsset<ISceneInfo>
     {
-        public T Build<T>() where T : class, ISceneInfo
-        {
-            return (T)OnBuild();
-        }
-
-        public ISceneInfo Build()
-        {
-            return OnBuild();
-        }
-
-        protected abstract ISceneInfo OnBuild();
     }
 }

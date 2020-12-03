@@ -9,7 +9,7 @@ using UnityEngine.SceneManagement;
 
 namespace UGF.Module.Scenes.Runtime
 {
-    public partial class SceneModule : ApplicationModuleDescribed<SceneModuleDescription>, ISceneModule
+    public partial class SceneModule : ApplicationModule<SceneModuleDescription>, ISceneModule
     {
         public ISceneProvider Provider { get; }
         public IReadOnlyDictionary<Scene, SceneInstance> Scenes { get; }
@@ -23,9 +23,13 @@ namespace UGF.Module.Scenes.Runtime
 
         private readonly Dictionary<Scene, SceneInstance> m_scenes = new Dictionary<Scene, SceneInstance>();
 
-        public SceneModule(IApplication application, SceneModuleDescription description, ISceneProvider provider = null) : base(application, description)
+        public SceneModule(SceneModuleDescription description, IApplication application) : this(description, application, new SceneProvider())
         {
-            Provider = provider ?? new SceneProvider();
+        }
+
+        public SceneModule(SceneModuleDescription description, IApplication application, ISceneProvider provider) : base(description, application)
+        {
+            Provider = provider ?? throw new ArgumentNullException(nameof(provider));
             Scenes = new ReadOnlyDictionary<Scene, SceneInstance>(m_scenes);
         }
 

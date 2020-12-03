@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 namespace UGF.Module.Scenes.Runtime
 {
-    public interface ISceneModule : IApplicationModuleDescribed
+    public interface ISceneModule : IApplicationModule
     {
         new ISceneModuleDescription Description { get; }
         ISceneProvider Provider { get; }

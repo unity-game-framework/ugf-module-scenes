@@ -6,7 +6,7 @@ using UnityEngine;
 namespace UGF.Module.Scenes.Runtime
 {
     [CreateAssetMenu(menuName = "UGF/Scenes/Scene Module", order = 2000)]
-    public class SceneModuleAsset : ApplicationModuleDescribedAsset<ISceneModule, SceneModuleDescription>
+    public class SceneModuleAsset : ApplicationModuleAsset<ISceneModule, SceneModuleDescription>
     {
         [SerializeField] private bool m_unloadTrackedScenesOnUninitialize = true;
         [SerializeField] private List<AssetReference<SceneLoaderAssetBase>> m_loaders = new List<AssetReference<SceneLoaderAssetBase>>();
@@ -16,9 +16,9 @@ namespace UGF.Module.Scenes.Runtime
         public List<AssetReference<SceneLoaderAssetBase>> Loaders { get { return m_loaders; } }
         public List<AssetReference<SceneInfoAssetBase>> Scenes { get { return m_scenes; } }
 
-        protected override SceneModuleDescription OnGetDescription(IApplication application)
+        protected override IApplicationModuleDescription OnBuildDescription()
         {
-            var description = new SceneModuleDescription
+            var description = new SceneModuleDescription(typeof(ISceneModule))
             {
                 UnloadTrackedScenesOnUninitialize = m_unloadTrackedScenesOnUninitialize
             };
@@ -42,9 +42,9 @@ namespace UGF.Module.Scenes.Runtime
             return description;
         }
 
-        protected override ISceneModule OnBuild(IApplication application, SceneModuleDescription description)
+        protected override ISceneModule OnBuild(SceneModuleDescription description, IApplication application)
         {
-            return new SceneModule(application, description);
+            return new SceneModule(description, application);
         }
     }
 }
