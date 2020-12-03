@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace UGF.Module.Scenes.Runtime
 {
-    [CreateAssetMenu(menuName = "UGF/Scenes/Scene Module", order = 2000)]
+    [CreateAssetMenu(menuName = "Unity Game Framework/Scenes/Scene Module", order = 2000)]
     public class SceneModuleAsset : ApplicationModuleAsset<ISceneModule, SceneModuleDescription>
     {
         [SerializeField] private bool m_unloadTrackedScenesOnUninitialize = true;

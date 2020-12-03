@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 
 namespace UGF.Module.Scenes.Runtime.Loaders.Manager
 {
-    [CreateAssetMenu(menuName = "UGF/Scenes/Manager Scene Info", order = 2000)]
+    [CreateAssetMenu(menuName = "Unity Game Framework/Scenes/Manager Scene Info", order = 2000)]
     public class ManagerSceneInfoAsset : SceneInfoAssetBase
     {
         [AssetGuid(typeof(SceneLoaderAssetBase))]
