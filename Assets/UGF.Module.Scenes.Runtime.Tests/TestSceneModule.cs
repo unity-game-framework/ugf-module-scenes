@@ -93,7 +93,7 @@ namespace UGF.Module.Scenes.Runtime.Tests
                 {
                     Modules =
                     {
-                        (IApplicationModuleAsset)Resources.Load(moduleName, typeof(IApplicationModuleAsset))
+                        (IApplicationModuleBuilder)Resources.Load(moduleName, typeof(IApplicationModuleBuilder))
                     }
                 }
             });

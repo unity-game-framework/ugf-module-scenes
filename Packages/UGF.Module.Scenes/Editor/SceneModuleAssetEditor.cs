@@ -1,5 +1,4 @@
-﻿using UGF.Application.Editor;
-using UGF.EditorTools.Editor.IMGUI.AssetReferences;
+﻿using UGF.EditorTools.Editor.IMGUI.AssetReferences;
 using UGF.EditorTools.Editor.IMGUI.Scopes;
 using UGF.Module.Scenes.Runtime;
 using UnityEditor;
@@ -7,7 +6,7 @@ using UnityEditor;
 namespace UGF.Module.Scenes.Editor
 {
     [CustomEditor(typeof(SceneModuleAsset), true)]
-    internal class SceneModuleAssetEditor : ApplicationModuleAssetEditor
+    internal class SceneModuleAssetEditor : UnityEditor.Editor
     {
         private SerializedProperty m_propertyScript;
         private SerializedProperty m_propertyUnloadTrackedScenesOnUninitialize;
@@ -46,8 +45,6 @@ namespace UGF.Module.Scenes.Editor
                 m_listLoaders.DrawGUILayout();
                 m_listScenes.DrawGUILayout();
             }
-
-            DrawModuleRegisterTypeInfo();
         }
     }
 }
