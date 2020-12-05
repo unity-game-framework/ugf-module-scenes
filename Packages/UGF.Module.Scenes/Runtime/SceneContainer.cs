@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace UGF.Module.Scenes.Runtime
 {
+    [AddComponentMenu("Unity Game Framework/Scenes/Scene Container", 2000)]
     public class SceneContainer : MonoBehaviour
     {
         [SerializeField] private List<Component> m_containers = new List<Component>();
