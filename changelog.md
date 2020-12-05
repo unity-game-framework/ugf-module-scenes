@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.0](https://github.com/unity-game-framework/ugf-module-scenes/releases/tag/2.0.0) - 2020-12-05  
+
+### Release Notes
+
+- [Milestone](https://github.com/unity-game-framework/ugf-module-scenes/milestone/9?closed=1)  
+    
+
+### Changed
+
+- Update to support latest application package ([#28](https://github.com/unity-game-framework/ugf-module-scenes/pull/28))  
+    - Update to use `UGF.Builder` and `UGF.Description` packages from the latest version of `UGF.Application` package.
+    - Add component menu name for `SceneContainer` component.
+    - Change dependencies: `com.ugf.application` to `6.0.0` and `com.ugf.logs` to `4.1.0`.
+    - Change all assets to use and implement builders features.
+    - Change name of the root of create asset menu, from `UGF` to `Unity Game Framework`.
+
 ## [1.1.0](https://github.com/unity-game-framework/ugf-module-scenes/releases/tag/1.1.0) - 2020-11-12  
 
 ### Release Notes
