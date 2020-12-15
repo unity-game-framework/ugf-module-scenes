@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Module
   m_EditorClassIdentifier: 
   m_unloadTrackedScenesOnUninitialize: 1
+  m_registerApplicationForScenes: 1
   m_loaders:
   - m_guid: 9fadd5c60f34fee42acd011bc692d89b
     m_asset: {fileID: 11400000, guid: 9fadd5c60f34fee42acd011bc692d89b, type: 2}
