@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using UGF.Application.Runtime;
+using UGF.Application.Runtime.Scenes;
 using UGF.Logs.Runtime;
 using UnityEngine.SceneManagement;
 
@@ -174,11 +175,20 @@ namespace UGF.Module.Scenes.Runtime
 
         protected virtual SceneInstance OnAddScene(string id, Scene scene, SceneLoadParameters parameters)
         {
+            if (Description.RegisterApplicationForScenes)
+            {
+                ApplicationSceneProviderInstance.Provider.Add(scene, Application);
+            }
+
             return new SceneInstance(scene, id);
         }
 
         protected virtual void OnRemoveScene(string id, Scene scene, SceneUnloadParameters parameters)
         {
+            if (Description.RegisterApplicationForScenes)
+            {
+                ApplicationSceneProviderInstance.Provider.Remove(scene);
+            }
         }
 
         protected virtual Scene OnLoad(string id, SceneLoadParameters parameters)
