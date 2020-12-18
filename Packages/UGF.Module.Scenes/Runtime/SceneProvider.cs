@@ -1,19 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using UGF.Module.Scenes.Runtime.Operations;
 
 namespace UGF.Module.Scenes.Runtime
 {
     public class SceneProvider : ISceneProvider
     {
+        public ISceneOperationProvider OperationProvider { get; }
         public IReadOnlyDictionary<string, ISceneLoader> Loaders { get; }
         public IReadOnlyDictionary<string, ISceneInfo> Scenes { get; }
 
         private readonly Dictionary<string, ISceneLoader> m_loaders = new Dictionary<string, ISceneLoader>();
         private readonly Dictionary<string, ISceneInfo> m_scenes = new Dictionary<string, ISceneInfo>();
 
-        public SceneProvider()
+        public SceneProvider() : this(SceneOperationProviderInstance.Provider)
         {
+        }
+
+        public SceneProvider(ISceneOperationProvider operationProvider)
+        {
+            OperationProvider = operationProvider ?? throw new ArgumentNullException(nameof(operationProvider));
             Loaders = new ReadOnlyDictionary<string, ISceneLoader>(m_loaders);
             Scenes = new ReadOnlyDictionary<string, ISceneInfo>(m_scenes);
         }

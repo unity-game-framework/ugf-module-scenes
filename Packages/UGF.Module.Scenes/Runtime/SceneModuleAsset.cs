@@ -9,10 +9,12 @@ namespace UGF.Module.Scenes.Runtime
     public class SceneModuleAsset : ApplicationModuleAsset<ISceneModule, SceneModuleDescription>
     {
         [SerializeField] private bool m_unloadTrackedScenesOnUninitialize = true;
+        [SerializeField] private bool m_registerApplicationForScenes = true;
         [SerializeField] private List<AssetReference<SceneLoaderAssetBase>> m_loaders = new List<AssetReference<SceneLoaderAssetBase>>();
         [SerializeField] private List<AssetReference<SceneInfoAssetBase>> m_scenes = new List<AssetReference<SceneInfoAssetBase>>();
 
         public bool UnloadTrackedScenesOnUninitialize { get { return m_unloadTrackedScenesOnUninitialize; } set { m_unloadTrackedScenesOnUninitialize = value; } }
+        public bool RegisterApplicationForScenes { get { return m_registerApplicationForScenes; } set { m_registerApplicationForScenes = value; } }
         public List<AssetReference<SceneLoaderAssetBase>> Loaders { get { return m_loaders; } }
         public List<AssetReference<SceneInfoAssetBase>> Scenes { get { return m_scenes; } }
 
@@ -20,7 +22,8 @@ namespace UGF.Module.Scenes.Runtime
         {
             var description = new SceneModuleDescription(typeof(ISceneModule))
             {
-                UnloadTrackedScenesOnUninitialize = m_unloadTrackedScenesOnUninitialize
+                UnloadTrackedScenesOnUninitialize = m_unloadTrackedScenesOnUninitialize,
+                RegisterApplicationForScenes = m_registerApplicationForScenes
             };
 
             for (int i = 0; i < m_loaders.Count; i++)

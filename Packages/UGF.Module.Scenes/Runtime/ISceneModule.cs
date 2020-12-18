@@ -21,6 +21,6 @@ namespace UGF.Module.Scenes.Runtime
         void Unload(string id, Scene scene, SceneUnloadParameters parameters);
         Task UnloadAsync(string id, Scene scene, SceneUnloadParameters parameters);
         SceneInstance GetScene(Scene scene);
-        bool TryGetScene(Scene scene, out SceneInstance controller);
+        bool TryGetScene(Scene scene, out SceneInstance instance);
     }
 }

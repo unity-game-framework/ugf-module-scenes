@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using UGF.Application.Runtime;
+using UGF.Application.Runtime.Scenes;
 using UGF.Logs.Runtime;
 using UnityEngine.SceneManagement;
 
@@ -12,6 +13,7 @@ namespace UGF.Module.Scenes.Runtime
     public partial class SceneModule : ApplicationModule<SceneModuleDescription>, ISceneModule
     {
         public ISceneProvider Provider { get; }
+        public IApplicationSceneProvider ApplicationSceneProvider { get; }
         public IReadOnlyDictionary<Scene, SceneInstance> Scenes { get; }
 
         ISceneModuleDescription ISceneModule.Description { get { return Description; } }
@@ -23,13 +25,14 @@ namespace UGF.Module.Scenes.Runtime
 
         private readonly Dictionary<Scene, SceneInstance> m_scenes = new Dictionary<Scene, SceneInstance>();
 
-        public SceneModule(SceneModuleDescription description, IApplication application) : this(description, application, new SceneProvider())
+        public SceneModule(SceneModuleDescription description, IApplication application) : this(description, application, new SceneProvider(), ApplicationSceneProviderInstance.Provider)
         {
         }
 
-        public SceneModule(SceneModuleDescription description, IApplication application, ISceneProvider provider) : base(description, application)
+        public SceneModule(SceneModuleDescription description, IApplication application, ISceneProvider provider, IApplicationSceneProvider applicationSceneProvider) : base(description, application)
         {
             Provider = provider ?? throw new ArgumentNullException(nameof(provider));
+            ApplicationSceneProvider = applicationSceneProvider ?? throw new ArgumentNullException(nameof(applicationSceneProvider));
             Scenes = new ReadOnlyDictionary<Scene, SceneInstance>(m_scenes);
         }
 
@@ -167,18 +170,27 @@ namespace UGF.Module.Scenes.Runtime
             return TryGetScene(scene, out SceneInstance instance) ? instance : throw new ArgumentException($"Scene instance not found by the specified scene: '{scene.name}'.");
         }
 
-        public bool TryGetScene(Scene scene, out SceneInstance controller)
+        public bool TryGetScene(Scene scene, out SceneInstance instance)
         {
-            return m_scenes.TryGetValue(scene, out controller);
+            return m_scenes.TryGetValue(scene, out instance);
         }
 
         protected virtual SceneInstance OnAddScene(string id, Scene scene, SceneLoadParameters parameters)
         {
+            if (Description.RegisterApplicationForScenes)
+            {
+                ApplicationSceneProvider.Add(scene, Application);
+            }
+
             return new SceneInstance(scene, id);
         }
 
         protected virtual void OnRemoveScene(string id, Scene scene, SceneUnloadParameters parameters)
         {
+            if (Description.RegisterApplicationForScenes)
+            {
+                ApplicationSceneProvider.Remove(scene);
+            }
         }
 
         protected virtual Scene OnLoad(string id, SceneLoadParameters parameters)
