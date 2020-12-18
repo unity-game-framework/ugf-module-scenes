@@ -37,9 +37,24 @@ namespace UGF.Module.Scenes.Runtime.Loaders.Manager
             AsyncOperation operation = SceneManager.LoadSceneAsync(scenePath, options);
             Scene scene = SceneManager.GetSceneAt(SceneManager.sceneCount - 1);
 
-            while (!operation.isDone)
+            operation.allowSceneActivation = parameters.AllowActivation;
+            provider.OperationProvider.Add(scene, operation);
+
+            if (operation.allowSceneActivation)
             {
-                await Task.Yield();
+                while (!operation.isDone)
+                {
+                    await Task.Yield();
+                }
+
+                provider.OperationProvider.Remove(scene);
+            }
+            else
+            {
+                while (operation.progress < 0.9F)
+                {
+                    await Task.Yield();
+                }
             }
 
             LogSceneLoaded(id, info, parameters, scene, true);

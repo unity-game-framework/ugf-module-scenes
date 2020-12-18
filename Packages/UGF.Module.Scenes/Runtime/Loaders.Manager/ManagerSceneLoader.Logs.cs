@@ -21,7 +21,8 @@ namespace UGF.Module.Scenes.Runtime.Loaders.Manager
                 parameters = new
                 {
                     parameters.AddMode,
-                    parameters.PhysicsMode
+                    parameters.PhysicsMode,
+                    parameters.AllowActivation
                 },
                 isAsync
             });
@@ -42,7 +43,8 @@ namespace UGF.Module.Scenes.Runtime.Loaders.Manager
                 parameters = new
                 {
                     parameters.AddMode,
-                    parameters.PhysicsMode
+                    parameters.PhysicsMode,
+                    parameters.AllowActivation
                 },
                 scene = new
                 {

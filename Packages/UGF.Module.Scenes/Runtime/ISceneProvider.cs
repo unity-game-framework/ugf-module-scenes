@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
+using UGF.Module.Scenes.Runtime.Operations;
 
 namespace UGF.Module.Scenes.Runtime
 {
     public interface ISceneProvider
     {
+        ISceneOperationProvider OperationProvider { get; }
         IReadOnlyDictionary<string, ISceneLoader> Loaders { get; }
         IReadOnlyDictionary<string, ISceneInfo> Scenes { get; }
 
