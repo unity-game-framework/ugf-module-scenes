@@ -5,6 +5,27 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.1.0](https://github.com/unity-game-framework/ugf-module-scenes/releases/tag/2.1.0) - 2020-12-18  
+
+### Release Notes
+
+- [Milestone](https://github.com/unity-game-framework/ugf-module-scenes/milestone/10?closed=1)  
+    
+
+### Added
+
+- Load scene with delayed activation ([#32](https://github.com/unity-game-framework/ugf-module-scenes/pull/32))  
+    - Add `ISceneOperationProvider` with default implementation `SceneOperationProvider ` to store `AsyncOperation` for specific scene.
+    - Add `SceneOperationProviderInstance` as static access to global scene operation provider instance.
+    - Add `Activate`, `GetOperation` and `TryGetOperation` extensions method for scene.
+    - Add `SceneLoadParameters.AllowActivation` property to determine whether to activate scene after loading.
+    - Change `ManagerSceneLoader` to support delayed scene activation using `SceneLoadParameters.AllowActivation` parameter.
+    - Change `ManagerSceneLoader` to support and manage scene operations.
+- Add support for application access by scene ([#31](https://github.com/unity-game-framework/ugf-module-scenes/pull/31))  
+    - Add `SceneModule.ApplicationSceneProvider` used to register application for loaded scenes.
+    - Add `SceneModuleDescription.RegisterApplicationForScenes` and `SceneModuleAsset.RegisterApplicationForScenes` properties to determine whether to register application for loaded scenes.
+    - Change dependencies: `com.ugf.application` to `6.1.0` version.
+
 ## [2.0.0](https://github.com/unity-game-framework/ugf-module-scenes/releases/tag/2.0.0) - 2020-12-05  
 
 ### Release Notes
