@@ -10,6 +10,7 @@ namespace UGF.Module.Scenes.Editor
     {
         private SerializedProperty m_propertyScript;
         private SerializedProperty m_propertyUnloadTrackedScenesOnUninitialize;
+        private SerializedProperty m_propertyRegisterApplicationForScenes;
         private AssetReferenceListDrawer m_listLoaders;
         private AssetReferenceListDrawer m_listScenes;
 
@@ -17,6 +18,7 @@ namespace UGF.Module.Scenes.Editor
         {
             m_propertyScript = serializedObject.FindProperty("m_Script");
             m_propertyUnloadTrackedScenesOnUninitialize = serializedObject.FindProperty("m_unloadTrackedScenesOnUninitialize");
+            m_propertyRegisterApplicationForScenes = serializedObject.FindProperty("m_registerApplicationForScenes");
 
             m_listLoaders = new AssetReferenceListDrawer(serializedObject.FindProperty("m_loaders"));
             m_listScenes = new AssetReferenceListDrawer(serializedObject.FindProperty("m_scenes"));
@@ -41,6 +43,7 @@ namespace UGF.Module.Scenes.Editor
                 }
 
                 EditorGUILayout.PropertyField(m_propertyUnloadTrackedScenesOnUninitialize);
+                EditorGUILayout.PropertyField(m_propertyRegisterApplicationForScenes);
 
                 m_listLoaders.DrawGUILayout();
                 m_listScenes.DrawGUILayout();
