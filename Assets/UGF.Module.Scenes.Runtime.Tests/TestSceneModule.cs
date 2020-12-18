@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using JetBrains.Annotations;
 using NUnit.Framework;
 using UGF.Application.Runtime;
+using UGF.Module.Scenes.Runtime.Operations;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
@@ -83,6 +84,41 @@ namespace UGF.Module.Scenes.Runtime.Tests
                 Assert.False(scene.IsValid(), "Unload: scene.IsValid()");
                 Assert.False(scene.isLoaded, "Unload: scene.isLoaded");
             }
+        }
+
+        [TestCase("Module", "70128677f5fe91241866ef846e7bb16e", ExpectedResult = null)]
+        [UnityTest]
+        public IEnumerator LoadAsyncActivation(string moduleName, string id)
+        {
+            IApplication application = CreateApplication(moduleName);
+
+            application.Initialize();
+
+            var module = application.GetModule<ISceneModule>();
+            Task<Scene> task = module.LoadAsync(id, SceneLoadParameters.DefaultAdditiveDisabled);
+
+            while (!task.IsCompleted)
+            {
+                yield return null;
+            }
+
+            Scene scene = task.Result;
+            AsyncOperation operation = scene.GetOperation();
+
+            Assert.True(scene.IsValid(), "Load: scene.IsValid()");
+            Assert.False(scene.isLoaded, "Load: scene.isLoaded");
+            Assert.NotNull(operation);
+            Assert.GreaterOrEqual(operation.progress, 0.9F);
+            Assert.AreEqual(module.Provider.GetScene(id).Address, "d39a9027b65879843ab7fc2c1a4a22af");
+
+            scene.Activate();
+
+            Assert.False(scene.TryGetOperation(out _));
+
+            yield return operation;
+
+            Assert.True(scene.IsValid(), "Load: scene.IsValid()");
+            Assert.True(scene.isLoaded, "Load: scene.isLoaded");
         }
 
         private IApplication CreateApplication(string moduleName)
