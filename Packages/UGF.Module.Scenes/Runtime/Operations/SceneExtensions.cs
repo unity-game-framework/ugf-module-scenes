@@ -5,11 +5,17 @@ namespace UGF.Module.Scenes.Runtime.Operations
 {
     public static class SceneExtensions
     {
-        public static void Activate(this Scene scene)
+        public static void Activate(this Scene scene, bool clearOperation = true)
         {
-            AsyncOperation operation = SceneOperationProviderInstance.Provider.Get(scene);
+            ISceneOperationProvider provider = SceneOperationProviderInstance.Provider;
+            AsyncOperation operation = provider.Get(scene);
 
             operation.allowSceneActivation = true;
+
+            if (clearOperation)
+            {
+                provider.Remove(scene);
+            }
         }
 
         public static AsyncOperation GetOperation(this Scene scene)

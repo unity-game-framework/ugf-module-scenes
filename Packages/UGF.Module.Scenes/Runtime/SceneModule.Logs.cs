@@ -16,7 +16,8 @@ namespace UGF.Module.Scenes.Runtime
                 parameters = new
                 {
                     parameters.AddMode,
-                    parameters.PhysicsMode
+                    parameters.PhysicsMode,
+                    parameters.AllowActivation
                 },
                 isAsync
             });
@@ -41,7 +42,8 @@ namespace UGF.Module.Scenes.Runtime
                 parameters = new
                 {
                     parameters.AddMode,
-                    parameters.PhysicsMode
+                    parameters.PhysicsMode,
+                    parameters.AllowActivation
                 },
                 isAsync
             });
