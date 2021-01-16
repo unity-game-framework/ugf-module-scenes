@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.2.0](https://github.com/unity-game-framework/ugf-module-scenes/releases/tag/2.2.0) - 2021-01-16  
+
+### Release Notes
+
+- [Milestone](https://github.com/unity-game-framework/ugf-module-scenes/milestone/11?closed=1)  
+    
+
+### Changed
+
+- Update application dependency ([#35](https://github.com/unity-game-framework/ugf-module-scenes/pull/35))  
+    - Update dependencies: `com.ugf.application` to `7.1.0` version.
+    - Deprecate `SceneModuleDescription` constructor with `registerType` argument, use properties initialization instead.
+
 ## [2.1.0](https://github.com/unity-game-framework/ugf-module-scenes/releases/tag/2.1.0) - 2020-12-18  
 
 ### Release Notes
