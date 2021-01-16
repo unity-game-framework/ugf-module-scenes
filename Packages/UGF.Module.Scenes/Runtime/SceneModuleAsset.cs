@@ -20,8 +20,9 @@ namespace UGF.Module.Scenes.Runtime
 
         protected override IApplicationModuleDescription OnBuildDescription()
         {
-            var description = new SceneModuleDescription(typeof(ISceneModule))
+            var description = new SceneModuleDescription
             {
+                RegisterType = typeof(ISceneModule),
                 UnloadTrackedScenesOnUninitialize = m_unloadTrackedScenesOnUninitialize,
                 RegisterApplicationForScenes = m_registerApplicationForScenes
             };
