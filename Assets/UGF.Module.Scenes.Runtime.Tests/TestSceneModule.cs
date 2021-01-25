@@ -35,7 +35,7 @@ namespace UGF.Module.Scenes.Runtime.Tests
             var module = application.GetModule<ISceneModule>();
             Scene scene = module.Load(id, SceneLoadParameters.DefaultAdditive);
 
-            Assert.Contains(scene, module.Scenes.Keys.ToArray());
+            Assert.Contains(scene, module.Instances.Entries.Keys.ToArray());
             Assert.Contains(scene, ProviderInstance.Get<IProvider<Scene, IApplication>>().Entries.Keys.ToArray());
             Assert.Contains(application, ProviderInstance.Get<IProvider<Scene, IApplication>>().Entries.Values.ToArray());
 
@@ -43,14 +43,14 @@ namespace UGF.Module.Scenes.Runtime.Tests
 
             Assert.True(scene.IsValid(), "Load: scene.IsValid()");
             Assert.True(scene.isLoaded, "Load: scene.isLoaded");
-            Assert.AreEqual(module.Provider.GetScene(id).Address, "d39a9027b65879843ab7fc2c1a4a22af");
-            Assert.Contains(scene, module.Scenes.Keys.ToArray());
+            Assert.AreEqual(module.Scenes.Get(id).Address, "d39a9027b65879843ab7fc2c1a4a22af");
+            Assert.Contains(scene, module.Instances.Entries.Keys.ToArray());
 
             if (unload)
             {
                 module.Unload(id, scene, SceneUnloadParameters.Default);
 
-                Assert.IsEmpty(module.Scenes.Keys);
+                Assert.IsEmpty(module.Instances.Entries.Keys);
                 Assert.IsEmpty(ProviderInstance.Get<IProvider<Scene, IApplication>>().Entries.Keys);
                 Assert.IsEmpty(ProviderInstance.Get<IProvider<Scene, IApplication>>().Entries.Values);
 
@@ -80,13 +80,13 @@ namespace UGF.Module.Scenes.Runtime.Tests
 
             Scene scene = task.Result;
 
-            Assert.Contains(scene, module.Scenes.Keys.ToArray());
+            Assert.Contains(scene, module.Instances.Entries.Keys.ToArray());
             Assert.Contains(task.Result, ProviderInstance.Get<IProvider<Scene, IApplication>>().Entries.Keys.ToArray());
             Assert.Contains(application, ProviderInstance.Get<IProvider<Scene, IApplication>>().Entries.Values.ToArray());
 
             Assert.True(scene.IsValid(), "Load: scene.IsValid()");
             Assert.True(scene.isLoaded, "Load: scene.isLoaded");
-            Assert.AreEqual(module.Provider.GetScene(id).Address, "d39a9027b65879843ab7fc2c1a4a22af");
+            Assert.AreEqual(module.Scenes.Get(id).Address, "d39a9027b65879843ab7fc2c1a4a22af");
 
             if (unload)
             {
@@ -97,7 +97,7 @@ namespace UGF.Module.Scenes.Runtime.Tests
                     yield return null;
                 }
 
-                Assert.IsEmpty(module.Scenes.Keys);
+                Assert.IsEmpty(module.Instances.Entries.Keys);
                 Assert.IsEmpty(ProviderInstance.Get<IProvider<Scene, IApplication>>().Entries.Keys);
                 Assert.IsEmpty(ProviderInstance.Get<IProvider<Scene, IApplication>>().Entries.Values);
 
@@ -129,7 +129,7 @@ namespace UGF.Module.Scenes.Runtime.Tests
             Assert.False(scene.isLoaded, "Load: scene.isLoaded");
             Assert.NotNull(operation);
             Assert.GreaterOrEqual(operation.progress, 0.9F);
-            Assert.AreEqual(module.Provider.GetScene(id).Address, "d39a9027b65879843ab7fc2c1a4a22af");
+            Assert.AreEqual(module.Scenes.Get(id).Address, "d39a9027b65879843ab7fc2c1a4a22af");
 
             scene.Activate();
 

@@ -1,41 +1,47 @@
 ﻿using System.Threading.Tasks;
+using UGF.RuntimeTools.Runtime.Contexts;
+using UGF.RuntimeTools.Runtime.Providers;
 using UnityEngine.SceneManagement;
 
 namespace UGF.Module.Scenes.Runtime
 {
     public abstract class SceneLoader<TInfo> : SceneLoaderBase where TInfo : class, ISceneInfo
     {
-        protected override Scene OnLoad(ISceneProvider provider, string id, SceneLoadParameters parameters)
+        protected override Scene OnLoad(string id, SceneLoadParameters parameters, IContext context)
         {
-            var info = provider.GetScene<TInfo>(id);
+            var provider = context.Get<IProvider<Scene, ISceneInfo>>();
+            var info = provider.Get<TInfo>(id);
 
-            return OnLoad(provider, id, info, parameters);
+            return OnLoad(id, info, parameters, context);
         }
 
-        protected override Task<Scene> OnLoadAsync(ISceneProvider provider, string id, SceneLoadParameters parameters)
+        protected override Task<Scene> OnLoadAsync(string id, SceneLoadParameters parameters, IContext context)
         {
-            var info = provider.GetScene<TInfo>(id);
+            var provider = context.Get<IProvider<Scene, ISceneInfo>>();
+            var info = provider.Get<TInfo>(id);
 
-            return OnLoadAsync(provider, id, info, parameters);
+            return OnLoadAsync(id, info, parameters, context);
         }
 
-        protected override void OnUnload(ISceneProvider provider, string id, Scene scene, SceneUnloadParameters parameters)
+        protected override void OnUnload(string id, Scene scene, SceneUnloadParameters parameters, IContext context)
         {
-            var info = provider.GetScene<TInfo>(id);
+            var provider = context.Get<IProvider<Scene, ISceneInfo>>();
+            var info = provider.Get<TInfo>(id);
 
-            OnUnload(provider, id, scene, info, parameters);
+            OnUnload(id, scene, info, parameters, context);
         }
 
-        protected override Task OnUnloadAsync(ISceneProvider provider, string id, Scene scene, SceneUnloadParameters parameters)
+        protected override Task OnUnloadAsync(string id, Scene scene, SceneUnloadParameters parameters, IContext context)
         {
-            var info = provider.GetScene<TInfo>(id);
+            var provider = context.Get<IProvider<Scene, ISceneInfo>>();
+            var info = provider.Get<TInfo>(id);
 
-            return OnUnloadAsync(provider, id, scene, info, parameters);
+            return OnUnloadAsync(id, scene, info, parameters, context);
         }
 
-        protected abstract Scene OnLoad(ISceneProvider provider, string id, TInfo info, SceneLoadParameters parameters);
-        protected abstract Task<Scene> OnLoadAsync(ISceneProvider provider, string id, TInfo info, SceneLoadParameters parameters);
-        protected abstract void OnUnload(ISceneProvider provider, string id, Scene scene, TInfo info, SceneUnloadParameters parameters);
-        protected abstract Task OnUnloadAsync(ISceneProvider provider, string id, Scene scene, TInfo info, SceneUnloadParameters parameters);
+        protected abstract Scene OnLoad(string id, TInfo info, SceneLoadParameters parameters, IContext context);
+        protected abstract Task<Scene> OnLoadAsync(string id, TInfo info, SceneLoadParameters parameters, IContext context);
+        protected abstract void OnUnload(string id, Scene scene, TInfo info, SceneUnloadParameters parameters, IContext context);
+        protected abstract Task OnUnloadAsync(string id, Scene scene, TInfo info, SceneUnloadParameters parameters, IContext context);
     }
 }

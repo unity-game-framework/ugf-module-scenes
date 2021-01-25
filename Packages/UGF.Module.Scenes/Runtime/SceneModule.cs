@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using UGF.Application.Runtime;
 using UGF.Logs.Runtime;
+using UGF.RuntimeTools.Runtime.Contexts;
 using UGF.RuntimeTools.Runtime.Providers;
 using UnityEngine.SceneManagement;
 
@@ -12,8 +12,10 @@ namespace UGF.Module.Scenes.Runtime
 {
     public partial class SceneModule : ApplicationModule<SceneModuleDescription>, ISceneModule
     {
-        public ISceneProvider Provider { get; }
-        public IReadOnlyDictionary<Scene, SceneInstance> Scenes { get; }
+        public IProvider<string, ISceneInfo> Scenes { get; }
+        public IProvider<string, ISceneLoader> Loaders { get; }
+        public IProvider<Scene, SceneInstance> Instances { get { return m_instances; } }
+        public IContext Context { get; } = new Context();
 
         ISceneModuleDescription ISceneModule.Description { get { return Description; } }
 
@@ -22,16 +24,21 @@ namespace UGF.Module.Scenes.Runtime
         public event SceneUnloadHandler Unloading;
         public event SceneUnloadedHandler Unloaded;
 
-        private readonly Dictionary<Scene, SceneInstance> m_scenes = new Dictionary<Scene, SceneInstance>();
+        private readonly Provider<Scene, SceneInstance> m_instances = new Provider<Scene, SceneInstance>();
 
-        public SceneModule(SceneModuleDescription description, IApplication application) : this(description, application, new SceneProvider())
+        public SceneModule(SceneModuleDescription description, IApplication application) : this(description, application, new Provider<string, ISceneInfo>(), new Provider<string, ISceneLoader>())
         {
         }
 
-        public SceneModule(SceneModuleDescription description, IApplication application, ISceneProvider provider) : base(description, application)
+        public SceneModule(SceneModuleDescription description, IApplication application, IProvider<string, ISceneInfo> scenes, IProvider<string, ISceneLoader> loaders)
+            : base(description, application)
         {
-            Provider = provider ?? throw new ArgumentNullException(nameof(provider));
-            Scenes = new ReadOnlyDictionary<Scene, SceneInstance>(m_scenes);
+            Scenes = scenes ?? throw new ArgumentNullException(nameof(scenes));
+            Loaders = loaders ?? throw new ArgumentNullException(nameof(loaders));
+
+            Context.Add(Application);
+            Context.Add(Scenes);
+            Context.Add(Loaders);
         }
 
         protected override void OnInitialize()
@@ -40,18 +47,18 @@ namespace UGF.Module.Scenes.Runtime
 
             foreach (KeyValuePair<string, ISceneLoader> pair in Description.Loaders)
             {
-                Provider.AddLoader(pair.Key, pair.Value);
+                Loaders.Add(pair.Key, pair.Value);
             }
 
             foreach (KeyValuePair<string, ISceneInfo> pair in Description.Scenes)
             {
-                Provider.AddScene(pair.Key, pair.Value);
+                Scenes.Add(pair.Key, pair.Value);
             }
 
             Log.Debug("Scene Module initialized", new
             {
-                loadersCount = Provider.Loaders.Count,
-                scenesCount = Provider.Scenes.Count
+                loadersCount = Loaders.Entries.Count,
+                scenesCount = Scenes.Entries.Count
             });
         }
 
@@ -63,27 +70,27 @@ namespace UGF.Module.Scenes.Runtime
             {
                 Log.Debug("Scene Module unload tracked scenes on uninitialize", new
                 {
-                    count = m_scenes.Count
+                    count = m_instances.Entries.Count
                 });
 
-                while (m_scenes.Count > 0)
+                while (m_instances.Entries.Count > 0)
                 {
-                    KeyValuePair<Scene, SceneInstance> pair = m_scenes.First();
+                    KeyValuePair<Scene, SceneInstance> pair = m_instances.Entries.First();
 
                     Unload(pair.Value.Id, pair.Key, SceneUnloadParameters.Default);
                 }
             }
 
-            m_scenes.Clear();
+            m_instances.Clear();
 
             foreach (KeyValuePair<string, ISceneLoader> pair in Description.Loaders)
             {
-                Provider.RemoveLoader(pair.Key);
+                Loaders.Remove(pair.Key);
             }
 
             foreach (KeyValuePair<string, ISceneInfo> pair in Description.Scenes)
             {
-                Provider.RemoveScene(pair.Key);
+                Scenes.Remove(pair.Key);
             }
         }
 
@@ -98,7 +105,7 @@ namespace UGF.Module.Scenes.Runtime
             Scene scene = OnLoad(id, parameters);
             SceneInstance instance = OnAddScene(id, scene, parameters);
 
-            m_scenes.Add(scene, instance);
+            m_instances.Add(scene, instance);
 
             Loaded?.Invoke(id, scene, parameters);
 
@@ -118,7 +125,7 @@ namespace UGF.Module.Scenes.Runtime
             Scene scene = await OnLoadAsync(id, parameters);
             SceneInstance instance = OnAddScene(id, scene, parameters);
 
-            m_scenes.Add(scene, instance);
+            m_instances.Add(scene, instance);
 
             Loaded?.Invoke(id, scene, parameters);
 
@@ -138,7 +145,7 @@ namespace UGF.Module.Scenes.Runtime
             OnRemoveScene(id, scene, parameters);
             OnUnload(id, scene, parameters);
 
-            m_scenes.Remove(scene);
+            m_instances.Remove(scene);
 
             Unloaded?.Invoke(id, parameters);
 
@@ -156,21 +163,11 @@ namespace UGF.Module.Scenes.Runtime
             OnRemoveScene(id, scene, parameters);
             await OnUnloadAsync(id, scene, parameters);
 
-            m_scenes.Remove(scene);
+            m_instances.Remove(scene);
 
             Unloaded?.Invoke(id, parameters);
 
             LogSceneUnloaded(id, parameters, true);
-        }
-
-        public SceneInstance GetScene(Scene scene)
-        {
-            return TryGetScene(scene, out SceneInstance instance) ? instance : throw new ArgumentException($"Scene instance not found by the specified scene: '{scene.name}'.");
-        }
-
-        public bool TryGetScene(Scene scene, out SceneInstance instance)
-        {
-            return m_scenes.TryGetValue(scene, out instance);
         }
 
         protected virtual SceneInstance OnAddScene(string id, Scene scene, SceneLoadParameters parameters)
@@ -195,7 +192,7 @@ namespace UGF.Module.Scenes.Runtime
         {
             ISceneLoader loader = GetLoaderByScene(id);
 
-            Scene scene = loader.Load(Provider, id, parameters);
+            Scene scene = loader.Load(id, parameters, Context);
 
             return scene;
         }
@@ -204,7 +201,7 @@ namespace UGF.Module.Scenes.Runtime
         {
             ISceneLoader loader = GetLoaderByScene(id);
 
-            Task<Scene> task = loader.LoadAsync(Provider, id, parameters);
+            Task<Scene> task = loader.LoadAsync(id, parameters, Context);
 
             return task;
         }
@@ -213,14 +210,14 @@ namespace UGF.Module.Scenes.Runtime
         {
             ISceneLoader loader = GetLoaderByScene(id);
 
-            loader.Unload(Provider, id, scene, parameters);
+            loader.Unload(id, scene, parameters, Context);
         }
 
         protected virtual Task OnUnloadAsync(string id, Scene scene, SceneUnloadParameters parameters)
         {
             ISceneLoader loader = GetLoaderByScene(id);
 
-            Task task = loader.UnloadAsync(Provider, id, scene, parameters);
+            Task task = loader.UnloadAsync(id, scene, parameters, Context);
 
             return task;
         }
@@ -233,7 +230,7 @@ namespace UGF.Module.Scenes.Runtime
         protected bool TryGetLoaderByScene(string id, out ISceneLoader loader)
         {
             loader = default;
-            return Provider.TryGetScene(id, out ISceneInfo scene) && Provider.TryGetLoader(scene.LoaderId, out loader);
+            return Scenes.TryGet(id, out ISceneInfo scene) && Loaders.TryGet(scene.LoaderId, out loader);
         }
     }
 }
