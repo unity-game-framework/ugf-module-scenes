@@ -9,7 +9,7 @@ namespace UGF.Module.Scenes.Runtime
     {
         protected override Scene OnLoad(string id, SceneLoadParameters parameters, IContext context)
         {
-            var provider = context.Get<IProvider<Scene, ISceneInfo>>();
+            var provider = context.Get<IProvider<string, ISceneInfo>>();
             var info = provider.Get<TInfo>(id);
 
             return OnLoad(id, info, parameters, context);
@@ -17,7 +17,7 @@ namespace UGF.Module.Scenes.Runtime
 
         protected override Task<Scene> OnLoadAsync(string id, SceneLoadParameters parameters, IContext context)
         {
-            var provider = context.Get<IProvider<Scene, ISceneInfo>>();
+            var provider = context.Get<IProvider<string, ISceneInfo>>();
             var info = provider.Get<TInfo>(id);
 
             return OnLoadAsync(id, info, parameters, context);
@@ -25,7 +25,7 @@ namespace UGF.Module.Scenes.Runtime
 
         protected override void OnUnload(string id, Scene scene, SceneUnloadParameters parameters, IContext context)
         {
-            var provider = context.Get<IProvider<Scene, ISceneInfo>>();
+            var provider = context.Get<IProvider<string, ISceneInfo>>();
             var info = provider.Get<TInfo>(id);
 
             OnUnload(id, scene, info, parameters, context);
@@ -33,7 +33,7 @@ namespace UGF.Module.Scenes.Runtime
 
         protected override Task OnUnloadAsync(string id, Scene scene, SceneUnloadParameters parameters, IContext context)
         {
-            var provider = context.Get<IProvider<Scene, ISceneInfo>>();
+            var provider = context.Get<IProvider<string, ISceneInfo>>();
             var info = provider.Get<TInfo>(id);
 
             return OnUnloadAsync(id, scene, info, parameters, context);
