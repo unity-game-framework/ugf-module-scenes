@@ -4,8 +4,8 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using UGF.Application.Runtime;
-using UGF.Application.Runtime.Scenes;
 using UGF.Logs.Runtime;
+using UGF.RuntimeTools.Runtime.Providers;
 using UnityEngine.SceneManagement;
 
 namespace UGF.Module.Scenes.Runtime
@@ -13,7 +13,6 @@ namespace UGF.Module.Scenes.Runtime
     public partial class SceneModule : ApplicationModule<SceneModuleDescription>, ISceneModule
     {
         public ISceneProvider Provider { get; }
-        public IApplicationSceneProvider ApplicationSceneProvider { get; }
         public IReadOnlyDictionary<Scene, SceneInstance> Scenes { get; }
 
         ISceneModuleDescription ISceneModule.Description { get { return Description; } }
@@ -25,14 +24,13 @@ namespace UGF.Module.Scenes.Runtime
 
         private readonly Dictionary<Scene, SceneInstance> m_scenes = new Dictionary<Scene, SceneInstance>();
 
-        public SceneModule(SceneModuleDescription description, IApplication application) : this(description, application, new SceneProvider(), ApplicationSceneProviderInstance.Provider)
+        public SceneModule(SceneModuleDescription description, IApplication application) : this(description, application, new SceneProvider())
         {
         }
 
-        public SceneModule(SceneModuleDescription description, IApplication application, ISceneProvider provider, IApplicationSceneProvider applicationSceneProvider) : base(description, application)
+        public SceneModule(SceneModuleDescription description, IApplication application, ISceneProvider provider) : base(description, application)
         {
             Provider = provider ?? throw new ArgumentNullException(nameof(provider));
-            ApplicationSceneProvider = applicationSceneProvider ?? throw new ArgumentNullException(nameof(applicationSceneProvider));
             Scenes = new ReadOnlyDictionary<Scene, SceneInstance>(m_scenes);
         }
 
@@ -177,9 +175,9 @@ namespace UGF.Module.Scenes.Runtime
 
         protected virtual SceneInstance OnAddScene(string id, Scene scene, SceneLoadParameters parameters)
         {
-            if (Description.RegisterApplicationForScenes)
+            if (Description.RegisterApplicationForScenes && ProviderInstance.TryGet(out IProvider<Scene, IApplication> provider))
             {
-                ApplicationSceneProvider.Add(scene, Application);
+                provider.Add(scene, Application);
             }
 
             return new SceneInstance(scene, id);
@@ -187,9 +185,9 @@ namespace UGF.Module.Scenes.Runtime
 
         protected virtual void OnRemoveScene(string id, Scene scene, SceneUnloadParameters parameters)
         {
-            if (Description.RegisterApplicationForScenes)
+            if (Description.RegisterApplicationForScenes && ProviderInstance.TryGet(out IProvider<Scene, IApplication> provider))
             {
-                ApplicationSceneProvider.Remove(scene);
+                provider.Remove(scene);
             }
         }
 
