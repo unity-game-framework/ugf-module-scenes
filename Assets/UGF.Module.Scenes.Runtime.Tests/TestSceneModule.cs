@@ -14,11 +14,22 @@ namespace UGF.Module.Scenes.Runtime.Tests
 {
     public class TestSceneModule
     {
+        [OneTimeSetUp]
+        public void SetupOnce()
+        {
+            ProviderInstance.Set<IProvider<Scene, IApplication>>(new Provider<Scene, IApplication>());
+            ProviderInstance.Set<IProvider<Scene, AsyncOperation>>(new Provider<Scene, AsyncOperation>());
+        }
+
         [UnityTearDown, UsedImplicitly]
         public IEnumerator Teardown()
         {
             SceneManager.LoadScene("SampleScene", new LoadSceneParameters(LoadSceneMode.Single));
-            ProviderInstance.Get<IProvider<Scene, IApplication>>().Clear();
+
+            if (ProviderInstance.TryGet(out IProvider<Scene, IApplication> provider))
+            {
+                provider.Clear();
+            }
 
             yield return null;
         }
