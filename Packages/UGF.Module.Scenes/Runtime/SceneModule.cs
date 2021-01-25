@@ -12,9 +12,9 @@ namespace UGF.Module.Scenes.Runtime
 {
     public partial class SceneModule : ApplicationModule<SceneModuleDescription>, ISceneModule
     {
-        public IProvider<string, ISceneInfo> Scenes { get; }
         public IProvider<string, ISceneLoader> Loaders { get; }
-        public IProvider<Scene, SceneInstance> Instances { get { return m_instances; } }
+        public IProvider<string, ISceneInfo> Scenes { get; }
+        public IProvider<Scene, SceneInstance> Instances { get; } = new Provider<Scene, SceneInstance>();
         public IContext Context { get; } = new Context();
 
         ISceneModuleDescription ISceneModule.Description { get { return Description; } }
@@ -24,21 +24,19 @@ namespace UGF.Module.Scenes.Runtime
         public event SceneUnloadHandler Unloading;
         public event SceneUnloadedHandler Unloaded;
 
-        private readonly Provider<Scene, SceneInstance> m_instances = new Provider<Scene, SceneInstance>();
-
-        public SceneModule(SceneModuleDescription description, IApplication application) : this(description, application, new Provider<string, ISceneInfo>(), new Provider<string, ISceneLoader>())
+        public SceneModule(SceneModuleDescription description, IApplication application) : this(description, application, new Provider<string, ISceneLoader>(), new Provider<string, ISceneInfo>())
         {
         }
 
-        public SceneModule(SceneModuleDescription description, IApplication application, IProvider<string, ISceneInfo> scenes, IProvider<string, ISceneLoader> loaders)
+        public SceneModule(SceneModuleDescription description, IApplication application, IProvider<string, ISceneLoader> loaders, IProvider<string, ISceneInfo> scenes)
             : base(description, application)
         {
-            Scenes = scenes ?? throw new ArgumentNullException(nameof(scenes));
             Loaders = loaders ?? throw new ArgumentNullException(nameof(loaders));
+            Scenes = scenes ?? throw new ArgumentNullException(nameof(scenes));
 
             Context.Add(Application);
-            Context.Add(Scenes);
             Context.Add(Loaders);
+            Context.Add(Scenes);
         }
 
         protected override void OnInitialize()
@@ -70,18 +68,18 @@ namespace UGF.Module.Scenes.Runtime
             {
                 Log.Debug("Scene Module unload tracked scenes on uninitialize", new
                 {
-                    count = m_instances.Entries.Count
+                    count = Instances.Entries.Count
                 });
 
-                while (m_instances.Entries.Count > 0)
+                while (Instances.Entries.Count > 0)
                 {
-                    KeyValuePair<Scene, SceneInstance> pair = m_instances.Entries.First();
+                    KeyValuePair<Scene, SceneInstance> pair = Instances.Entries.First();
 
                     Unload(pair.Value.Id, pair.Key, SceneUnloadParameters.Default);
                 }
             }
 
-            m_instances.Clear();
+            Instances.Clear();
 
             foreach (KeyValuePair<string, ISceneLoader> pair in Description.Loaders)
             {
@@ -105,7 +103,7 @@ namespace UGF.Module.Scenes.Runtime
             Scene scene = OnLoad(id, parameters);
             SceneInstance instance = OnAddScene(id, scene, parameters);
 
-            m_instances.Add(scene, instance);
+            Instances.Add(scene, instance);
 
             Loaded?.Invoke(id, scene, parameters);
 
@@ -125,7 +123,7 @@ namespace UGF.Module.Scenes.Runtime
             Scene scene = await OnLoadAsync(id, parameters);
             SceneInstance instance = OnAddScene(id, scene, parameters);
 
-            m_instances.Add(scene, instance);
+            Instances.Add(scene, instance);
 
             Loaded?.Invoke(id, scene, parameters);
 
@@ -145,7 +143,7 @@ namespace UGF.Module.Scenes.Runtime
             OnRemoveScene(id, scene, parameters);
             OnUnload(id, scene, parameters);
 
-            m_instances.Remove(scene);
+            Instances.Remove(scene);
 
             Unloaded?.Invoke(id, parameters);
 
@@ -163,7 +161,7 @@ namespace UGF.Module.Scenes.Runtime
             OnRemoveScene(id, scene, parameters);
             await OnUnloadAsync(id, scene, parameters);
 
-            m_instances.Remove(scene);
+            Instances.Remove(scene);
 
             Unloaded?.Invoke(id, parameters);
 

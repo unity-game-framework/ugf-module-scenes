@@ -8,8 +8,8 @@ namespace UGF.Module.Scenes.Runtime
     public interface ISceneModule : IApplicationModule
     {
         new ISceneModuleDescription Description { get; }
-        IProvider<string, ISceneInfo> Scenes { get; }
         IProvider<string, ISceneLoader> Loaders { get; }
+        IProvider<string, ISceneInfo> Scenes { get; }
         IProvider<Scene, SceneInstance> Instances { get; }
 
         event SceneLoadHandler Loading;
