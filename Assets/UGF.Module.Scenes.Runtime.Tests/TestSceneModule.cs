@@ -4,8 +4,8 @@ using System.Threading.Tasks;
 using JetBrains.Annotations;
 using NUnit.Framework;
 using UGF.Application.Runtime;
-using UGF.Application.Runtime.Scenes;
 using UGF.Module.Scenes.Runtime.Operations;
+using UGF.RuntimeTools.Runtime.Providers;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
@@ -18,7 +18,7 @@ namespace UGF.Module.Scenes.Runtime.Tests
         public IEnumerator Teardown()
         {
             SceneManager.LoadScene("SampleScene", new LoadSceneParameters(LoadSceneMode.Single));
-            ApplicationSceneProviderInstance.Provider.Clear();
+            ProviderInstance.Get<IProvider<Scene, IApplication>>().Clear();
 
             yield return null;
         }
@@ -36,8 +36,8 @@ namespace UGF.Module.Scenes.Runtime.Tests
             Scene scene = module.Load(id, SceneLoadParameters.DefaultAdditive);
 
             Assert.Contains(scene, module.Scenes.Keys.ToArray());
-            Assert.Contains(scene, ApplicationSceneProviderInstance.Provider.Applications.Keys.ToArray());
-            Assert.Contains(application, ApplicationSceneProviderInstance.Provider.Applications.Values.ToArray());
+            Assert.Contains(scene, ProviderInstance.Get<IProvider<Scene, IApplication>>().Entries.Keys.ToArray());
+            Assert.Contains(application, ProviderInstance.Get<IProvider<Scene, IApplication>>().Entries.Values.ToArray());
 
             yield return null;
 
@@ -51,8 +51,8 @@ namespace UGF.Module.Scenes.Runtime.Tests
                 module.Unload(id, scene, SceneUnloadParameters.Default);
 
                 Assert.IsEmpty(module.Scenes.Keys);
-                Assert.IsEmpty(ApplicationSceneProviderInstance.Provider.Applications.Keys);
-                Assert.IsEmpty(ApplicationSceneProviderInstance.Provider.Applications.Values);
+                Assert.IsEmpty(ProviderInstance.Get<IProvider<Scene, IApplication>>().Entries.Keys);
+                Assert.IsEmpty(ProviderInstance.Get<IProvider<Scene, IApplication>>().Entries.Values);
 
                 yield return null;
 
@@ -81,8 +81,8 @@ namespace UGF.Module.Scenes.Runtime.Tests
             Scene scene = task.Result;
 
             Assert.Contains(scene, module.Scenes.Keys.ToArray());
-            Assert.Contains(task.Result, ApplicationSceneProviderInstance.Provider.Applications.Keys.ToArray());
-            Assert.Contains(application, ApplicationSceneProviderInstance.Provider.Applications.Values.ToArray());
+            Assert.Contains(task.Result, ProviderInstance.Get<IProvider<Scene, IApplication>>().Entries.Keys.ToArray());
+            Assert.Contains(application, ProviderInstance.Get<IProvider<Scene, IApplication>>().Entries.Values.ToArray());
 
             Assert.True(scene.IsValid(), "Load: scene.IsValid()");
             Assert.True(scene.isLoaded, "Load: scene.isLoaded");
@@ -98,8 +98,8 @@ namespace UGF.Module.Scenes.Runtime.Tests
                 }
 
                 Assert.IsEmpty(module.Scenes.Keys);
-                Assert.IsEmpty(ApplicationSceneProviderInstance.Provider.Applications.Keys);
-                Assert.IsEmpty(ApplicationSceneProviderInstance.Provider.Applications.Values);
+                Assert.IsEmpty(ProviderInstance.Get<IProvider<Scene, IApplication>>().Entries.Keys);
+                Assert.IsEmpty(ProviderInstance.Get<IProvider<Scene, IApplication>>().Entries.Values);
 
                 Assert.False(scene.IsValid(), "Unload: scene.IsValid()");
                 Assert.False(scene.isLoaded, "Unload: scene.isLoaded");
