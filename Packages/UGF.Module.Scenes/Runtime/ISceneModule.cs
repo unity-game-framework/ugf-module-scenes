@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using UGF.Application.Runtime;
+using UGF.RuntimeTools.Runtime.Contexts;
 using UGF.RuntimeTools.Runtime.Providers;
 using UnityEngine.SceneManagement;
 
@@ -11,6 +12,7 @@ namespace UGF.Module.Scenes.Runtime
         IProvider<string, ISceneLoader> Loaders { get; }
         IProvider<string, ISceneInfo> Scenes { get; }
         IProvider<Scene, SceneInstance> Instances { get; }
+        IContext Context { get; }
 
         event SceneLoadHandler Loading;
         event SceneLoadedHandler Loaded;
