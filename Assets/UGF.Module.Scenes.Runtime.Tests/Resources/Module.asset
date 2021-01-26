@@ -18,5 +18,5 @@ MonoBehaviour:
   - m_guid: 9fadd5c60f34fee42acd011bc692d89b
     m_asset: {fileID: 11400000, guid: 9fadd5c60f34fee42acd011bc692d89b, type: 2}
   m_scenes:
-  - m_guid: 70128677f5fe91241866ef846e7bb16e
-    m_asset: {fileID: 11400000, guid: 70128677f5fe91241866ef846e7bb16e, type: 2}
+  - m_guid: 
+    m_asset: {fileID: 0}
