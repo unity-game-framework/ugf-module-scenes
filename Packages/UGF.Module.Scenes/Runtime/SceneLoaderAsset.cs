@@ -2,7 +2,7 @@
 
 namespace UGF.Module.Scenes.Runtime
 {
-    public abstract class SceneLoaderAssetBase : BuilderAsset<ISceneLoader>
+    public abstract class SceneLoaderAsset : BuilderAsset<ISceneLoader>
     {
     }
 }

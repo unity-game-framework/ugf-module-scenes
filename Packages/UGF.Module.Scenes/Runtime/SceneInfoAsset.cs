@@ -7,7 +7,7 @@ namespace UGF.Module.Scenes.Runtime
     [CreateAssetMenu(menuName = "Unity Game Framework/Scenes/Scene Info", order = 2000)]
     public class SceneInfoAsset : SceneInfoAssetBase
     {
-        [AssetGuid(typeof(SceneLoaderAssetBase))]
+        [AssetGuid(typeof(SceneLoaderAsset))]
         [SerializeField] private string m_loader;
         [AssetPath(typeof(Scene))]
         [SerializeField] private string m_scene;

@@ -7,7 +7,7 @@ namespace UGF.Module.Scenes.Runtime.Loaders.Manager
     [CreateAssetMenu(menuName = "Unity Game Framework/Scenes/Manager Scene Info", order = 2000)]
     public class ManagerSceneInfoAsset : SceneInfoAssetBase
     {
-        [AssetGuid(typeof(SceneLoaderAssetBase))]
+        [AssetGuid(typeof(SceneLoaderAsset))]
         [SerializeField] private string m_loader;
         [AssetGuid(typeof(Scene))]
         [SerializeField] private string m_scene;
