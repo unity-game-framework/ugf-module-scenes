@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 
 namespace UGF.Module.Scenes.Runtime.Loaders.Manager
 {
-    public partial class ManagerSceneLoader : SceneLoader<ManagerSceneInfo>
+    public partial class ManagerSceneLoader : SceneLoader<ISceneInfo>
     {
         public bool UnloadUnusedAfterUnload { get; }
 
@@ -15,11 +15,11 @@ namespace UGF.Module.Scenes.Runtime.Loaders.Manager
             UnloadUnusedAfterUnload = unloadUnusedAfterUnload;
         }
 
-        protected override Scene OnLoad(string id, ManagerSceneInfo info, SceneLoadParameters parameters, IContext context)
+        protected override Scene OnLoad(string id, ISceneInfo info, SceneLoadParameters parameters, IContext context)
         {
             LogSceneLoading(id, info, parameters);
 
-            string scenePath = ManagerSceneSettings.GetScenePath(info.SceneId);
+            string scenePath = ManagerSceneSettings.GetScenePath(info.Address);
             var options = new LoadSceneParameters(parameters.AddMode, parameters.PhysicsMode);
 
             Scene scene = SceneManager.LoadScene(scenePath, options);
@@ -29,12 +29,12 @@ namespace UGF.Module.Scenes.Runtime.Loaders.Manager
             return scene;
         }
 
-        protected override async Task<Scene> OnLoadAsync(string id, ManagerSceneInfo info, SceneLoadParameters parameters, IContext context)
+        protected override async Task<Scene> OnLoadAsync(string id, ISceneInfo info, SceneLoadParameters parameters, IContext context)
         {
             LogSceneLoading(id, info, parameters, true);
 
             var provider = ProviderInstance.Get<IProvider<Scene, AsyncOperation>>();
-            string scenePath = ManagerSceneSettings.GetScenePath(info.SceneId);
+            string scenePath = ManagerSceneSettings.GetScenePath(info.Address);
             var options = new LoadSceneParameters(parameters.AddMode, parameters.PhysicsMode);
 
             AsyncOperation operation = SceneManager.LoadSceneAsync(scenePath, options);
@@ -65,7 +65,7 @@ namespace UGF.Module.Scenes.Runtime.Loaders.Manager
             return scene;
         }
 
-        protected override void OnUnload(string id, Scene scene, ManagerSceneInfo info, SceneUnloadParameters parameters, IContext context)
+        protected override void OnUnload(string id, Scene scene, ISceneInfo info, SceneUnloadParameters parameters, IContext context)
         {
             LogSceneUnload(id, info, parameters, scene, UnloadUnusedAfterUnload);
 
@@ -79,7 +79,7 @@ namespace UGF.Module.Scenes.Runtime.Loaders.Manager
             LogSceneUnloaded(id, info, parameters, UnloadUnusedAfterUnload);
         }
 
-        protected override async Task OnUnloadAsync(string id, Scene scene, ManagerSceneInfo info, SceneUnloadParameters parameters, IContext context)
+        protected override async Task OnUnloadAsync(string id, Scene scene, ISceneInfo info, SceneUnloadParameters parameters, IContext context)
         {
             LogSceneUnload(id, info, parameters, scene, UnloadUnusedAfterUnload, true);
 
