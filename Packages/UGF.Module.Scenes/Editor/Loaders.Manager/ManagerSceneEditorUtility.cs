@@ -7,43 +7,6 @@ namespace UGF.Module.Scenes.Editor.Loaders.Manager
 {
     public static class ManagerSceneEditorUtility
     {
-        public static void UpdateAllSceneGroups()
-        {
-            int progressId = Progress.Start("Update All Manager Scene Groups");
-
-            try
-            {
-                string[] guids = AssetDatabase.FindAssets($"t:{nameof(ManagerSceneGroupAsset)}");
-
-                for (int i = 0; i < guids.Length; i++)
-                {
-                    Progress.Report(progressId, i, guids.Length);
-
-                    string guid = guids[i];
-                    string path = AssetDatabase.GUIDToAssetPath(guid);
-                    var asset = AssetDatabase.LoadAssetAtPath<ManagerSceneGroupAsset>(path);
-
-                    if (asset != null)
-                    {
-                        UpdateSceneGroupEntries(asset);
-
-                        EditorUtility.SetDirty(asset);
-                    }
-                }
-
-                Progress.Finish(progressId);
-            }
-            catch
-            {
-                Progress.Finish(progressId, Progress.Status.Failed);
-                throw;
-            }
-            finally
-            {
-                AssetDatabase.SaveAssets();
-            }
-        }
-
         public static bool IsSceneGroupHasMissingEntries(ManagerSceneGroupAsset group)
         {
             if (group == null) throw new ArgumentNullException(nameof(group));
@@ -89,6 +52,43 @@ namespace UGF.Module.Scenes.Editor.Loaders.Manager
                         group.Scenes[i] = entry;
                     }
                 }
+            }
+        }
+
+        public static void UpdateAllSceneGroups()
+        {
+            int progressId = Progress.Start("Update All Manager Scene Groups");
+
+            try
+            {
+                string[] guids = AssetDatabase.FindAssets($"t:{nameof(ManagerSceneGroupAsset)}");
+
+                for (int i = 0; i < guids.Length; i++)
+                {
+                    Progress.Report(progressId, i, guids.Length);
+
+                    string guid = guids[i];
+                    string path = AssetDatabase.GUIDToAssetPath(guid);
+                    var asset = AssetDatabase.LoadAssetAtPath<ManagerSceneGroupAsset>(path);
+
+                    if (asset != null)
+                    {
+                        UpdateSceneGroupEntries(asset);
+
+                        EditorUtility.SetDirty(asset);
+                    }
+                }
+
+                Progress.Finish(progressId);
+            }
+            catch
+            {
+                Progress.Finish(progressId, Progress.Status.Failed);
+                throw;
+            }
+            finally
+            {
+                AssetDatabase.SaveAssets();
             }
         }
     }
