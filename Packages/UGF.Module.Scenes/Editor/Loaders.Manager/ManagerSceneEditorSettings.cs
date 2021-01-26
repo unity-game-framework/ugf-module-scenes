@@ -14,7 +14,7 @@ namespace UGF.Module.Scenes.Editor.Loaders.Manager
         [SettingsProvider]
         private static SettingsProvider GetProvider()
         {
-            return new CustomSettingsProvider<ManagerSceneEditorSettingsData>("Project/UGF/Scenes", Settings, SettingsScope.Project);
+            return new CustomSettingsProvider<ManagerSceneEditorSettingsData>("Project/UGF/Scenes Manager", Settings, SettingsScope.Project);
         }
     }
 }
