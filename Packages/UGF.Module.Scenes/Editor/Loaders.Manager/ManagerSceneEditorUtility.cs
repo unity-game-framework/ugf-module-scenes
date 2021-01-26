@@ -44,7 +44,7 @@ namespace UGF.Module.Scenes.Editor.Loaders.Manager
             }
         }
 
-        public static bool IsSceneGroupHasMissingEntry(ManagerSceneGroupAsset group)
+        public static bool IsSceneGroupHasMissingEntries(ManagerSceneGroupAsset group)
         {
             if (group == null) throw new ArgumentNullException(nameof(group));
 

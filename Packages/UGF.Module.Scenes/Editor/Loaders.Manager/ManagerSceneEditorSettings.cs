@@ -17,6 +17,12 @@ namespace UGF.Module.Scenes.Editor.Loaders.Manager
             }
         }
 
+        public static CustomSettingsEditorPackage<ManagerSceneEditorSettingsData> Settings { get; } = new CustomSettingsEditorPackage<ManagerSceneEditorSettingsData>
+        (
+            "UGF.Module.Scenes",
+            "ManagerSceneEditorSettings"
+        );
+
         static ManagerSceneEditorSettings()
         {
             EditorBuildSettings.sceneListChanged += OnEditorBuildSettingsSceneListChanged;
@@ -57,7 +63,7 @@ namespace UGF.Module.Scenes.Editor.Loaders.Manager
         [SettingsProvider]
         private static SettingsProvider GetProvider()
         {
-            return new CustomSettingsProvider<ManagerSceneSettingsAsset>("Project/UGF/Scenes Manager", ManagerSceneSettings.Settings, SettingsScope.Project);
+            return new CustomSettingsProvider<ManagerSceneEditorSettingsData>("Project/UGF/Scenes", Settings, SettingsScope.Project);
         }
     }
 }

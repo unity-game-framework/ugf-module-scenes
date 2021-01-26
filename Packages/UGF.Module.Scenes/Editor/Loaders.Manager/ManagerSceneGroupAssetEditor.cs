@@ -70,7 +70,7 @@ namespace UGF.Module.Scenes.Editor.Loaders.Manager
 
             EditorGUILayout.Space();
 
-            if (ManagerSceneEditorUtility.IsSceneGroupHasMissingEntry((ManagerSceneGroupAsset)target))
+            if (ManagerSceneEditorUtility.IsSceneGroupHasMissingEntries((ManagerSceneGroupAsset)target))
             {
                 EditorGUILayout.HelpBox(m_styles.MissingEntryMessage, MessageType.Warning);
             }
