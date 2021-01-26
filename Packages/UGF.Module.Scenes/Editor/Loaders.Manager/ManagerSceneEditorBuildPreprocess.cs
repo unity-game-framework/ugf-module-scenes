@@ -3,7 +3,7 @@ using UnityEditor.Build.Reporting;
 
 namespace UGF.Module.Scenes.Editor.Loaders.Manager
 {
-    internal class ManagerSceneEditorSettingsBuildPreprocess : IPreprocessBuildWithReport
+    internal class ManagerSceneEditorBuildPreprocess : IPreprocessBuildWithReport
     {
         public int callbackOrder { get; }
 
