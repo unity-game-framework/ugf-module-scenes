@@ -17,7 +17,7 @@ namespace UGF.Module.Scenes.Editor.Loaders.Manager
         {
             public GUIContent RefreshContent { get; } = new GUIContent("Refresh", "Refresh all entries to update address for each entry.");
             public GUIContent RefreshAllContent { get; } = new GUIContent("Refresh All", "Refresh all groups in project to update address for each entry.");
-            public string MissingEntryMessage { get; } = "Group contains entries which have missing or invalid address.";
+            public string MissingEntryMessage { get; } = "Group contains entries with missing or invalid address.";
         }
 
         private void OnEnable()

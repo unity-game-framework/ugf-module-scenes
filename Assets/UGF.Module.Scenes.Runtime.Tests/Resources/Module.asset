@@ -17,6 +17,7 @@ MonoBehaviour:
   m_loaders:
   - m_guid: 9fadd5c60f34fee42acd011bc692d89b
     m_asset: {fileID: 11400000, guid: 9fadd5c60f34fee42acd011bc692d89b, type: 2}
-  m_scenes:
-  - m_guid: 
-    m_asset: {fileID: 0}
+  m_scenes: []
+  m_groups:
+  - m_guid: 7c8d6e3cf85e0d94f99d87ee7bf59f89
+    m_asset: {fileID: 11400000, guid: 7c8d6e3cf85e0d94f99d87ee7bf59f89, type: 2}
