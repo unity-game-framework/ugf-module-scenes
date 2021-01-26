@@ -34,8 +34,8 @@ namespace UGF.Module.Scenes.Runtime.Tests
             yield return null;
         }
 
-        [TestCase("Module", "70128677f5fe91241866ef846e7bb16e", false, ExpectedResult = null)]
-        [TestCase("Module", "70128677f5fe91241866ef846e7bb16e", true, ExpectedResult = null)]
+        [TestCase("Module", "d39a9027b65879843ab7fc2c1a4a22af", false, ExpectedResult = null)]
+        [TestCase("Module", "d39a9027b65879843ab7fc2c1a4a22af", true, ExpectedResult = null)]
         [UnityTest]
         public IEnumerator Load(string moduleName, string id, bool unload)
         {
@@ -54,7 +54,7 @@ namespace UGF.Module.Scenes.Runtime.Tests
 
             Assert.True(scene.IsValid(), "Load: scene.IsValid()");
             Assert.True(scene.isLoaded, "Load: scene.isLoaded");
-            Assert.AreEqual(module.Scenes.Get(id).Address, "d39a9027b65879843ab7fc2c1a4a22af");
+            Assert.AreEqual(module.Scenes.Get(id).Address, "Assets/UGF.Module.Scenes.Runtime.Tests/Resources/SceneTest.unity");
             Assert.Contains(scene, module.Instances.Entries.Keys.ToArray());
 
             if (unload)
@@ -72,8 +72,8 @@ namespace UGF.Module.Scenes.Runtime.Tests
             }
         }
 
-        [TestCase("Module", "70128677f5fe91241866ef846e7bb16e", false, ExpectedResult = null)]
-        [TestCase("Module", "70128677f5fe91241866ef846e7bb16e", true, ExpectedResult = null)]
+        [TestCase("Module", "d39a9027b65879843ab7fc2c1a4a22af", false, ExpectedResult = null)]
+        [TestCase("Module", "d39a9027b65879843ab7fc2c1a4a22af", true, ExpectedResult = null)]
         [UnityTest]
         public IEnumerator LoadAsync(string moduleName, string id, bool unload)
         {
@@ -97,7 +97,7 @@ namespace UGF.Module.Scenes.Runtime.Tests
 
             Assert.True(scene.IsValid(), "Load: scene.IsValid()");
             Assert.True(scene.isLoaded, "Load: scene.isLoaded");
-            Assert.AreEqual(module.Scenes.Get(id).Address, "d39a9027b65879843ab7fc2c1a4a22af");
+            Assert.AreEqual(module.Scenes.Get(id).Address, "Assets/UGF.Module.Scenes.Runtime.Tests/Resources/SceneTest.unity");
 
             if (unload)
             {
@@ -117,7 +117,7 @@ namespace UGF.Module.Scenes.Runtime.Tests
             }
         }
 
-        [TestCase("Module", "70128677f5fe91241866ef846e7bb16e", ExpectedResult = null)]
+        [TestCase("Module", "d39a9027b65879843ab7fc2c1a4a22af", ExpectedResult = null)]
         [UnityTest]
         public IEnumerator LoadAsyncActivation(string moduleName, string id)
         {
@@ -140,7 +140,7 @@ namespace UGF.Module.Scenes.Runtime.Tests
             Assert.False(scene.isLoaded, "Load: scene.isLoaded");
             Assert.NotNull(operation);
             Assert.GreaterOrEqual(operation.progress, 0.9F);
-            Assert.AreEqual(module.Scenes.Get(id).Address, "d39a9027b65879843ab7fc2c1a4a22af");
+            Assert.AreEqual(module.Scenes.Get(id).Address, "Assets/UGF.Module.Scenes.Runtime.Tests/Resources/SceneTest.unity");
 
             scene.Activate();
 
