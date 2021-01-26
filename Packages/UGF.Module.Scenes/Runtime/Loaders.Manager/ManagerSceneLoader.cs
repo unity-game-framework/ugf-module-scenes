@@ -19,10 +19,9 @@ namespace UGF.Module.Scenes.Runtime.Loaders.Manager
         {
             LogSceneLoading(id, info, parameters);
 
-            string scenePath = ManagerSceneSettings.GetScenePath(info.Address);
             var options = new LoadSceneParameters(parameters.AddMode, parameters.PhysicsMode);
 
-            Scene scene = SceneManager.LoadScene(scenePath, options);
+            Scene scene = SceneManager.LoadScene(info.Address, options);
 
             LogSceneLoaded(id, info, parameters, scene);
 
@@ -34,10 +33,9 @@ namespace UGF.Module.Scenes.Runtime.Loaders.Manager
             LogSceneLoading(id, info, parameters, true);
 
             var provider = ProviderInstance.Get<IProvider<Scene, AsyncOperation>>();
-            string scenePath = ManagerSceneSettings.GetScenePath(info.Address);
             var options = new LoadSceneParameters(parameters.AddMode, parameters.PhysicsMode);
 
-            AsyncOperation operation = SceneManager.LoadSceneAsync(scenePath, options);
+            AsyncOperation operation = SceneManager.LoadSceneAsync(info.Address, options);
             Scene scene = SceneManager.GetSceneAt(SceneManager.sceneCount - 1);
 
             operation.allowSceneActivation = parameters.AllowActivation;
