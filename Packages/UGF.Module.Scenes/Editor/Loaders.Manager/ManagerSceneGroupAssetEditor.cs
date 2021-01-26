@@ -1,6 +1,7 @@
 ﻿using UGF.EditorTools.Editor.IMGUI.Scopes;
 using UGF.Module.Scenes.Runtime.Loaders.Manager;
 using UnityEditor;
+using UnityEngine;
 
 namespace UGF.Module.Scenes.Editor.Loaders.Manager
 {
@@ -10,6 +11,14 @@ namespace UGF.Module.Scenes.Editor.Loaders.Manager
         private SerializedProperty m_propertyScript;
         private SerializedProperty m_propertyLoader;
         private ManagerSceneGroupAssetListDrawer m_listScenes;
+        private Styles m_styles;
+
+        private class Styles
+        {
+            public GUIContent RefreshContent { get; } = new GUIContent("Refresh", "Refresh all entries to update address for each entry.");
+            public GUIContent RefreshAllContent { get; } = new GUIContent("Refresh All", "Refresh all groups in project to update address for each entry.");
+            public string MissingEntryMessage { get; } = "Group contains entries which have missing or invalid address.";
+        }
 
         private void OnEnable()
         {
@@ -27,6 +36,8 @@ namespace UGF.Module.Scenes.Editor.Loaders.Manager
 
         public override void OnInspectorGUI()
         {
+            m_styles ??= new Styles();
+
             using (new SerializedObjectUpdateScope(serializedObject))
             {
                 using (new EditorGUI.DisabledScope(true))
@@ -37,6 +48,31 @@ namespace UGF.Module.Scenes.Editor.Loaders.Manager
                 EditorGUILayout.PropertyField(m_propertyLoader);
 
                 m_listScenes.DrawGUILayout();
+            }
+
+            EditorGUILayout.Space();
+
+            using (new EditorGUILayout.HorizontalScope())
+            {
+                GUILayout.FlexibleSpace();
+
+                if (GUILayout.Button(m_styles.RefreshAllContent))
+                {
+                    ManagerSceneEditorUtility.UpdateAllSceneGroups();
+                }
+
+                if (GUILayout.Button(m_styles.RefreshContent))
+                {
+                    ManagerSceneEditorUtility.UpdateSceneGroupEntries((ManagerSceneGroupAsset)target);
+                    EditorUtility.SetDirty(target);
+                }
+            }
+
+            EditorGUILayout.Space();
+
+            if (ManagerSceneEditorUtility.IsSceneGroupHasMissingEntry((ManagerSceneGroupAsset)target))
+            {
+                EditorGUILayout.HelpBox(m_styles.MissingEntryMessage, MessageType.Warning);
             }
         }
     }
