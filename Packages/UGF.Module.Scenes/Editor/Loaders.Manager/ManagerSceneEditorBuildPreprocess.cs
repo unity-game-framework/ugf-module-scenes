@@ -1,4 +1,5 @@
-﻿using UnityEditor.Build;
+﻿using UGF.CustomSettings.Editor;
+using UnityEditor.Build;
 using UnityEditor.Build.Reporting;
 
 namespace UGF.Module.Scenes.Editor.Loaders.Manager
@@ -9,7 +10,9 @@ namespace UGF.Module.Scenes.Editor.Loaders.Manager
 
         public void OnPreprocessBuild(BuildReport report)
         {
-            if (ManagerSceneEditorSettings.Settings.Exists() && ManagerSceneEditorSettings.Settings.GetData().UpdateAllGroupsOnBuild)
+            CustomSettingsEditorPackage<ManagerSceneEditorSettingsData> settings = ManagerSceneEditorSettings.Settings;
+
+            if (settings.Exists() && settings.GetData().UpdateAllGroupsOnBuild)
             {
                 ManagerSceneEditorUtility.UpdateAllSceneGroups();
             }
