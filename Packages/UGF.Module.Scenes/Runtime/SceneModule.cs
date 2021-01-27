@@ -188,7 +188,7 @@ namespace UGF.Module.Scenes.Runtime
 
         protected virtual Scene OnLoad(string id, SceneLoadParameters parameters)
         {
-            ISceneLoader loader = GetLoaderByScene(id);
+            ISceneLoader loader = this.GetLoaderByScene(id);
 
             Scene scene = loader.Load(id, parameters, Context);
 
@@ -197,7 +197,7 @@ namespace UGF.Module.Scenes.Runtime
 
         protected virtual Task<Scene> OnLoadAsync(string id, SceneLoadParameters parameters)
         {
-            ISceneLoader loader = GetLoaderByScene(id);
+            ISceneLoader loader = this.GetLoaderByScene(id);
 
             Task<Scene> task = loader.LoadAsync(id, parameters, Context);
 
@@ -206,29 +206,18 @@ namespace UGF.Module.Scenes.Runtime
 
         protected virtual void OnUnload(string id, Scene scene, SceneUnloadParameters parameters)
         {
-            ISceneLoader loader = GetLoaderByScene(id);
+            ISceneLoader loader = this.GetLoaderByScene(id);
 
             loader.Unload(id, scene, parameters, Context);
         }
 
         protected virtual Task OnUnloadAsync(string id, Scene scene, SceneUnloadParameters parameters)
         {
-            ISceneLoader loader = GetLoaderByScene(id);
+            ISceneLoader loader = this.GetLoaderByScene(id);
 
             Task task = loader.UnloadAsync(id, scene, parameters, Context);
 
             return task;
-        }
-
-        protected ISceneLoader GetLoaderByScene(string id)
-        {
-            return TryGetLoaderByScene(id, out ISceneLoader loader) ? loader : throw new ArgumentException($"Scene loader not found by the specified scene id: '{id}'.");
-        }
-
-        protected bool TryGetLoaderByScene(string id, out ISceneLoader loader)
-        {
-            loader = default;
-            return Scenes.TryGet(id, out ISceneInfo scene) && Loaders.TryGet(scene.LoaderId, out loader);
         }
     }
 }
