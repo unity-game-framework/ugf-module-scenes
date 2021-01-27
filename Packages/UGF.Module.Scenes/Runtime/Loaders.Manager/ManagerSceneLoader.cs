@@ -15,7 +15,7 @@ namespace UGF.Module.Scenes.Runtime.Loaders.Manager
             UnloadUnusedAfterUnload = unloadUnusedAfterUnload;
         }
 
-        protected override Scene OnLoad(string id, ISceneInfo info, SceneLoadParameters parameters, IContext context)
+        protected override Scene OnLoad(string id, ISceneInfo info, ISceneLoadParameters parameters, IContext context)
         {
             LogSceneLoading(id, info, parameters);
 
@@ -28,7 +28,7 @@ namespace UGF.Module.Scenes.Runtime.Loaders.Manager
             return scene;
         }
 
-        protected override async Task<Scene> OnLoadAsync(string id, ISceneInfo info, SceneLoadParameters parameters, IContext context)
+        protected override async Task<Scene> OnLoadAsync(string id, ISceneInfo info, ISceneLoadParameters parameters, IContext context)
         {
             LogSceneLoading(id, info, parameters, true);
 
@@ -63,7 +63,7 @@ namespace UGF.Module.Scenes.Runtime.Loaders.Manager
             return scene;
         }
 
-        protected override void OnUnload(string id, Scene scene, ISceneInfo info, SceneUnloadParameters parameters, IContext context)
+        protected override void OnUnload(string id, Scene scene, ISceneInfo info, ISceneUnloadParameters parameters, IContext context)
         {
             LogSceneUnload(id, info, parameters, scene, UnloadUnusedAfterUnload);
 
@@ -77,16 +77,22 @@ namespace UGF.Module.Scenes.Runtime.Loaders.Manager
             LogSceneUnloaded(id, info, parameters, UnloadUnusedAfterUnload);
         }
 
-        protected override async Task OnUnloadAsync(string id, Scene scene, ISceneInfo info, SceneUnloadParameters parameters, IContext context)
+        protected override async Task OnUnloadAsync(string id, Scene scene, ISceneInfo info, ISceneUnloadParameters parameters, IContext context)
         {
             LogSceneUnload(id, info, parameters, scene, UnloadUnusedAfterUnload, true);
 
+            var provider = ProviderInstance.Get<IProvider<Scene, AsyncOperation>>();
+
             AsyncOperation operation = SceneManager.UnloadSceneAsync(scene, parameters.Options);
+
+            provider.Add(scene, operation);
 
             while (!operation.isDone)
             {
                 await Task.Yield();
             }
+
+            provider.Remove(scene);
 
             if (UnloadUnusedAfterUnload)
             {

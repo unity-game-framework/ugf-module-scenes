@@ -6,9 +6,9 @@ namespace UGF.Module.Scenes.Runtime
 {
     public interface ISceneLoader
     {
-        Scene Load(string id, SceneLoadParameters parameters, IContext context);
-        Task<Scene> LoadAsync(string id, SceneLoadParameters parameters, IContext context);
-        void Unload(string id, Scene scene, SceneUnloadParameters parameters, IContext context);
-        Task UnloadAsync(string id, Scene scene, SceneUnloadParameters parameters, IContext context);
+        Scene Load(string id, ISceneLoadParameters parameters, IContext context);
+        Task<Scene> LoadAsync(string id, ISceneLoadParameters parameters, IContext context);
+        void Unload(string id, Scene scene, ISceneUnloadParameters parameters, IContext context);
+        Task UnloadAsync(string id, Scene scene, ISceneUnloadParameters parameters, IContext context);
     }
 }
