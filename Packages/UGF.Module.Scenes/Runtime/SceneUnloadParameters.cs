@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 namespace UGF.Module.Scenes.Runtime
 {
     [Serializable]
-    public struct SceneUnloadParameters
+    public class SceneUnloadParameters : ISceneUnloadParameters
     {
         [SerializeField] private UnloadSceneOptions m_options;
 

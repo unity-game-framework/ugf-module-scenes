@@ -1,7 +1,7 @@
 {
   "name": "com.ugf.module.scenes",
   "displayName": "UGF.Module.Scenes",
-  "version": "0.6.0-preview",
+  "version": "2.2.0",
   "unity": "2020.2",
   "apiCompatibility": ".NET Standard 2.0",
   "description": "Module to manage scenes loading.",
@@ -22,6 +22,6 @@
     "registry": "https://api.bintray.com/content/unity-game-framework/public"
   },
   "dependencies": {
-    "com.ugf.application": "7.1.0"
+    "com.ugf.application": "8.0.0-preview.3"
   }
 }

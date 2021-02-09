@@ -1,48 +1,53 @@
 ﻿using System;
 using System.Threading.Tasks;
+using UGF.RuntimeTools.Runtime.Contexts;
 using UnityEngine.SceneManagement;
 
 namespace UGF.Module.Scenes.Runtime
 {
     public abstract class SceneLoaderBase : ISceneLoader
     {
-        public Scene Load(ISceneProvider provider, string id, SceneLoadParameters parameters)
+        public Scene Load(string id, ISceneLoadParameters parameters, IContext context)
         {
-            if (provider == null) throw new ArgumentNullException(nameof(provider));
             if (string.IsNullOrEmpty(id)) throw new ArgumentException("Value cannot be null or empty.", nameof(id));
+            if (parameters == null) throw new ArgumentNullException(nameof(parameters));
+            if (context == null) throw new ArgumentNullException(nameof(context));
 
-            return OnLoad(provider, id, parameters);
+            return OnLoad(id, parameters, context);
         }
 
-        public Task<Scene> LoadAsync(ISceneProvider provider, string id, SceneLoadParameters parameters)
+        public Task<Scene> LoadAsync(string id, ISceneLoadParameters parameters, IContext context)
         {
-            if (provider == null) throw new ArgumentNullException(nameof(provider));
             if (string.IsNullOrEmpty(id)) throw new ArgumentException("Value cannot be null or empty.", nameof(id));
+            if (parameters == null) throw new ArgumentNullException(nameof(parameters));
+            if (context == null) throw new ArgumentNullException(nameof(context));
 
-            return OnLoadAsync(provider, id, parameters);
+            return OnLoadAsync(id, parameters, context);
         }
 
-        public void Unload(ISceneProvider provider, string id, Scene scene, SceneUnloadParameters parameters)
+        public void Unload(string id, Scene scene, ISceneUnloadParameters parameters, IContext context)
         {
-            if (provider == null) throw new ArgumentNullException(nameof(provider));
-            if (string.IsNullOrEmpty(id)) throw new ArgumentException("Value cannot be null or empty.", nameof(id));
-            if (!scene.IsValid()) throw new ArgumentException("Value should be valid.", nameof(scene));
-
-            OnUnload(provider, id, scene, parameters);
-        }
-
-        public Task UnloadAsync(ISceneProvider provider, string id, Scene scene, SceneUnloadParameters parameters)
-        {
-            if (provider == null) throw new ArgumentNullException(nameof(provider));
             if (string.IsNullOrEmpty(id)) throw new ArgumentException("Value cannot be null or empty.", nameof(id));
             if (!scene.IsValid()) throw new ArgumentException("Value should be valid.", nameof(scene));
+            if (parameters == null) throw new ArgumentNullException(nameof(parameters));
+            if (context == null) throw new ArgumentNullException(nameof(context));
 
-            return OnUnloadAsync(provider, id, scene, parameters);
+            OnUnload(id, scene, parameters, context);
         }
 
-        protected abstract Scene OnLoad(ISceneProvider provider, string id, SceneLoadParameters parameters);
-        protected abstract Task<Scene> OnLoadAsync(ISceneProvider provider, string id, SceneLoadParameters parameters);
-        protected abstract void OnUnload(ISceneProvider provider, string id, Scene scene, SceneUnloadParameters parameters);
-        protected abstract Task OnUnloadAsync(ISceneProvider provider, string id, Scene scene, SceneUnloadParameters parameters);
+        public Task UnloadAsync(string id, Scene scene, ISceneUnloadParameters parameters, IContext context)
+        {
+            if (string.IsNullOrEmpty(id)) throw new ArgumentException("Value cannot be null or empty.", nameof(id));
+            if (!scene.IsValid()) throw new ArgumentException("Value should be valid.", nameof(scene));
+            if (parameters == null) throw new ArgumentNullException(nameof(parameters));
+            if (context == null) throw new ArgumentNullException(nameof(context));
+
+            return OnUnloadAsync(id, scene, parameters, context);
+        }
+
+        protected abstract Scene OnLoad(string id, ISceneLoadParameters parameters, IContext context);
+        protected abstract Task<Scene> OnLoadAsync(string id, ISceneLoadParameters parameters, IContext context);
+        protected abstract void OnUnload(string id, Scene scene, ISceneUnloadParameters parameters, IContext context);
+        protected abstract Task OnUnloadAsync(string id, Scene scene, ISceneUnloadParameters parameters, IContext context);
     }
 }

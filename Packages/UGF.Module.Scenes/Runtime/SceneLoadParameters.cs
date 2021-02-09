@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 namespace UGF.Module.Scenes.Runtime
 {
     [Serializable]
-    public struct SceneLoadParameters
+    public class SceneLoadParameters : ISceneLoadParameters
     {
         [SerializeField] private LoadSceneMode m_addMode;
         [SerializeField] private LocalPhysicsMode m_physicsMode;

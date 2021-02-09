@@ -1,32 +1,92 @@
 # Changelog
+
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## Unreleased - 2020-01-01
-- [Commits](https://github.com/unity-game-framework/ugf-module-scenes/compare/0.0.0...0.0.0)
-- [Milestone](https://github.com/unity-game-framework/ugf-module-scenes/milestone/0?closed=1)
+## [2.2.0](https://github.com/unity-game-framework/ugf-module-scenes/releases/tag/2.2.0) - 2021-01-16  
 
-### Added
-- Nothing.
+### Release Notes
+
+- [Milestone](https://github.com/unity-game-framework/ugf-module-scenes/milestone/11?closed=1)  
+    
 
 ### Changed
-- Nothing.
 
-### Deprecated
-- Nothing.
+- Update application dependency ([#35](https://github.com/unity-game-framework/ugf-module-scenes/pull/35))  
+    - Update dependencies: `com.ugf.application` to `7.1.0` version.
+    - Deprecate `SceneModuleDescription` constructor with `registerType` argument, use properties initialization instead.
 
-### Removed
-- Nothing.
+## [2.1.0](https://github.com/unity-game-framework/ugf-module-scenes/releases/tag/2.1.0) - 2020-12-18  
 
-### Fixed
-- Nothing.
+### Release Notes
 
-### Security
-- Nothing.
+- [Milestone](https://github.com/unity-game-framework/ugf-module-scenes/milestone/10?closed=1)  
+    
 
-## 0.6.0-preview - 2020-02-21
+### Added
+
+- Load scene with delayed activation ([#32](https://github.com/unity-game-framework/ugf-module-scenes/pull/32))  
+    - Add `ISceneOperationProvider` with default implementation `SceneOperationProvider ` to store `AsyncOperation` for specific scene.
+    - Add `SceneOperationProviderInstance` as static access to global scene operation provider instance.
+    - Add `Activate`, `GetOperation` and `TryGetOperation` extensions method for scene.
+    - Add `SceneLoadParameters.AllowActivation` property to determine whether to activate scene after loading.
+    - Change `ManagerSceneLoader` to support delayed scene activation using `SceneLoadParameters.AllowActivation` parameter.
+    - Change `ManagerSceneLoader` to support and manage scene operations.
+- Add support for application access by scene ([#31](https://github.com/unity-game-framework/ugf-module-scenes/pull/31))  
+    - Add `SceneModule.ApplicationSceneProvider` used to register application for loaded scenes.
+    - Add `SceneModuleDescription.RegisterApplicationForScenes` and `SceneModuleAsset.RegisterApplicationForScenes` properties to determine whether to register application for loaded scenes.
+    - Change dependencies: `com.ugf.application` to `6.1.0` version.
+
+## [2.0.0](https://github.com/unity-game-framework/ugf-module-scenes/releases/tag/2.0.0) - 2020-12-05  
+
+### Release Notes
+
+- [Milestone](https://github.com/unity-game-framework/ugf-module-scenes/milestone/9?closed=1)  
+    
+
+### Changed
+
+- Update to support latest application package ([#28](https://github.com/unity-game-framework/ugf-module-scenes/pull/28))  
+    - Update to use `UGF.Builder` and `UGF.Description` packages from the latest version of `UGF.Application` package.
+    - Add component menu name for `SceneContainer` component.
+    - Change dependencies: `com.ugf.application` to `6.0.0` and `com.ugf.logs` to `4.1.0`.
+    - Change all assets to use and implement builders features.
+    - Change name of the root of create asset menu, from `UGF` to `Unity Game Framework`.
+
+## [1.1.0](https://github.com/unity-game-framework/ugf-module-scenes/releases/tag/1.1.0) - 2020-11-12  
+
+### Release Notes
+
+- [Milestone](https://github.com/unity-game-framework/ugf-module-scenes/milestone/8?closed=1)  
+    
+
+### Added
+
+- Add scene module runtime debug logs ([#25](https://github.com/unity-game-framework/ugf-module-scenes/pull/25))  
+    - Add logs for `SceneModule` initialize and uninitialize events.
+    - Add logs for `SceneModule` and `ManagerSceneLoader` of loading and unloading events.
+
+## [1.0.0](https://github.com/unity-game-framework/ugf-module-scenes/releases/tag/1.0.0) - 2020-11-12  
+
+### Release Notes
+
+- [Milestone](https://github.com/unity-game-framework/ugf-module-scenes/milestone/7?closed=1)  
+    
+
+### Changed
+
+- Rework module to support updated UGF.Application package ([#21](https://github.com/unity-game-framework/ugf-module-scenes/pull/21))
+  - Add scene loaders and scene information.
+  - Add scene provider to manager scene loaders and scene information.
+  - Add runtime settings for scene build list.
+  - Add scene loader implementation to load and unload scene using `SceneManager` for scenes from build settings.
+  - Change module and module creation to support updated `UGF.Application` package.
+- Update to Unity 2020.2 ([#19](https://github.com/unity-game-framework/ugf-module-scenes/pull/19))
+
+## [0.6.0-preview](https://github.com/unity-game-framework/ugf-module-scenes/releases/tag/0.6.0-preview) - 2020-02-21  
+
 - [Commits](https://github.com/unity-game-framework/ugf-module-scenes/compare/0.5.0-preview...0.6.0-preview)
 - [Milestone](https://github.com/unity-game-framework/ugf-module-scenes/milestone/6?closed=1)
 
@@ -34,7 +94,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Rework `SceneModule` controllers events.
 - Change `SceneContainer` to store containers by `Component` type, rather than `MonoBehaviour`.
 
-## 0.5.0-preview - 2020-02-19
+## [0.5.0-preview](https://github.com/unity-game-framework/ugf-module-scenes/releases/tag/0.5.0-preview) - 2020-02-19  
+
 - [Commits](https://github.com/unity-game-framework/ugf-module-scenes/compare/0.4.0-preview...0.5.0-preview)
 - [Milestone](https://github.com/unity-game-framework/ugf-module-scenes/milestone/5?closed=1)
 
@@ -53,7 +114,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     - `com.ugf.module.elements`: `0.3.0-preview`.
 - Remove elements from `SceneController`, replaced by collection of `IInitialize` items.
 
-## 0.4.0-preview - 2020-02-17
+## [0.4.0-preview](https://github.com/unity-game-framework/ugf-module-scenes/releases/tag/0.4.0-preview) - 2020-02-17  
+
 - [Commits](https://github.com/unity-game-framework/ugf-module-scenes/compare/0.3.0-preview...0.4.0-preview)
 - [Milestone](https://github.com/unity-game-framework/ugf-module-scenes/milestone/4?closed=1)
 
@@ -78,7 +140,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - Fix `ISceneModule.LoadScene` does not return `Scene`.
 
-## 0.3.0-preview - 2019-12-09
+## [0.3.0-preview](https://github.com/unity-game-framework/ugf-module-scenes/releases/tag/0.3.0-preview) - 2019-12-09  
+
 - [Commits](https://github.com/unity-game-framework/ugf-module-scenes/compare/0.2.0-preview...0.3.0-preview)
 - [Milestone](https://github.com/unity-game-framework/ugf-module-scenes/milestone/3?closed=1)
 
@@ -93,7 +156,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Package dependencies:
     - `com.ugf.module`: `0.2.0-preview`.
 
-## 0.2.0-preview - 2019-11-19
+## [0.2.0-preview](https://github.com/unity-game-framework/ugf-module-scenes/releases/tag/0.2.0-preview) - 2019-11-19  
+
 - [Commits](https://github.com/unity-game-framework/ugf-module-scenes/compare/0.1.0-preview...0.2.0-preview)
 - [Milestone](https://github.com/unity-game-framework/ugf-module-scenes/milestone/2?closed=1)
 
@@ -106,12 +170,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Package dependencies:
     - `com.ugf.coroutines`: from `0.1.0-preview`.
 
-## 0.1.0-preview - 2019-10-08
+## [0.1.0-preview](https://github.com/unity-game-framework/ugf-module-scenes/releases/tag/0.1.0-preview) - 2019-10-08  
+
 - [Commits](https://github.com/unity-game-framework/ugf-module-scenes/compare/09b9c96...0.1.0-preview)
 - [Milestone](https://github.com/unity-game-framework/ugf-module-scenes/milestone/1?closed=1)
 
 ### Added
 - This is a initial release.
 
----
-> Unity Game Framework | Copyright 2019
+

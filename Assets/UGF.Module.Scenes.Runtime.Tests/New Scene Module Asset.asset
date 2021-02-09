@@ -13,9 +13,11 @@ MonoBehaviour:
   m_Name: New Scene Module Asset
   m_EditorClassIdentifier: 
   m_unloadTrackedScenesOnUninitialize: 1
+  m_registerApplicationForScenes: 1
   m_loaders:
   - m_guid: e0a0f37874446644f8243cfdbd00e22a
     m_asset: {fileID: 11400000, guid: e0a0f37874446644f8243cfdbd00e22a, type: 2}
   m_scenes:
-  - m_guid: cb923b16df321cd419f7aea2bafe93d8
-    m_asset: {fileID: 11400000, guid: cb923b16df321cd419f7aea2bafe93d8, type: 2}
+  - m_loader: 9fadd5c60f34fee42acd011bc692d89b
+    m_scene: d39a9027b65879843ab7fc2c1a4a22af
+  m_groups: []
