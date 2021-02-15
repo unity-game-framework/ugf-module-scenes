@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a527a59f18494c809bf69f37cfcc66b3, type: 3}
+  m_Name: New Manager Scene Group Asset
+  m_EditorClassIdentifier: 
+  m_loader: e0a0f37874446644f8243cfdbd00e22a
+  m_scenes:
+  - m_id: 9fc0d4010bbf28b4594072e72b8655ab
+    m_address: Assets/Scenes/SampleScene.unity
+  - m_id: d39a9027b65879843ab7fc2c1a4a22af
+    m_address: Assets/UGF.Module.Scenes.Runtime.Tests/Resources/SceneTest.unity

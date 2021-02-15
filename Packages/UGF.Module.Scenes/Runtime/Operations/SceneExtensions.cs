@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using UGF.RuntimeTools.Runtime.Providers;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace UGF.Module.Scenes.Runtime.Operations
@@ -7,7 +8,7 @@ namespace UGF.Module.Scenes.Runtime.Operations
     {
         public static void Activate(this Scene scene, bool clearOperation = true)
         {
-            ISceneOperationProvider provider = SceneOperationProviderInstance.Provider;
+            var provider = ProviderInstance.Get<IProvider<Scene, AsyncOperation>>();
             AsyncOperation operation = provider.Get(scene);
 
             operation.allowSceneActivation = true;
@@ -20,12 +21,12 @@ namespace UGF.Module.Scenes.Runtime.Operations
 
         public static AsyncOperation GetOperation(this Scene scene)
         {
-            return SceneOperationProviderInstance.Provider.Get(scene);
+            return ProviderInstance.Get<IProvider<Scene, AsyncOperation>>().Get(scene);
         }
 
         public static bool TryGetOperation(this Scene scene, out AsyncOperation operation)
         {
-            return SceneOperationProviderInstance.Provider.TryGet(scene, out operation);
+            return ProviderInstance.Get<IProvider<Scene, AsyncOperation>>().TryGet(scene, out operation);
         }
     }
 }

@@ -4,8 +4,8 @@ using System.Threading.Tasks;
 using JetBrains.Annotations;
 using NUnit.Framework;
 using UGF.Application.Runtime;
-using UGF.Application.Runtime.Scenes;
 using UGF.Module.Scenes.Runtime.Operations;
+using UGF.RuntimeTools.Runtime.Providers;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
@@ -14,17 +14,28 @@ namespace UGF.Module.Scenes.Runtime.Tests
 {
     public class TestSceneModule
     {
+        [OneTimeSetUp]
+        public void SetupOnce()
+        {
+            ProviderInstance.Set<IProvider<Scene, IApplication>>(new Provider<Scene, IApplication>());
+            ProviderInstance.Set<IProvider<Scene, AsyncOperation>>(new Provider<Scene, AsyncOperation>());
+        }
+
         [UnityTearDown, UsedImplicitly]
         public IEnumerator Teardown()
         {
             SceneManager.LoadScene("SampleScene", new LoadSceneParameters(LoadSceneMode.Single));
-            ApplicationSceneProviderInstance.Provider.Clear();
+
+            if (ProviderInstance.TryGet(out IProvider<Scene, IApplication> provider))
+            {
+                provider.Clear();
+            }
 
             yield return null;
         }
 
-        [TestCase("Module", "70128677f5fe91241866ef846e7bb16e", false, ExpectedResult = null)]
-        [TestCase("Module", "70128677f5fe91241866ef846e7bb16e", true, ExpectedResult = null)]
+        [TestCase("Module", "d39a9027b65879843ab7fc2c1a4a22af", false, ExpectedResult = null)]
+        [TestCase("Module", "d39a9027b65879843ab7fc2c1a4a22af", true, ExpectedResult = null)]
         [UnityTest]
         public IEnumerator Load(string moduleName, string id, bool unload)
         {
@@ -35,24 +46,24 @@ namespace UGF.Module.Scenes.Runtime.Tests
             var module = application.GetModule<ISceneModule>();
             Scene scene = module.Load(id, SceneLoadParameters.DefaultAdditive);
 
-            Assert.Contains(scene, module.Scenes.Keys.ToArray());
-            Assert.Contains(scene, ApplicationSceneProviderInstance.Provider.Applications.Keys.ToArray());
-            Assert.Contains(application, ApplicationSceneProviderInstance.Provider.Applications.Values.ToArray());
+            Assert.Contains(scene, module.Instances.Entries.Keys.ToArray());
+            Assert.Contains(scene, ProviderInstance.Get<IProvider<Scene, IApplication>>().Entries.Keys.ToArray());
+            Assert.Contains(application, ProviderInstance.Get<IProvider<Scene, IApplication>>().Entries.Values.ToArray());
 
             yield return null;
 
             Assert.True(scene.IsValid(), "Load: scene.IsValid()");
             Assert.True(scene.isLoaded, "Load: scene.isLoaded");
-            Assert.AreEqual(module.Provider.GetScene(id).Address, "d39a9027b65879843ab7fc2c1a4a22af");
-            Assert.Contains(scene, module.Scenes.Keys.ToArray());
+            Assert.AreEqual(module.Scenes.Get(id).Address, "Assets/UGF.Module.Scenes.Runtime.Tests/Resources/SceneTest.unity");
+            Assert.Contains(scene, module.Instances.Entries.Keys.ToArray());
 
             if (unload)
             {
                 module.Unload(id, scene, SceneUnloadParameters.Default);
 
-                Assert.IsEmpty(module.Scenes.Keys);
-                Assert.IsEmpty(ApplicationSceneProviderInstance.Provider.Applications.Keys);
-                Assert.IsEmpty(ApplicationSceneProviderInstance.Provider.Applications.Values);
+                Assert.IsEmpty(module.Instances.Entries.Keys);
+                Assert.IsEmpty(ProviderInstance.Get<IProvider<Scene, IApplication>>().Entries.Keys);
+                Assert.IsEmpty(ProviderInstance.Get<IProvider<Scene, IApplication>>().Entries.Values);
 
                 yield return null;
 
@@ -61,8 +72,8 @@ namespace UGF.Module.Scenes.Runtime.Tests
             }
         }
 
-        [TestCase("Module", "70128677f5fe91241866ef846e7bb16e", false, ExpectedResult = null)]
-        [TestCase("Module", "70128677f5fe91241866ef846e7bb16e", true, ExpectedResult = null)]
+        [TestCase("Module", "d39a9027b65879843ab7fc2c1a4a22af", false, ExpectedResult = null)]
+        [TestCase("Module", "d39a9027b65879843ab7fc2c1a4a22af", true, ExpectedResult = null)]
         [UnityTest]
         public IEnumerator LoadAsync(string moduleName, string id, bool unload)
         {
@@ -80,13 +91,13 @@ namespace UGF.Module.Scenes.Runtime.Tests
 
             Scene scene = task.Result;
 
-            Assert.Contains(scene, module.Scenes.Keys.ToArray());
-            Assert.Contains(task.Result, ApplicationSceneProviderInstance.Provider.Applications.Keys.ToArray());
-            Assert.Contains(application, ApplicationSceneProviderInstance.Provider.Applications.Values.ToArray());
+            Assert.Contains(scene, module.Instances.Entries.Keys.ToArray());
+            Assert.Contains(task.Result, ProviderInstance.Get<IProvider<Scene, IApplication>>().Entries.Keys.ToArray());
+            Assert.Contains(application, ProviderInstance.Get<IProvider<Scene, IApplication>>().Entries.Values.ToArray());
 
             Assert.True(scene.IsValid(), "Load: scene.IsValid()");
             Assert.True(scene.isLoaded, "Load: scene.isLoaded");
-            Assert.AreEqual(module.Provider.GetScene(id).Address, "d39a9027b65879843ab7fc2c1a4a22af");
+            Assert.AreEqual(module.Scenes.Get(id).Address, "Assets/UGF.Module.Scenes.Runtime.Tests/Resources/SceneTest.unity");
 
             if (unload)
             {
@@ -97,16 +108,16 @@ namespace UGF.Module.Scenes.Runtime.Tests
                     yield return null;
                 }
 
-                Assert.IsEmpty(module.Scenes.Keys);
-                Assert.IsEmpty(ApplicationSceneProviderInstance.Provider.Applications.Keys);
-                Assert.IsEmpty(ApplicationSceneProviderInstance.Provider.Applications.Values);
+                Assert.IsEmpty(module.Instances.Entries.Keys);
+                Assert.IsEmpty(ProviderInstance.Get<IProvider<Scene, IApplication>>().Entries.Keys);
+                Assert.IsEmpty(ProviderInstance.Get<IProvider<Scene, IApplication>>().Entries.Values);
 
                 Assert.False(scene.IsValid(), "Unload: scene.IsValid()");
                 Assert.False(scene.isLoaded, "Unload: scene.isLoaded");
             }
         }
 
-        [TestCase("Module", "70128677f5fe91241866ef846e7bb16e", ExpectedResult = null)]
+        [TestCase("Module", "d39a9027b65879843ab7fc2c1a4a22af", ExpectedResult = null)]
         [UnityTest]
         public IEnumerator LoadAsyncActivation(string moduleName, string id)
         {
@@ -129,7 +140,7 @@ namespace UGF.Module.Scenes.Runtime.Tests
             Assert.False(scene.isLoaded, "Load: scene.isLoaded");
             Assert.NotNull(operation);
             Assert.GreaterOrEqual(operation.progress, 0.9F);
-            Assert.AreEqual(module.Provider.GetScene(id).Address, "d39a9027b65879843ab7fc2c1a4a22af");
+            Assert.AreEqual(module.Scenes.Get(id).Address, "Assets/UGF.Module.Scenes.Runtime.Tests/Resources/SceneTest.unity");
 
             scene.Activate();
 

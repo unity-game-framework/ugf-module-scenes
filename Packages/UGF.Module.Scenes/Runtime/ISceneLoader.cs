@@ -1,13 +1,14 @@
 ﻿using System.Threading.Tasks;
+using UGF.RuntimeTools.Runtime.Contexts;
 using UnityEngine.SceneManagement;
 
 namespace UGF.Module.Scenes.Runtime
 {
     public interface ISceneLoader
     {
-        Scene Load(ISceneProvider provider, string id, SceneLoadParameters parameters);
-        Task<Scene> LoadAsync(ISceneProvider provider, string id, SceneLoadParameters parameters);
-        void Unload(ISceneProvider provider, string id, Scene scene, SceneUnloadParameters parameters);
-        Task UnloadAsync(ISceneProvider provider, string id, Scene scene, SceneUnloadParameters parameters);
+        Scene Load(string id, ISceneLoadParameters parameters, IContext context);
+        Task<Scene> LoadAsync(string id, ISceneLoadParameters parameters, IContext context);
+        void Unload(string id, Scene scene, ISceneUnloadParameters parameters, IContext context);
+        Task UnloadAsync(string id, Scene scene, ISceneUnloadParameters parameters, IContext context);
     }
 }

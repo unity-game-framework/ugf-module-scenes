@@ -8,7 +8,7 @@ namespace UGF.Module.Scenes.Runtime.Loaders.Manager
     {
         [Conditional("UNITY_EDITOR")]
         [Conditional(LogUtility.LOG_DEBUG_DEFINE)]
-        private static void LogSceneLoading(string id, ManagerSceneInfo info, SceneLoadParameters parameters, bool isAsync = false)
+        private static void LogSceneLoading(string id, ISceneInfo info, ISceneLoadParameters parameters, bool isAsync = false)
         {
             Log.Debug("Manager Scene Loader loading", new
             {
@@ -16,7 +16,7 @@ namespace UGF.Module.Scenes.Runtime.Loaders.Manager
                 info = new
                 {
                     info.LoaderId,
-                    info.SceneId
+                    info.Address
                 },
                 parameters = new
                 {
@@ -30,7 +30,7 @@ namespace UGF.Module.Scenes.Runtime.Loaders.Manager
 
         [Conditional("UNITY_EDITOR")]
         [Conditional(LogUtility.LOG_DEBUG_DEFINE)]
-        private static void LogSceneLoaded(string id, ManagerSceneInfo info, SceneLoadParameters parameters, Scene scene, bool isAsync = false)
+        private static void LogSceneLoaded(string id, ISceneInfo info, ISceneLoadParameters parameters, Scene scene, bool isAsync = false)
         {
             Log.Debug("Manager Scene Loader loaded", new
             {
@@ -38,7 +38,7 @@ namespace UGF.Module.Scenes.Runtime.Loaders.Manager
                 info = new
                 {
                     info.LoaderId,
-                    info.SceneId
+                    info.Address
                 },
                 parameters = new
                 {
@@ -61,7 +61,7 @@ namespace UGF.Module.Scenes.Runtime.Loaders.Manager
 
         [Conditional("UNITY_EDITOR")]
         [Conditional(LogUtility.LOG_DEBUG_DEFINE)]
-        private static void LogSceneUnload(string id, ManagerSceneInfo info, SceneUnloadParameters parameters, Scene scene, bool unloadUnused, bool isAsync = false)
+        private static void LogSceneUnload(string id, ISceneInfo info, ISceneUnloadParameters parameters, Scene scene, bool unloadUnused, bool isAsync = false)
         {
             Log.Debug("Manager Scene Loader unloading", new
             {
@@ -69,7 +69,7 @@ namespace UGF.Module.Scenes.Runtime.Loaders.Manager
                 info = new
                 {
                     info.LoaderId,
-                    info.SceneId
+                    info.Address
                 },
                 parameters = new
                 {
@@ -91,7 +91,7 @@ namespace UGF.Module.Scenes.Runtime.Loaders.Manager
 
         [Conditional("UNITY_EDITOR")]
         [Conditional(LogUtility.LOG_DEBUG_DEFINE)]
-        private static void LogSceneUnloaded(string id, ManagerSceneInfo info, SceneUnloadParameters parameters, bool unloadUnused, bool isAsync = false)
+        private static void LogSceneUnloaded(string id, ISceneInfo info, ISceneUnloadParameters parameters, bool unloadUnused, bool isAsync = false)
         {
             Log.Debug("Manager Scene Loader unloaded", new
             {
@@ -99,7 +99,7 @@ namespace UGF.Module.Scenes.Runtime.Loaders.Manager
                 info = new
                 {
                     info.LoaderId,
-                    info.SceneId
+                    info.Address
                 },
                 parameters = new
                 {

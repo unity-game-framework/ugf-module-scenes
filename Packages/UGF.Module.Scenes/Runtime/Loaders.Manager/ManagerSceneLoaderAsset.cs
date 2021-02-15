@@ -3,7 +3,7 @@
 namespace UGF.Module.Scenes.Runtime.Loaders.Manager
 {
     [CreateAssetMenu(menuName = "Unity Game Framework/Scenes/Manager Scene Loader", order = 2000)]
-    public class ManagerSceneLoaderAsset : SceneLoaderAssetBase
+    public class ManagerSceneLoaderAsset : SceneLoaderAsset
     {
         [SerializeField] private bool m_unloadUnusedAfterUnload;
 

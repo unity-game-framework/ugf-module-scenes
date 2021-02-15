@@ -1,20 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using UGF.Application.Runtime;
-using UGF.Application.Runtime.Scenes;
 using UGF.Logs.Runtime;
+using UGF.RuntimeTools.Runtime.Contexts;
+using UGF.RuntimeTools.Runtime.Providers;
 using UnityEngine.SceneManagement;
 
 namespace UGF.Module.Scenes.Runtime
 {
     public partial class SceneModule : ApplicationModule<SceneModuleDescription>, ISceneModule
     {
-        public ISceneProvider Provider { get; }
-        public IApplicationSceneProvider ApplicationSceneProvider { get; }
-        public IReadOnlyDictionary<Scene, SceneInstance> Scenes { get; }
+        public IProvider<string, ISceneLoader> Loaders { get; }
+        public IProvider<string, ISceneInfo> Scenes { get; }
+        public IProvider<Scene, SceneInstance> Instances { get; } = new Provider<Scene, SceneInstance>();
+        public IContext Context { get; } = new Context();
 
         ISceneModuleDescription ISceneModule.Description { get { return Description; } }
 
@@ -23,17 +24,18 @@ namespace UGF.Module.Scenes.Runtime
         public event SceneUnloadHandler Unloading;
         public event SceneUnloadedHandler Unloaded;
 
-        private readonly Dictionary<Scene, SceneInstance> m_scenes = new Dictionary<Scene, SceneInstance>();
-
-        public SceneModule(SceneModuleDescription description, IApplication application) : this(description, application, new SceneProvider(), ApplicationSceneProviderInstance.Provider)
+        public SceneModule(SceneModuleDescription description, IApplication application) : this(description, application, new Provider<string, ISceneLoader>(), new Provider<string, ISceneInfo>())
         {
         }
 
-        public SceneModule(SceneModuleDescription description, IApplication application, ISceneProvider provider, IApplicationSceneProvider applicationSceneProvider) : base(description, application)
+        public SceneModule(SceneModuleDescription description, IApplication application, IProvider<string, ISceneLoader> loaders, IProvider<string, ISceneInfo> scenes) : base(description, application)
         {
-            Provider = provider ?? throw new ArgumentNullException(nameof(provider));
-            ApplicationSceneProvider = applicationSceneProvider ?? throw new ArgumentNullException(nameof(applicationSceneProvider));
-            Scenes = new ReadOnlyDictionary<Scene, SceneInstance>(m_scenes);
+            Loaders = loaders ?? throw new ArgumentNullException(nameof(loaders));
+            Scenes = scenes ?? throw new ArgumentNullException(nameof(scenes));
+
+            Context.Add(Application);
+            Context.Add(Loaders);
+            Context.Add(Scenes);
         }
 
         protected override void OnInitialize()
@@ -42,18 +44,18 @@ namespace UGF.Module.Scenes.Runtime
 
             foreach (KeyValuePair<string, ISceneLoader> pair in Description.Loaders)
             {
-                Provider.AddLoader(pair.Key, pair.Value);
+                Loaders.Add(pair.Key, pair.Value);
             }
 
             foreach (KeyValuePair<string, ISceneInfo> pair in Description.Scenes)
             {
-                Provider.AddScene(pair.Key, pair.Value);
+                Scenes.Add(pair.Key, pair.Value);
             }
 
             Log.Debug("Scene Module initialized", new
             {
-                loadersCount = Provider.Loaders.Count,
-                scenesCount = Provider.Scenes.Count
+                loadersCount = Loaders.Entries.Count,
+                scenesCount = Scenes.Entries.Count
             });
         }
 
@@ -65,33 +67,34 @@ namespace UGF.Module.Scenes.Runtime
             {
                 Log.Debug("Scene Module unload tracked scenes on uninitialize", new
                 {
-                    count = m_scenes.Count
+                    count = Instances.Entries.Count
                 });
 
-                while (m_scenes.Count > 0)
+                while (Instances.Entries.Count > 0)
                 {
-                    KeyValuePair<Scene, SceneInstance> pair = m_scenes.First();
+                    KeyValuePair<Scene, SceneInstance> pair = Instances.Entries.First();
 
                     Unload(pair.Value.Id, pair.Key, SceneUnloadParameters.Default);
                 }
             }
 
-            m_scenes.Clear();
+            Instances.Clear();
 
             foreach (KeyValuePair<string, ISceneLoader> pair in Description.Loaders)
             {
-                Provider.RemoveLoader(pair.Key);
+                Loaders.Remove(pair.Key);
             }
 
             foreach (KeyValuePair<string, ISceneInfo> pair in Description.Scenes)
             {
-                Provider.RemoveScene(pair.Key);
+                Scenes.Remove(pair.Key);
             }
         }
 
-        public Scene Load(string id, SceneLoadParameters parameters)
+        public Scene Load(string id, ISceneLoadParameters parameters)
         {
             if (string.IsNullOrEmpty(id)) throw new ArgumentException("Value cannot be null or empty.", nameof(id));
+            if (parameters == null) throw new ArgumentNullException(nameof(parameters));
 
             LogSceneLoad(id, parameters);
 
@@ -100,7 +103,7 @@ namespace UGF.Module.Scenes.Runtime
             Scene scene = OnLoad(id, parameters);
             SceneInstance instance = OnAddScene(id, scene, parameters);
 
-            m_scenes.Add(scene, instance);
+            Instances.Add(scene, instance);
 
             Loaded?.Invoke(id, scene, parameters);
 
@@ -109,9 +112,10 @@ namespace UGF.Module.Scenes.Runtime
             return scene;
         }
 
-        public async Task<Scene> LoadAsync(string id, SceneLoadParameters parameters)
+        public async Task<Scene> LoadAsync(string id, ISceneLoadParameters parameters)
         {
             if (string.IsNullOrEmpty(id)) throw new ArgumentException("Value cannot be null or empty.", nameof(id));
+            if (parameters == null) throw new ArgumentNullException(nameof(parameters));
 
             LogSceneLoad(id, parameters, true);
 
@@ -120,7 +124,7 @@ namespace UGF.Module.Scenes.Runtime
             Scene scene = await OnLoadAsync(id, parameters);
             SceneInstance instance = OnAddScene(id, scene, parameters);
 
-            m_scenes.Add(scene, instance);
+            Instances.Add(scene, instance);
 
             Loaded?.Invoke(id, scene, parameters);
 
@@ -129,9 +133,10 @@ namespace UGF.Module.Scenes.Runtime
             return scene;
         }
 
-        public void Unload(string id, Scene scene, SceneUnloadParameters parameters)
+        public void Unload(string id, Scene scene, ISceneUnloadParameters parameters)
         {
             if (string.IsNullOrEmpty(id)) throw new ArgumentException("Value cannot be null or empty.", nameof(id));
+            if (parameters == null) throw new ArgumentNullException(nameof(parameters));
 
             LogSceneUnload(id, scene, parameters);
 
@@ -140,16 +145,17 @@ namespace UGF.Module.Scenes.Runtime
             OnRemoveScene(id, scene, parameters);
             OnUnload(id, scene, parameters);
 
-            m_scenes.Remove(scene);
+            Instances.Remove(scene);
 
             Unloaded?.Invoke(id, parameters);
 
             LogSceneUnloaded(id, parameters);
         }
 
-        public async Task UnloadAsync(string id, Scene scene, SceneUnloadParameters parameters)
+        public async Task UnloadAsync(string id, Scene scene, ISceneUnloadParameters parameters)
         {
             if (string.IsNullOrEmpty(id)) throw new ArgumentException("Value cannot be null or empty.", nameof(id));
+            if (parameters == null) throw new ArgumentNullException(nameof(parameters));
 
             LogSceneUnload(id, scene, parameters, true);
 
@@ -158,84 +164,63 @@ namespace UGF.Module.Scenes.Runtime
             OnRemoveScene(id, scene, parameters);
             await OnUnloadAsync(id, scene, parameters);
 
-            m_scenes.Remove(scene);
+            Instances.Remove(scene);
 
             Unloaded?.Invoke(id, parameters);
 
             LogSceneUnloaded(id, parameters, true);
         }
 
-        public SceneInstance GetScene(Scene scene)
+        protected virtual SceneInstance OnAddScene(string id, Scene scene, ISceneLoadParameters parameters)
         {
-            return TryGetScene(scene, out SceneInstance instance) ? instance : throw new ArgumentException($"Scene instance not found by the specified scene: '{scene.name}'.");
-        }
-
-        public bool TryGetScene(Scene scene, out SceneInstance instance)
-        {
-            return m_scenes.TryGetValue(scene, out instance);
-        }
-
-        protected virtual SceneInstance OnAddScene(string id, Scene scene, SceneLoadParameters parameters)
-        {
-            if (Description.RegisterApplicationForScenes)
+            if (Description.RegisterApplicationForScenes && ProviderInstance.TryGet(out IProvider<Scene, IApplication> provider))
             {
-                ApplicationSceneProvider.Add(scene, Application);
+                provider.Add(scene, Application);
             }
 
             return new SceneInstance(scene, id);
         }
 
-        protected virtual void OnRemoveScene(string id, Scene scene, SceneUnloadParameters parameters)
+        protected virtual void OnRemoveScene(string id, Scene scene, ISceneUnloadParameters parameters)
         {
-            if (Description.RegisterApplicationForScenes)
+            if (Description.RegisterApplicationForScenes && ProviderInstance.TryGet(out IProvider<Scene, IApplication> provider))
             {
-                ApplicationSceneProvider.Remove(scene);
+                provider.Remove(scene);
             }
         }
 
-        protected virtual Scene OnLoad(string id, SceneLoadParameters parameters)
+        protected virtual Scene OnLoad(string id, ISceneLoadParameters parameters)
         {
-            ISceneLoader loader = GetLoaderByScene(id);
+            ISceneLoader loader = this.GetLoaderByScene(id);
 
-            Scene scene = loader.Load(Provider, id, parameters);
+            Scene scene = loader.Load(id, parameters, Context);
 
             return scene;
         }
 
-        protected virtual Task<Scene> OnLoadAsync(string id, SceneLoadParameters parameters)
+        protected virtual Task<Scene> OnLoadAsync(string id, ISceneLoadParameters parameters)
         {
-            ISceneLoader loader = GetLoaderByScene(id);
+            ISceneLoader loader = this.GetLoaderByScene(id);
 
-            Task<Scene> task = loader.LoadAsync(Provider, id, parameters);
+            Task<Scene> task = loader.LoadAsync(id, parameters, Context);
 
             return task;
         }
 
-        protected virtual void OnUnload(string id, Scene scene, SceneUnloadParameters parameters)
+        protected virtual void OnUnload(string id, Scene scene, ISceneUnloadParameters parameters)
         {
-            ISceneLoader loader = GetLoaderByScene(id);
+            ISceneLoader loader = this.GetLoaderByScene(id);
 
-            loader.Unload(Provider, id, scene, parameters);
+            loader.Unload(id, scene, parameters, Context);
         }
 
-        protected virtual Task OnUnloadAsync(string id, Scene scene, SceneUnloadParameters parameters)
+        protected virtual Task OnUnloadAsync(string id, Scene scene, ISceneUnloadParameters parameters)
         {
-            ISceneLoader loader = GetLoaderByScene(id);
+            ISceneLoader loader = this.GetLoaderByScene(id);
 
-            Task task = loader.UnloadAsync(Provider, id, scene, parameters);
+            Task task = loader.UnloadAsync(id, scene, parameters, Context);
 
             return task;
-        }
-
-        protected ISceneLoader GetLoaderByScene(string id)
-        {
-            return TryGetLoaderByScene(id, out ISceneLoader loader) ? loader : throw new ArgumentException($"Scene loader not found by the specified scene id: '{id}'.");
-        }
-
-        protected bool TryGetLoaderByScene(string id, out ISceneLoader loader)
-        {
-            loader = default;
-            return Provider.TryGetScene(id, out ISceneInfo scene) && Provider.TryGetLoader(scene.LoaderId, out loader);
         }
     }
 }

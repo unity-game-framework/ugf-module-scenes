@@ -5,6 +5,38 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.0.0-preview](https://github.com/unity-game-framework/ugf-module-scenes/releases/tag/3.0.0-preview) - 2021-02-09  
+
+### Release Notes
+
+- [Milestone](https://github.com/unity-game-framework/ugf-module-scenes/milestone/12?closed=1)  
+    
+
+### Changed
+
+- Update project registry ([#42](https://github.com/unity-game-framework/ugf-module-scenes/pull/42))  
+    - Update package publish registry.
+    - Update dependencies: `com.ugf.application` to `8.0.0-preview.4` version.
+- Update to Unity 2021.1 ([#41](https://github.com/unity-game-framework/ugf-module-scenes/pull/41))  
+- Update providers and application package ([#38](https://github.com/unity-game-framework/ugf-module-scenes/pull/38))  
+    - Update dependencies: `com.ugf.application` to `8.0.0-preview.3` version.
+    - Add dependencies: `com.ugf.runtimetools` of `2.0.0` version.
+    - Add `SceneGroupAsset` abstract class to implement custom scene group asset.
+    - Add `ManagerSceneGroupAsset` asset to define scenes to work with `ManagerSceneLoader`.
+    - Add `ManagerSceneEditorUtility` class to work with `ManagerSceneGroupAsset` assets.
+    - Add `ISceneLoadParameters` and `ISceneUnloadParameters` interfaces and default implementation to replace solution with structures.
+    - Add `SceneOperationProviderInstanceComponent` component to create and register global provider for scene operations.
+    - Add `SceneModuleExtensions` with `GetLoaderByScene` and `TryGetLoaderByScene` methods.
+    - Change `SceneModuleAsset` to work with `SceneGroupAsset` instead of removed `SceneInfoAssetBase` class.
+    - Change `ISceneModule` and implementation to use providers solution for loaders and scenes.
+    - Change `ISceneModule` and `ISceneLoader` and implementations to work with scene load and unload parameter interfaces.
+    - Change `ManagerSceneEditorSettings` to work with scene groups, settings contains `UpdateAllGroupsOnBuild` property to control update of all scene groups before player build.
+    - Change name of abstract `SceneLoaderAssetBase` class to `SceneLoaderAsset`.
+    - Remove `ISceneProvider` and `ISceneOperationProvider` interfaces and implementations, replaced by generic providers solution.
+    - Remove `SceneInfoAssetBase` and related classes.
+    - Remove `ManagerSceneSettings` settings and related classes.
+    - Remove deprecated code.
+
 ## [2.2.0](https://github.com/unity-game-framework/ugf-module-scenes/releases/tag/2.2.0) - 2021-01-16  
 
 ### Release Notes

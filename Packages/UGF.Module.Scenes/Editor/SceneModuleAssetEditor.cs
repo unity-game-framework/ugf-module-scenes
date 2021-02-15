@@ -12,7 +12,7 @@ namespace UGF.Module.Scenes.Editor
         private SerializedProperty m_propertyUnloadTrackedScenesOnUninitialize;
         private SerializedProperty m_propertyRegisterApplicationForScenes;
         private AssetReferenceListDrawer m_listLoaders;
-        private AssetReferenceListDrawer m_listScenes;
+        private AssetReferenceListDrawer m_listGroups;
 
         private void OnEnable()
         {
@@ -21,16 +21,16 @@ namespace UGF.Module.Scenes.Editor
             m_propertyRegisterApplicationForScenes = serializedObject.FindProperty("m_registerApplicationForScenes");
 
             m_listLoaders = new AssetReferenceListDrawer(serializedObject.FindProperty("m_loaders"));
-            m_listScenes = new AssetReferenceListDrawer(serializedObject.FindProperty("m_scenes"));
+            m_listGroups = new AssetReferenceListDrawer(serializedObject.FindProperty("m_groups"));
 
             m_listLoaders.Enable();
-            m_listScenes.Enable();
+            m_listGroups.Enable();
         }
 
         private void OnDisable()
         {
             m_listLoaders.Disable();
-            m_listScenes.Disable();
+            m_listGroups.Disable();
         }
 
         public override void OnInspectorGUI()
@@ -46,7 +46,7 @@ namespace UGF.Module.Scenes.Editor
                 EditorGUILayout.PropertyField(m_propertyRegisterApplicationForScenes);
 
                 m_listLoaders.DrawGUILayout();
-                m_listScenes.DrawGUILayout();
+                m_listGroups.DrawGUILayout();
             }
         }
     }
