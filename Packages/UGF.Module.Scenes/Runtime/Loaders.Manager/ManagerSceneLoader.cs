@@ -10,7 +10,12 @@ namespace UGF.Module.Scenes.Runtime.Loaders.Manager
     {
         public bool UnloadUnusedAfterUnload { get; }
 
-        public ManagerSceneLoader(bool unloadUnusedAfterUnload = true)
+        public ManagerSceneLoader(bool unloadUnusedAfterUnload = true) : this(SceneLoadParameters.Default, SceneUnloadParameters.Default, unloadUnusedAfterUnload)
+        {
+            UnloadUnusedAfterUnload = unloadUnusedAfterUnload;
+        }
+
+        public ManagerSceneLoader(ISceneLoadParameters defaultLoadParameters, ISceneUnloadParameters defaultUnloadParameters, bool unloadUnusedAfterUnload) : base(defaultLoadParameters, defaultUnloadParameters)
         {
             UnloadUnusedAfterUnload = unloadUnusedAfterUnload;
         }
