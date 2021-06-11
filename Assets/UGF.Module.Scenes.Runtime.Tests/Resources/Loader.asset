@@ -13,3 +13,9 @@ MonoBehaviour:
   m_Name: Loader
   m_EditorClassIdentifier: 
   m_unloadUnusedAfterUnload: 0
+  m_defaultLoadParameters:
+    m_addMode: 0
+    m_physicsMode: 0
+    m_allowActivation: 1
+  m_defaultUnloadParameters:
+    m_options: 1
