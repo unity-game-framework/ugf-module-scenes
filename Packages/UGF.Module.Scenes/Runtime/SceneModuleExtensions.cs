@@ -55,8 +55,6 @@ namespace UGF.Module.Scenes.Runtime
 
         public static Scene Load(this ISceneModule sceneModule, string id)
         {
-            if (sceneModule == null) throw new ArgumentNullException(nameof(sceneModule));
-
             ISceneLoadParameters parameters = GetDefaultLoadParametersByScene(sceneModule, id);
 
             return sceneModule.Load(id, parameters);
@@ -64,8 +62,6 @@ namespace UGF.Module.Scenes.Runtime
 
         public static Task<Scene> LoadAsync(this ISceneModule sceneModule, string id)
         {
-            if (sceneModule == null) throw new ArgumentNullException(nameof(sceneModule));
-
             ISceneLoadParameters parameters = GetDefaultLoadParametersByScene(sceneModule, id);
 
             return sceneModule.LoadAsync(id, parameters);
@@ -73,8 +69,6 @@ namespace UGF.Module.Scenes.Runtime
 
         public static void Unload(this ISceneModule sceneModule, string id, Scene scene)
         {
-            if (sceneModule == null) throw new ArgumentNullException(nameof(sceneModule));
-
             ISceneUnloadParameters parameters = GetDefaultUnloadParametersByScene(sceneModule, id);
 
             sceneModule.Unload(id, scene, parameters);
@@ -82,8 +76,6 @@ namespace UGF.Module.Scenes.Runtime
 
         public static Task UnloadAsync(this ISceneModule sceneModule, string id, Scene scene)
         {
-            if (sceneModule == null) throw new ArgumentNullException(nameof(sceneModule));
-
             ISceneUnloadParameters parameters = GetDefaultUnloadParametersByScene(sceneModule, id);
 
             return sceneModule.UnloadAsync(id, scene, parameters);
