@@ -10,6 +10,10 @@ namespace UGF.Module.Scenes.Runtime
         where TLoadParameters : class, ISceneLoadParameters
         where TUnloadParameters : class, ISceneUnloadParameters
     {
+        protected SceneLoader(TLoadParameters defaultLoadParameters, TUnloadParameters defaultUnloadParameters) : base(defaultLoadParameters, defaultUnloadParameters)
+        {
+        }
+
         protected override Scene OnLoad(string id, ISceneLoadParameters parameters, IContext context)
         {
             var provider = context.Get<IProvider<string, ISceneInfo>>();

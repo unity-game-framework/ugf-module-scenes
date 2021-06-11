@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93956d54c05347358c002a9ab8df22d9, type: 3}
+  m_Name: Module2
+  m_EditorClassIdentifier: 
+  m_unloadTrackedScenesOnUninitialize: 1
+  m_registerApplicationForScenes: 1
+  m_loaders:
+  - m_guid: 600ff64afcd85df4cb980b92cba88dda
+    m_asset: {fileID: 11400000, guid: 600ff64afcd85df4cb980b92cba88dda, type: 2}
+  m_groups:
+  - m_guid: b7a8683c9bcfb87478c5fc09d50e12ca
+    m_asset: {fileID: 11400000, guid: b7a8683c9bcfb87478c5fc09d50e12ca, type: 2}
