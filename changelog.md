@@ -5,6 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.0.0-preview.3](https://github.com/unity-game-framework/ugf-module-scenes/releases/tag/3.0.0-preview.3) - 2021-06-11  
+
+### Release Notes
+
+- [Milestone](https://github.com/unity-game-framework/ugf-module-scenes/milestone/15?closed=1)  
+    
+
+### Added
+
+- Add scene info load and unload default parameters ([#49](https://github.com/unity-game-framework/ugf-module-scenes/pull/49))  
+    - Add `DefaultLoadParameters` and `DefaultUnloadParameters` properties for `ISceneLoader` interface and class implementations.
+    - Add `Load`, `LoadAsync`, `Unload` and `UnloadAsync` method overloads without load and unload parameters argument, which use default parameters from loader.
+    - Add implementation of default parameters properties for `SceneLoaderBase` abstract class and virtual methods of load and unload overloads.
+    - Add constructor with default parameters for `ManagerSceneLoader` class.
+    - Add `DefaultLoadParameters` and `DefaultUnloadParameters` properties for `ManagerSceneLoaderAsset` asset.
+    - Add `TryGetDefaultLoadParametersByScene`, `GetDefaultLoadParametersByScene`, `TryGetDefaultUnloadParametersByScene` and `GetDefaultUnloadParametersByScene` extension methods for `ISceneModule` to get default parameters of loader by the specified scene id.
+    - Add `Load`, `LoadAsync`, `Unload` and `UnloadAsync` extension methods for `ISceneModule` to load and unload scenes without parameters arguments, which use default parameters from loader.
+
 ## [3.0.0-preview.2](https://github.com/unity-game-framework/ugf-module-scenes/releases/tag/3.0.0-preview.2) - 2021-05-25  
 
 ### Release Notes
