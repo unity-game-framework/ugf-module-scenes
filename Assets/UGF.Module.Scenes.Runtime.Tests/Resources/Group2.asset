@@ -9,13 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 869877dcdceb4129bbea1fa939c7b71b, type: 3}
-  m_Name: Loader
+  m_Script: {fileID: 11500000, guid: a527a59f18494c809bf69f37cfcc66b3, type: 3}
+  m_Name: Group2
   m_EditorClassIdentifier: 
-  m_unloadUnusedAfterUnload: 0
-  m_defaultLoadParameters:
-    m_addMode: 1
-    m_physicsMode: 0
-    m_allowActivation: 1
-  m_defaultUnloadParameters:
-    m_options: 1
+  m_loader: 600ff64afcd85df4cb980b92cba88dda
+  m_scenes:
+  - m_id: d39a9027b65879843ab7fc2c1a4a22af
+    m_address: Assets/UGF.Module.Scenes.Runtime.Tests/Resources/SceneTest.unity

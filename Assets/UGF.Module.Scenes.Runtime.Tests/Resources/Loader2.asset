@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 869877dcdceb4129bbea1fa939c7b71b, type: 3}
-  m_Name: Loader
+  m_Name: Loader2
   m_EditorClassIdentifier: 
   m_unloadUnusedAfterUnload: 0
   m_defaultLoadParameters:
     m_addMode: 1
     m_physicsMode: 0
-    m_allowActivation: 1
+    m_allowActivation: 0
   m_defaultUnloadParameters:
     m_options: 1

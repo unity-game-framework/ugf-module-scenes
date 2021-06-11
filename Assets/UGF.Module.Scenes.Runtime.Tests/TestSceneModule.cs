@@ -44,7 +44,7 @@ namespace UGF.Module.Scenes.Runtime.Tests
             application.Initialize();
 
             var module = application.GetModule<ISceneModule>();
-            Scene scene = module.Load(id, SceneLoadParameters.DefaultAdditive);
+            Scene scene = module.Load(id);
 
             Assert.Contains(scene, module.Instances.Entries.Keys.ToArray());
             Assert.Contains(scene, ProviderInstance.Get<IProvider<Scene, IApplication>>().Entries.Keys.ToArray());
@@ -59,7 +59,7 @@ namespace UGF.Module.Scenes.Runtime.Tests
 
             if (unload)
             {
-                module.Unload(id, scene, SceneUnloadParameters.Default);
+                module.Unload(id, scene);
 
                 Assert.IsEmpty(module.Instances.Entries.Keys);
                 Assert.IsEmpty(ProviderInstance.Get<IProvider<Scene, IApplication>>().Entries.Keys);
@@ -82,7 +82,7 @@ namespace UGF.Module.Scenes.Runtime.Tests
             application.Initialize();
 
             var module = application.GetModule<ISceneModule>();
-            Task<Scene> task = module.LoadAsync(id, SceneLoadParameters.DefaultAdditive);
+            Task<Scene> task = module.LoadAsync(id);
 
             while (!task.IsCompleted)
             {
@@ -101,7 +101,7 @@ namespace UGF.Module.Scenes.Runtime.Tests
 
             if (unload)
             {
-                Task task2 = module.UnloadAsync(id, scene, SceneUnloadParameters.Default);
+                Task task2 = module.UnloadAsync(id, scene);
 
                 while (!task2.IsCompleted)
                 {
@@ -117,7 +117,7 @@ namespace UGF.Module.Scenes.Runtime.Tests
             }
         }
 
-        [TestCase("Module", "d39a9027b65879843ab7fc2c1a4a22af", ExpectedResult = null)]
+        [TestCase("Module2", "d39a9027b65879843ab7fc2c1a4a22af", ExpectedResult = null)]
         [UnityTest]
         public IEnumerator LoadAsyncActivation(string moduleName, string id)
         {
@@ -126,7 +126,7 @@ namespace UGF.Module.Scenes.Runtime.Tests
             application.Initialize();
 
             var module = application.GetModule<ISceneModule>();
-            Task<Scene> task = module.LoadAsync(id, SceneLoadParameters.DefaultAdditiveDisabled);
+            Task<Scene> task = module.LoadAsync(id);
 
             while (!task.IsCompleted)
             {
