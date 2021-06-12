@@ -74,7 +74,7 @@ namespace UGF.Module.Scenes.Runtime
                 {
                     KeyValuePair<Scene, SceneInstance> pair = Instances.Entries.First();
 
-                    Unload(pair.Value.Id, pair.Key, SceneUnloadParameters.Default);
+                    this.Unload(pair.Value.Id, pair.Key);
                 }
             }
 
