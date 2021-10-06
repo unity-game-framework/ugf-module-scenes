@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.0.0-preview.5](https://github.com/unity-game-framework/ugf-module-scenes/releases/tag/3.0.0-preview.5) - 2021-10-06  
+
+### Release Notes
+
+- [Milestone](https://github.com/unity-game-framework/ugf-module-scenes/milestone/17?closed=1)  
+    
+
+### Added
+
+- Add refresh all groups in project settings ([#53](https://github.com/unity-game-framework/ugf-module-scenes/pull/53))  
+    - Add `Refresh All` button in project settings to refresh all groups in the project.
+    - Deprecate `ManagerSceneEditorUtility.UpdateAllSceneGroups()` method, use `UpdateSceneGroupAll()` method instead.
+
 ## [3.0.0-preview.4](https://github.com/unity-game-framework/ugf-module-scenes/releases/tag/3.0.0-preview.4) - 2021-06-12  
 
 ### Release Notes
