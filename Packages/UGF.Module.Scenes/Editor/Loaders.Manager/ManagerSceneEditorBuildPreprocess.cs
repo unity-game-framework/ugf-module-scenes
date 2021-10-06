@@ -1,4 +1,5 @@
 ﻿using UGF.CustomSettings.Editor;
+using UnityEditor;
 using UnityEditor.Build;
 using UnityEditor.Build.Reporting;
 
@@ -14,7 +15,8 @@ namespace UGF.Module.Scenes.Editor.Loaders.Manager
 
             if (settings.Exists() && settings.GetData().UpdateAllGroupsOnBuild)
             {
-                ManagerSceneEditorUtility.UpdateAllSceneGroups();
+                ManagerSceneEditorUtility.UpdateSceneGroupAll();
+                AssetDatabase.SaveAssets();
             }
         }
     }
