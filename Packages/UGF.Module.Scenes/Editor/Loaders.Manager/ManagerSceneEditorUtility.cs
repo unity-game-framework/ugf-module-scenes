@@ -5,7 +5,7 @@ using Object = UnityEngine.Object;
 
 namespace UGF.Module.Scenes.Editor.Loaders.Manager
 {
-    public static partial class ManagerSceneEditorUtility
+    public static class ManagerSceneEditorUtility
     {
         public static bool IsSceneGroupHasMissingEntries(ManagerSceneGroupAsset group)
         {

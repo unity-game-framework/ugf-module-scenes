@@ -1,4 +1,5 @@
-﻿using UGF.EditorTools.Editor.IMGUI.AssetReferences;
+﻿using UGF.EditorTools.Editor.IMGUI;
+using UGF.EditorTools.Editor.IMGUI.AssetReferences;
 using UGF.EditorTools.Editor.IMGUI.Scopes;
 using UGF.Module.Scenes.Runtime;
 using UnityEditor;
@@ -8,7 +9,6 @@ namespace UGF.Module.Scenes.Editor
     [CustomEditor(typeof(SceneModuleAsset), true)]
     internal class SceneModuleAssetEditor : UnityEditor.Editor
     {
-        private SerializedProperty m_propertyScript;
         private SerializedProperty m_propertyUnloadTrackedScenesOnUninitialize;
         private SerializedProperty m_propertyRegisterApplicationForScenes;
         private AssetReferenceListDrawer m_listLoaders;
@@ -16,7 +16,6 @@ namespace UGF.Module.Scenes.Editor
 
         private void OnEnable()
         {
-            m_propertyScript = serializedObject.FindProperty("m_Script");
             m_propertyUnloadTrackedScenesOnUninitialize = serializedObject.FindProperty("m_unloadTrackedScenesOnUninitialize");
             m_propertyRegisterApplicationForScenes = serializedObject.FindProperty("m_registerApplicationForScenes");
 
@@ -37,10 +36,7 @@ namespace UGF.Module.Scenes.Editor
         {
             using (new SerializedObjectUpdateScope(serializedObject))
             {
-                using (new EditorGUI.DisabledScope(true))
-                {
-                    EditorGUILayout.PropertyField(m_propertyScript);
-                }
+                EditorIMGUIUtility.DrawScriptProperty(serializedObject);
 
                 EditorGUILayout.PropertyField(m_propertyUnloadTrackedScenesOnUninitialize);
                 EditorGUILayout.PropertyField(m_propertyRegisterApplicationForScenes);
