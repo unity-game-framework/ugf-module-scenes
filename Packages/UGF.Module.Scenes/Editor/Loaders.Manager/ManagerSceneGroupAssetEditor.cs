@@ -1,4 +1,5 @@
-﻿using UGF.EditorTools.Editor.IMGUI.Scopes;
+﻿using UGF.EditorTools.Editor.IMGUI;
+using UGF.EditorTools.Editor.IMGUI.Scopes;
 using UGF.Module.Scenes.Runtime.Loaders.Manager;
 using UnityEditor;
 using UnityEngine;
@@ -8,7 +9,6 @@ namespace UGF.Module.Scenes.Editor.Loaders.Manager
     [CustomEditor(typeof(ManagerSceneGroupAsset), true)]
     internal class ManagerSceneGroupAssetEditor : UnityEditor.Editor
     {
-        private SerializedProperty m_propertyScript;
         private SerializedProperty m_propertyLoader;
         private ManagerSceneGroupAssetListDrawer m_listScenes;
         private Styles m_styles;
@@ -22,7 +22,6 @@ namespace UGF.Module.Scenes.Editor.Loaders.Manager
 
         private void OnEnable()
         {
-            m_propertyScript = serializedObject.FindProperty("m_Script");
             m_propertyLoader = serializedObject.FindProperty("m_loader");
             m_listScenes = new ManagerSceneGroupAssetListDrawer(serializedObject.FindProperty("m_scenes"));
 
@@ -40,10 +39,7 @@ namespace UGF.Module.Scenes.Editor.Loaders.Manager
 
             using (new SerializedObjectUpdateScope(serializedObject))
             {
-                using (new EditorGUI.DisabledScope(true))
-                {
-                    EditorGUILayout.PropertyField(m_propertyScript);
-                }
+                EditorIMGUIUtility.DrawScriptProperty(serializedObject);
 
                 EditorGUILayout.PropertyField(m_propertyLoader);
 
