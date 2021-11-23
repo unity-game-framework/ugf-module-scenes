@@ -4,13 +4,13 @@ UGF.Module.Scenes
 
 ## Info
 
-- **Version**: `3.0.0-preview.5`
-- **Unity**: `2021.1`
+- **Version**: `3.0.0-preview.6`
+- **Unity**: `2021.2`
 - **API Compatibility Level**: `.NET Standard 2.0`
 
 ### Dependencies
 
-- `com.ugf.application`: `8.0.0-preview.7`
+- `com.ugf.application`: `8.0.0`
 
 
 ### Description

@@ -5,6 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.0.0-preview.6](https://github.com/unity-game-framework/ugf-module-scenes/releases/tag/3.0.0-preview.6) - 2021-11-23  
+
+### Release Notes
+
+- [Milestone](https://github.com/unity-game-framework/ugf-module-scenes/milestone/18?closed=1)  
+    
+
+### Added
+
+- Add scene loader application register from context ([#55](https://github.com/unity-game-framework/ugf-module-scenes/pull/55))  
+    - Update package _Unity_ version to `2021.2`.
+    - Update dependencies: `com.ugf.application` to `8.0.0` version.
+    - Add `ManagerSceneLoader.RegisterApplication` property to determine whether to register application for loaded scene.
+    - Add `ManagerSceneLoader.OnRegisterApplication` and `OnUnregisterApplication` protected virtual methods to override application register logic.
+    - Change `UnloadUnusedAfterUnload` property to be with setter and have `true` as default value.
+    - Remove `unloadUnusedAfterUnload` constructor argument from `ManagerSceneLoader` class, use `UnloadUnusedAfterUnload` property instead.
+    - Remove deprecated code.
+
 ## [3.0.0-preview.5](https://github.com/unity-game-framework/ugf-module-scenes/releases/tag/3.0.0-preview.5) - 2021-10-06  
 
 ### Release Notes
