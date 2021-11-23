@@ -2,7 +2,7 @@
   "name": "com.ugf.module.scenes",
   "displayName": "UGF.Module.Scenes",
   "version": "3.0.0-preview.5",
-  "unity": "2021.1",
+  "unity": "2021.2",
   "apiCompatibility": ".NET Standard 2.0",
   "description": "Module to manage scenes loading.",
   "author": {
