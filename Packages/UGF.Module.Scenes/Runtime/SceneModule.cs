@@ -173,7 +173,7 @@ namespace UGF.Module.Scenes.Runtime
 
         protected virtual SceneInstance OnAddScene(string id, Scene scene, ISceneLoadParameters parameters)
         {
-            if (Description.RegisterApplicationForScenes && ProviderInstance.TryGet(out IProvider<Scene, IApplication> provider))
+            if (Description.RegisterApplicationForScenes && ProviderInstance.TryGet(out IProvider<Scene, IApplication> provider) && !provider.Entries.ContainsKey(scene))
             {
                 provider.Add(scene, Application);
             }

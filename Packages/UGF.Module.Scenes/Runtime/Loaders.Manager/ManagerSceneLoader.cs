@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using UGF.Application.Runtime;
 using UGF.RuntimeTools.Runtime.Contexts;
 using UGF.RuntimeTools.Runtime.Providers;
 using UnityEngine;
@@ -8,16 +9,15 @@ namespace UGF.Module.Scenes.Runtime.Loaders.Manager
 {
     public partial class ManagerSceneLoader : SceneLoader<ISceneInfo>
     {
-        public bool UnloadUnusedAfterUnload { get; }
+        public bool RegisterApplication { get; set; } = true;
+        public bool UnloadUnusedAfterUnload { get; set; } = true;
 
-        public ManagerSceneLoader(bool unloadUnusedAfterUnload = true) : this(SceneLoadParameters.Default, SceneUnloadParameters.Default, unloadUnusedAfterUnload)
+        public ManagerSceneLoader() : this(SceneLoadParameters.Default, SceneUnloadParameters.Default)
         {
-            UnloadUnusedAfterUnload = unloadUnusedAfterUnload;
         }
 
-        public ManagerSceneLoader(ISceneLoadParameters defaultLoadParameters, ISceneUnloadParameters defaultUnloadParameters, bool unloadUnusedAfterUnload) : base(defaultLoadParameters, defaultUnloadParameters)
+        public ManagerSceneLoader(ISceneLoadParameters defaultLoadParameters, ISceneUnloadParameters defaultUnloadParameters) : base(defaultLoadParameters, defaultUnloadParameters)
         {
-            UnloadUnusedAfterUnload = unloadUnusedAfterUnload;
         }
 
         protected override Scene OnLoad(string id, ISceneInfo info, ISceneLoadParameters parameters, IContext context)
@@ -27,6 +27,11 @@ namespace UGF.Module.Scenes.Runtime.Loaders.Manager
             var options = new LoadSceneParameters(parameters.AddMode, parameters.PhysicsMode);
 
             Scene scene = SceneManager.LoadScene(info.Address, options);
+
+            if (RegisterApplication)
+            {
+                OnRegisterApplication(scene, context);
+            }
 
             LogSceneLoaded(id, info, parameters, scene);
 
@@ -42,6 +47,11 @@ namespace UGF.Module.Scenes.Runtime.Loaders.Manager
 
             AsyncOperation operation = SceneManager.LoadSceneAsync(info.Address, options);
             Scene scene = SceneManager.GetSceneAt(SceneManager.sceneCount - 1);
+
+            if (RegisterApplication)
+            {
+                OnRegisterApplication(scene, context);
+            }
 
             operation.allowSceneActivation = parameters.AllowActivation;
             provider.Add(scene, operation);
@@ -74,6 +84,11 @@ namespace UGF.Module.Scenes.Runtime.Loaders.Manager
 
             SceneUtility.UnloadScene(scene, parameters.Options);
 
+            if (RegisterApplication)
+            {
+                OnUnregisterApplication(scene);
+            }
+
             if (UnloadUnusedAfterUnload)
             {
                 Resources.UnloadUnusedAssets();
@@ -99,6 +114,11 @@ namespace UGF.Module.Scenes.Runtime.Loaders.Manager
 
             provider.Remove(scene);
 
+            if (RegisterApplication)
+            {
+                OnUnregisterApplication(scene);
+            }
+
             if (UnloadUnusedAfterUnload)
             {
                 operation = Resources.UnloadUnusedAssets();
@@ -110,6 +130,24 @@ namespace UGF.Module.Scenes.Runtime.Loaders.Manager
             }
 
             LogSceneUnloaded(id, info, parameters, UnloadUnusedAfterUnload, true);
+        }
+
+        protected virtual void OnRegisterApplication(Scene scene, IContext context)
+        {
+            if (ProviderInstance.TryGet(out IProvider<Scene, IApplication> provider) && !provider.Entries.ContainsKey(scene))
+            {
+                var application = context.Get<IApplication>();
+
+                provider.Add(scene, application);
+            }
+        }
+
+        protected virtual void OnUnregisterApplication(Scene scene)
+        {
+            if (ProviderInstance.TryGet(out IProvider<Scene, IApplication> provider))
+            {
+                provider.Remove(scene);
+            }
         }
     }
 }
