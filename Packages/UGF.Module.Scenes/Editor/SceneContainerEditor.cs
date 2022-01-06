@@ -8,14 +8,11 @@ namespace UGF.Module.Scenes.Editor
     [CustomEditor(typeof(SceneContainer), true)]
     internal class SceneContainerEditor : UnityEditor.Editor
     {
-        private SerializedProperty m_propertyScript;
         private ReorderableListDrawer m_list;
 
         private void OnEnable()
         {
-            m_propertyScript = serializedObject.FindProperty("m_Script");
             m_list = new ReorderableListDrawer(serializedObject.FindProperty("m_containers"));
-
             m_list.Enable();
         }
 
@@ -28,10 +25,7 @@ namespace UGF.Module.Scenes.Editor
         {
             using (new SerializedObjectUpdateScope(serializedObject))
             {
-                using (new EditorGUI.DisabledScope(true))
-                {
-                    EditorGUILayout.PropertyField(m_propertyScript);
-                }
+                EditorIMGUIUtility.DrawScriptProperty(serializedObject);
 
                 m_list.DrawGUILayout();
             }
