@@ -12,7 +12,9 @@ namespace UGF.Module.Scenes.Editor
         private SerializedProperty m_propertyUnloadTrackedScenesOnUninitialize;
         private SerializedProperty m_propertyRegisterApplicationForScenes;
         private AssetReferenceListDrawer m_listLoaders;
+        private ReorderableListSelectionDrawerByPath m_listLoadersSelection;
         private AssetReferenceListDrawer m_listGroups;
+        private ReorderableListSelectionDrawerByPath m_listGroupsSelection;
 
         private void OnEnable()
         {
@@ -20,16 +22,37 @@ namespace UGF.Module.Scenes.Editor
             m_propertyRegisterApplicationForScenes = serializedObject.FindProperty("m_registerApplicationForScenes");
 
             m_listLoaders = new AssetReferenceListDrawer(serializedObject.FindProperty("m_loaders"));
+
+            m_listLoadersSelection = new ReorderableListSelectionDrawerByPath(m_listLoaders, "m_asset")
+            {
+                Drawer =
+                {
+                    DisplayTitlebar = true
+                }
+            };
+
             m_listGroups = new AssetReferenceListDrawer(serializedObject.FindProperty("m_groups"));
 
+            m_listGroupsSelection = new ReorderableListSelectionDrawerByPath(m_listGroups, "m_asset")
+            {
+                Drawer =
+                {
+                    DisplayTitlebar = true
+                }
+            };
+
             m_listLoaders.Enable();
+            m_listLoadersSelection.Enable();
             m_listGroups.Enable();
+            m_listGroupsSelection.Enable();
         }
 
         private void OnDisable()
         {
             m_listLoaders.Disable();
+            m_listLoadersSelection.Disable();
             m_listGroups.Disable();
+            m_listGroupsSelection.Disable();
         }
 
         public override void OnInspectorGUI()
@@ -43,6 +66,9 @@ namespace UGF.Module.Scenes.Editor
 
                 m_listLoaders.DrawGUILayout();
                 m_listGroups.DrawGUILayout();
+
+                m_listLoadersSelection.DrawGUILayout();
+                m_listGroupsSelection.DrawGUILayout();
             }
         }
     }
