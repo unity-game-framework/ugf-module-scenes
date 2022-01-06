@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UGF.Application.Runtime;
 using UGF.EditorTools.Runtime.IMGUI.AssetReferences;
-using UGF.EditorTools.Runtime.IMGUI.Attributes;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 namespace UGF.Module.Scenes.Runtime
 {
