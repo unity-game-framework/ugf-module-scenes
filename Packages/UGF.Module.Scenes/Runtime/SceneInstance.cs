@@ -1,4 +1,5 @@
 ﻿using System;
+using UGF.EditorTools.Runtime.Ids;
 using UnityEngine.SceneManagement;
 
 namespace UGF.Module.Scenes.Runtime
@@ -6,13 +7,13 @@ namespace UGF.Module.Scenes.Runtime
     public class SceneInstance
     {
         public Scene Scene { get; }
-        public string Id { get; }
+        public GlobalId Id { get; }
         public SceneRoot Root { get; }
 
-        public SceneInstance(Scene scene, string id)
+        public SceneInstance(Scene scene, GlobalId id)
         {
             if (!scene.IsValid()) throw new ArgumentException("Value should be valid.", nameof(scene));
-            if (string.IsNullOrEmpty(id)) throw new ArgumentException("Value cannot be null or empty.", nameof(id));
+            if (!id.IsValid()) throw new ArgumentException("Value should be valid.", nameof(id));
 
             Scene = scene;
             Id = id;

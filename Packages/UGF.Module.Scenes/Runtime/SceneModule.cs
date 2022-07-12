@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using UGF.Application.Runtime;
+using UGF.EditorTools.Runtime.Ids;
 using UGF.Logs.Runtime;
 using UGF.RuntimeTools.Runtime.Contexts;
 using UGF.RuntimeTools.Runtime.Providers;
@@ -12,8 +13,8 @@ namespace UGF.Module.Scenes.Runtime
 {
     public partial class SceneModule : ApplicationModule<SceneModuleDescription>, ISceneModule
     {
-        public IProvider<string, ISceneLoader> Loaders { get; }
-        public IProvider<string, ISceneInfo> Scenes { get; }
+        public IProvider<GlobalId, ISceneLoader> Loaders { get; }
+        public IProvider<GlobalId, ISceneInfo> Scenes { get; }
         public IProvider<Scene, SceneInstance> Instances { get; } = new Provider<Scene, SceneInstance>();
         public IContext Context { get; } = new Context();
 
@@ -24,11 +25,11 @@ namespace UGF.Module.Scenes.Runtime
         public event SceneUnloadHandler Unloading;
         public event SceneUnloadedHandler Unloaded;
 
-        public SceneModule(SceneModuleDescription description, IApplication application) : this(description, application, new Provider<string, ISceneLoader>(), new Provider<string, ISceneInfo>())
+        public SceneModule(SceneModuleDescription description, IApplication application) : this(description, application, new Provider<GlobalId, ISceneLoader>(), new Provider<GlobalId, ISceneInfo>())
         {
         }
 
-        public SceneModule(SceneModuleDescription description, IApplication application, IProvider<string, ISceneLoader> loaders, IProvider<string, ISceneInfo> scenes) : base(description, application)
+        public SceneModule(SceneModuleDescription description, IApplication application, IProvider<GlobalId, ISceneLoader> loaders, IProvider<GlobalId, ISceneInfo> scenes) : base(description, application)
         {
             Loaders = loaders ?? throw new ArgumentNullException(nameof(loaders));
             Scenes = scenes ?? throw new ArgumentNullException(nameof(scenes));
@@ -42,14 +43,14 @@ namespace UGF.Module.Scenes.Runtime
         {
             base.OnInitialize();
 
-            foreach (KeyValuePair<string, ISceneLoader> pair in Description.Loaders)
+            foreach ((GlobalId key, ISceneLoader value) in Description.Loaders)
             {
-                Loaders.Add(pair.Key, pair.Value);
+                Loaders.Add(key, value);
             }
 
-            foreach (KeyValuePair<string, ISceneInfo> pair in Description.Scenes)
+            foreach ((GlobalId key, ISceneInfo value) in Description.Scenes)
             {
-                Scenes.Add(pair.Key, pair.Value);
+                Scenes.Add(key, value);
             }
 
             Log.Debug("Scene Module initialized", new
@@ -72,28 +73,28 @@ namespace UGF.Module.Scenes.Runtime
 
                 while (Instances.Entries.Count > 0)
                 {
-                    KeyValuePair<Scene, SceneInstance> pair = Instances.Entries.First();
+                    (Scene key, SceneInstance value) = Instances.Entries.First();
 
-                    this.Unload(pair.Value.Id, pair.Key);
+                    this.Unload(value.Id, key);
                 }
             }
 
             Instances.Clear();
 
-            foreach (KeyValuePair<string, ISceneLoader> pair in Description.Loaders)
+            foreach ((GlobalId key, _) in Description.Loaders)
             {
-                Loaders.Remove(pair.Key);
+                Loaders.Remove(key);
             }
 
-            foreach (KeyValuePair<string, ISceneInfo> pair in Description.Scenes)
+            foreach ((GlobalId key, _) in Description.Scenes)
             {
-                Scenes.Remove(pair.Key);
+                Scenes.Remove(key);
             }
         }
 
-        public Scene Load(string id, ISceneLoadParameters parameters)
+        public Scene Load(GlobalId id, ISceneLoadParameters parameters)
         {
-            if (string.IsNullOrEmpty(id)) throw new ArgumentException("Value cannot be null or empty.", nameof(id));
+            if (!id.IsValid()) throw new ArgumentException("Value should be valid.", nameof(id));
             if (parameters == null) throw new ArgumentNullException(nameof(parameters));
 
             LogSceneLoad(id, parameters);
@@ -112,9 +113,9 @@ namespace UGF.Module.Scenes.Runtime
             return scene;
         }
 
-        public async Task<Scene> LoadAsync(string id, ISceneLoadParameters parameters)
+        public async Task<Scene> LoadAsync(GlobalId id, ISceneLoadParameters parameters)
         {
-            if (string.IsNullOrEmpty(id)) throw new ArgumentException("Value cannot be null or empty.", nameof(id));
+            if (!id.IsValid()) throw new ArgumentException("Value should be valid.", nameof(id));
             if (parameters == null) throw new ArgumentNullException(nameof(parameters));
 
             LogSceneLoad(id, parameters, true);
@@ -133,9 +134,9 @@ namespace UGF.Module.Scenes.Runtime
             return scene;
         }
 
-        public void Unload(string id, Scene scene, ISceneUnloadParameters parameters)
+        public void Unload(GlobalId id, Scene scene, ISceneUnloadParameters parameters)
         {
-            if (string.IsNullOrEmpty(id)) throw new ArgumentException("Value cannot be null or empty.", nameof(id));
+            if (!id.IsValid()) throw new ArgumentException("Value should be valid.", nameof(id));
             if (parameters == null) throw new ArgumentNullException(nameof(parameters));
 
             LogSceneUnload(id, scene, parameters);
@@ -152,9 +153,9 @@ namespace UGF.Module.Scenes.Runtime
             LogSceneUnloaded(id, parameters);
         }
 
-        public async Task UnloadAsync(string id, Scene scene, ISceneUnloadParameters parameters)
+        public async Task UnloadAsync(GlobalId id, Scene scene, ISceneUnloadParameters parameters)
         {
-            if (string.IsNullOrEmpty(id)) throw new ArgumentException("Value cannot be null or empty.", nameof(id));
+            if (!id.IsValid()) throw new ArgumentException("Value should be valid.", nameof(id));
             if (parameters == null) throw new ArgumentNullException(nameof(parameters));
 
             LogSceneUnload(id, scene, parameters, true);
@@ -171,7 +172,7 @@ namespace UGF.Module.Scenes.Runtime
             LogSceneUnloaded(id, parameters, true);
         }
 
-        protected virtual SceneInstance OnAddScene(string id, Scene scene, ISceneLoadParameters parameters)
+        protected virtual SceneInstance OnAddScene(GlobalId id, Scene scene, ISceneLoadParameters parameters)
         {
             if (Description.RegisterApplicationForScenes && ProviderInstance.TryGet(out IProvider<Scene, IApplication> provider) && !provider.Entries.ContainsKey(scene))
             {
@@ -181,7 +182,7 @@ namespace UGF.Module.Scenes.Runtime
             return new SceneInstance(scene, id);
         }
 
-        protected virtual void OnRemoveScene(string id, Scene scene, ISceneUnloadParameters parameters)
+        protected virtual void OnRemoveScene(GlobalId id, Scene scene, ISceneUnloadParameters parameters)
         {
             if (Description.RegisterApplicationForScenes && ProviderInstance.TryGet(out IProvider<Scene, IApplication> provider))
             {
@@ -189,7 +190,7 @@ namespace UGF.Module.Scenes.Runtime
             }
         }
 
-        protected virtual Scene OnLoad(string id, ISceneLoadParameters parameters)
+        protected virtual Scene OnLoad(GlobalId id, ISceneLoadParameters parameters)
         {
             ISceneLoader loader = this.GetLoaderByScene(id);
 
@@ -198,7 +199,7 @@ namespace UGF.Module.Scenes.Runtime
             return scene;
         }
 
-        protected virtual Task<Scene> OnLoadAsync(string id, ISceneLoadParameters parameters)
+        protected virtual Task<Scene> OnLoadAsync(GlobalId id, ISceneLoadParameters parameters)
         {
             ISceneLoader loader = this.GetLoaderByScene(id);
 
@@ -207,14 +208,14 @@ namespace UGF.Module.Scenes.Runtime
             return task;
         }
 
-        protected virtual void OnUnload(string id, Scene scene, ISceneUnloadParameters parameters)
+        protected virtual void OnUnload(GlobalId id, Scene scene, ISceneUnloadParameters parameters)
         {
             ISceneLoader loader = this.GetLoaderByScene(id);
 
             loader.Unload(id, scene, parameters, Context);
         }
 
-        protected virtual Task OnUnloadAsync(string id, Scene scene, ISceneUnloadParameters parameters)
+        protected virtual Task OnUnloadAsync(GlobalId id, Scene scene, ISceneUnloadParameters parameters)
         {
             ISceneLoader loader = this.GetLoaderByScene(id);
 

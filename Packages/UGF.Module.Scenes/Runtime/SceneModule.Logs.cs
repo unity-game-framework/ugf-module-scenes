@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using UGF.EditorTools.Runtime.Ids;
 using UGF.Logs.Runtime;
 using UnityEngine.SceneManagement;
 
@@ -8,7 +9,7 @@ namespace UGF.Module.Scenes.Runtime
     {
         [Conditional("UNITY_EDITOR")]
         [Conditional(LogUtility.LOG_DEBUG_DEFINE)]
-        private static void LogSceneLoad(string id, ISceneLoadParameters parameters, bool isAsync = false)
+        private static void LogSceneLoad(GlobalId id, ISceneLoadParameters parameters, bool isAsync = false)
         {
             Log.Debug("Scene loading", new
             {
@@ -25,7 +26,7 @@ namespace UGF.Module.Scenes.Runtime
 
         [Conditional("UNITY_EDITOR")]
         [Conditional(LogUtility.LOG_DEBUG_DEFINE)]
-        private static void LogSceneLoaded(string id, Scene scene, ISceneLoadParameters parameters, bool isAsync = false)
+        private static void LogSceneLoaded(GlobalId id, Scene scene, ISceneLoadParameters parameters, bool isAsync = false)
         {
             Log.Debug("Scene loaded", new
             {
@@ -51,7 +52,7 @@ namespace UGF.Module.Scenes.Runtime
 
         [Conditional("UNITY_EDITOR")]
         [Conditional(LogUtility.LOG_DEBUG_DEFINE)]
-        private static void LogSceneUnload(string id, Scene scene, ISceneUnloadParameters parameters, bool isAsync = false)
+        private static void LogSceneUnload(GlobalId id, Scene scene, ISceneUnloadParameters parameters, bool isAsync = false)
         {
             Log.Debug("Scene unloading", new
             {
@@ -75,7 +76,7 @@ namespace UGF.Module.Scenes.Runtime
 
         [Conditional("UNITY_EDITOR")]
         [Conditional(LogUtility.LOG_DEBUG_DEFINE)]
-        private static void LogSceneUnloaded(string id, ISceneUnloadParameters parameters, bool isAsync = false)
+        private static void LogSceneUnloaded(GlobalId id, ISceneUnloadParameters parameters, bool isAsync = false)
         {
             Log.Debug("Scene unloaded", new
             {
