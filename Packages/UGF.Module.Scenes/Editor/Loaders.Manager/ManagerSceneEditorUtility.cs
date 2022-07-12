@@ -1,4 +1,5 @@
 ﻿using System;
+using UGF.EditorTools.Runtime.Ids;
 using UGF.Module.Scenes.Runtime.Loaders.Manager;
 using UnityEditor;
 using Object = UnityEngine.Object;
@@ -15,7 +16,7 @@ namespace UGF.Module.Scenes.Editor.Loaders.Manager
             {
                 ManagerSceneGroupAsset.Entry entry = group.Scenes[i];
 
-                if (!string.IsNullOrEmpty(entry.Id) && !string.IsNullOrEmpty(entry.Address))
+                if (entry.Id != GlobalId.Empty && !string.IsNullOrEmpty(entry.Address))
                 {
                     var asset = AssetDatabase.LoadAssetAtPath<Object>(entry.Address);
 
@@ -60,9 +61,9 @@ namespace UGF.Module.Scenes.Editor.Loaders.Manager
             {
                 ManagerSceneGroupAsset.Entry entry = group.Scenes[i];
 
-                if (!string.IsNullOrEmpty(entry.Id))
+                if (entry.Id != GlobalId.Empty)
                 {
-                    string path = AssetDatabase.GUIDToAssetPath(entry.Id);
+                    string path = AssetDatabase.GUIDToAssetPath(entry.Id.ToString());
 
                     if (!string.IsNullOrEmpty(path))
                     {
