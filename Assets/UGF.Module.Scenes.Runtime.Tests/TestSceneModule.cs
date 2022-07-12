@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using JetBrains.Annotations;
 using NUnit.Framework;
 using UGF.Application.Runtime;
+using UGF.EditorTools.Runtime.Ids;
 using UGF.Module.Scenes.Runtime.Operations;
 using UGF.RuntimeTools.Runtime.Providers;
 using UnityEngine;
@@ -37,8 +38,9 @@ namespace UGF.Module.Scenes.Runtime.Tests
         [TestCase("Module", "d39a9027b65879843ab7fc2c1a4a22af", false, ExpectedResult = null)]
         [TestCase("Module", "d39a9027b65879843ab7fc2c1a4a22af", true, ExpectedResult = null)]
         [UnityTest]
-        public IEnumerator Load(string moduleName, string id, bool unload)
+        public IEnumerator Load(string moduleName, string value, bool unload)
         {
+            var id = new GlobalId(value);
             IApplication application = CreateApplication(moduleName);
 
             application.Initialize();
@@ -75,8 +77,9 @@ namespace UGF.Module.Scenes.Runtime.Tests
         [TestCase("Module", "d39a9027b65879843ab7fc2c1a4a22af", false, ExpectedResult = null)]
         [TestCase("Module", "d39a9027b65879843ab7fc2c1a4a22af", true, ExpectedResult = null)]
         [UnityTest]
-        public IEnumerator LoadAsync(string moduleName, string id, bool unload)
+        public IEnumerator LoadAsync(string moduleName, string value, bool unload)
         {
+            var id = new GlobalId(value);
             IApplication application = CreateApplication(moduleName);
 
             application.Initialize();
@@ -119,8 +122,9 @@ namespace UGF.Module.Scenes.Runtime.Tests
 
         [TestCase("Module2", "d39a9027b65879843ab7fc2c1a4a22af", ExpectedResult = null)]
         [UnityTest]
-        public IEnumerator LoadAsyncActivation(string moduleName, string id)
+        public IEnumerator LoadAsyncActivation(string moduleName, string value)
         {
+            var id = new GlobalId(value);
             IApplication application = CreateApplication(moduleName);
 
             application.Initialize();
