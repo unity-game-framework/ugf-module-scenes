@@ -12,9 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a527a59f18494c809bf69f37cfcc66b3, type: 3}
   m_Name: New Manager Scene Group Asset
   m_EditorClassIdentifier: 
-  m_loader: e0a0f37874446644f8243cfdbd00e22a
+  m_loader:
+    m_first: 0
+    m_second: 0
   m_scenes:
-  - m_id: 9fc0d4010bbf28b4594072e72b8655ab
+  - m_id:
+      m_first: 2932982174971909121
+      m_second: 12345921476630823001
     m_address: Assets/Scenes/SampleScene.unity
-  - m_id: d39a9027b65879843ab7fc2c1a4a22af
+  - m_id:
+      m_first: 8756324068138586151
+      m_second: 12619730582129915706
     m_address: Assets/UGF.Module.Scenes.Runtime.Tests/Resources/SceneTest.unity

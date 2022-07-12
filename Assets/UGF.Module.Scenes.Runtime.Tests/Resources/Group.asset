@@ -12,7 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a527a59f18494c809bf69f37cfcc66b3, type: 3}
   m_Name: Group
   m_EditorClassIdentifier: 
-  m_loader: 9fadd5c60f34fee42acd011bc692d89b
+  m_loader:
+    m_first: 18366821899015411142
+    m_second: 11229887050402614570
   m_scenes:
-  - m_id: d39a9027b65879843ab7fc2c1a4a22af
+  - m_id:
+      m_first: 8756324068138586151
+      m_second: 12619730582129915706
     m_address: Assets/UGF.Module.Scenes.Runtime.Tests/Resources/SceneTest.unity
