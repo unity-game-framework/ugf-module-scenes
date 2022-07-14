@@ -15,9 +15,12 @@ MonoBehaviour:
   m_unloadTrackedScenesOnUninitialize: 1
   m_registerApplicationForScenes: 1
   m_loaders:
-  - m_guid: e0a0f37874446644f8243cfdbd00e22a
+  - m_guid:
+      m_first: 7369142729460216696
+      m_second: 3090033110326977784
     m_asset: {fileID: 11400000, guid: e0a0f37874446644f8243cfdbd00e22a, type: 2}
-  m_scenes:
-  - m_loader: 9fadd5c60f34fee42acd011bc692d89b
-    m_scene: d39a9027b65879843ab7fc2c1a4a22af
-  m_groups: []
+  m_groups:
+  - m_guid:
+      m_first: 978680103746498108
+      m_second: 9916914817124769273
+    m_asset: {fileID: 11400000, guid: 7c8d6e3cf85e0d94f99d87ee7bf59f89, type: 2}

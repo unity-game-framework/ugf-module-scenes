@@ -1,6 +1,7 @@
-﻿using UnityEngine.SceneManagement;
+﻿using UGF.EditorTools.Runtime.Ids;
+using UnityEngine.SceneManagement;
 
 namespace UGF.Module.Scenes.Runtime
 {
-    public delegate void SceneUnloadHandler(string id, Scene scene, ISceneUnloadParameters parameters);
+    public delegate void SceneUnloadHandler(GlobalId id, Scene scene, ISceneUnloadParameters parameters);
 }

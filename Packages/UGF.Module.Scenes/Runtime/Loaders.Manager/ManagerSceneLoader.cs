@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using UGF.Application.Runtime;
+using UGF.EditorTools.Runtime.Ids;
 using UGF.RuntimeTools.Runtime.Contexts;
 using UGF.RuntimeTools.Runtime.Providers;
 using UnityEngine;
@@ -20,7 +21,7 @@ namespace UGF.Module.Scenes.Runtime.Loaders.Manager
         {
         }
 
-        protected override Scene OnLoad(string id, ISceneInfo info, ISceneLoadParameters parameters, IContext context)
+        protected override Scene OnLoad(GlobalId id, ISceneInfo info, ISceneLoadParameters parameters, IContext context)
         {
             LogSceneLoading(id, info, parameters);
 
@@ -38,7 +39,7 @@ namespace UGF.Module.Scenes.Runtime.Loaders.Manager
             return scene;
         }
 
-        protected override async Task<Scene> OnLoadAsync(string id, ISceneInfo info, ISceneLoadParameters parameters, IContext context)
+        protected override async Task<Scene> OnLoadAsync(GlobalId id, ISceneInfo info, ISceneLoadParameters parameters, IContext context)
         {
             LogSceneLoading(id, info, parameters, true);
 
@@ -78,7 +79,7 @@ namespace UGF.Module.Scenes.Runtime.Loaders.Manager
             return scene;
         }
 
-        protected override void OnUnload(string id, Scene scene, ISceneInfo info, ISceneUnloadParameters parameters, IContext context)
+        protected override void OnUnload(GlobalId id, Scene scene, ISceneInfo info, ISceneUnloadParameters parameters, IContext context)
         {
             LogSceneUnload(id, info, parameters, scene, UnloadUnusedAfterUnload);
 
@@ -97,7 +98,7 @@ namespace UGF.Module.Scenes.Runtime.Loaders.Manager
             LogSceneUnloaded(id, info, parameters, UnloadUnusedAfterUnload);
         }
 
-        protected override async Task OnUnloadAsync(string id, Scene scene, ISceneInfo info, ISceneUnloadParameters parameters, IContext context)
+        protected override async Task OnUnloadAsync(GlobalId id, Scene scene, ISceneInfo info, ISceneUnloadParameters parameters, IContext context)
         {
             LogSceneUnload(id, info, parameters, scene, UnloadUnusedAfterUnload, true);
 
