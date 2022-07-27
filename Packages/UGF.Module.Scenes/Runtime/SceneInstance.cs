@@ -1,5 +1,6 @@
 ﻿using System;
 using UGF.EditorTools.Runtime.Ids;
+using UGF.RuntimeTools.Runtime.Containers;
 using UnityEngine.SceneManagement;
 
 namespace UGF.Module.Scenes.Runtime
@@ -20,12 +21,12 @@ namespace UGF.Module.Scenes.Runtime
             Root = new SceneRoot(scene);
         }
 
-        public SceneContainer GetContainer()
+        public ContainerComponent GetContainer()
         {
-            return TryGetContainer(out SceneContainer container) ? container : throw new ArgumentException($"Container not specified at this scene: '{Scene.name}'.");
+            return TryGetContainer(out ContainerComponent container) ? container : throw new ArgumentException($"Container not specified at this scene: '{Scene.name}'.");
         }
 
-        public bool TryGetContainer(out SceneContainer container)
+        public bool TryGetContainer(out ContainerComponent container)
         {
             return Root.TryGetComponent(out container);
         }
