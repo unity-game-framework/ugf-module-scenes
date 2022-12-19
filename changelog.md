@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.0.0-preview.3](https://github.com/unity-game-framework/ugf-module-scenes/releases/tag/4.0.0-preview.3) - 2022-12-19  
+
+### Release Notes
+
+- [Milestone](https://github.com/unity-game-framework/ugf-module-scenes/milestone/23?closed=1)  
+    
+
+### Fixed
+
+- Fix scene reference height display ([#65](https://github.com/unity-game-framework/ugf-module-scenes/issues/65))  
+    - Fix `SceneReference` property drawer display height.
+
 ## [4.0.0-preview.2](https://github.com/unity-game-framework/ugf-module-scenes/releases/tag/4.0.0-preview.2) - 2022-12-19  
 
 ### Release Notes
