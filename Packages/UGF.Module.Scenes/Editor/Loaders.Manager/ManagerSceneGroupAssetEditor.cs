@@ -10,20 +10,16 @@ namespace UGF.Module.Scenes.Editor.Loaders.Manager
     internal class ManagerSceneGroupAssetEditor : UnityEditor.Editor
     {
         private SerializedProperty m_propertyLoader;
-        private ManagerSceneGroupAssetListDrawer m_listScenes;
-        private Styles m_styles;
-
-        private class Styles
-        {
-            public GUIContent RefreshContent { get; } = new GUIContent("Refresh", "Refresh all entries to update address for each entry.");
-            public GUIContent RefreshAllContent { get; } = new GUIContent("Refresh All", "Refresh all groups in project to update address for each entry.");
-            public string MissingEntryMessage { get; } = "Group contains entries with missing or invalid address.";
-        }
+        private ReorderableListDrawer m_listScenes;
 
         private void OnEnable()
         {
             m_propertyLoader = serializedObject.FindProperty("m_loader");
-            m_listScenes = new ManagerSceneGroupAssetListDrawer(serializedObject.FindProperty("m_scenes"));
+
+            m_listScenes = new ReorderableListDrawer(serializedObject.FindProperty("m_scenes"))
+            {
+                DisplayAsSingleLine = true
+            };
 
             m_listScenes.Enable();
         }
@@ -35,8 +31,6 @@ namespace UGF.Module.Scenes.Editor.Loaders.Manager
 
         public override void OnInspectorGUI()
         {
-            m_styles ??= new Styles();
-
             using (new SerializedObjectUpdateScope(serializedObject))
             {
                 EditorIMGUIUtility.DrawScriptProperty(serializedObject);
@@ -52,23 +46,23 @@ namespace UGF.Module.Scenes.Editor.Loaders.Manager
             {
                 GUILayout.FlexibleSpace();
 
-                if (GUILayout.Button(m_styles.RefreshAllContent))
+                if (GUILayout.Button("Refresh All", GUILayout.Width(75F)))
                 {
-                    ManagerSceneEditorProgress.StartUpdateSceneGroupAll();
+                    ManagerSceneEditorUtility.UpdateSceneGroupAll();
                 }
 
-                if (GUILayout.Button(m_styles.RefreshContent))
+                if (GUILayout.Button("Refresh", GUILayout.Width(75F)))
                 {
-                    ManagerSceneEditorUtility.UpdateSceneGroupEntries((ManagerSceneGroupAsset)target);
-                    EditorUtility.SetDirty(target);
+                    SceneReferenceEditorUtility.UpdateScenePathAll(m_listScenes.SerializedProperty);
+
+                    serializedObject.ApplyModifiedProperties();
                 }
             }
 
-            EditorGUILayout.Space();
-
-            if (ManagerSceneEditorUtility.IsSceneGroupHasMissingEntries((ManagerSceneGroupAsset)target))
+            if (!SceneReferenceEditorUtility.ValidateReferencesAll(m_listScenes.SerializedProperty))
             {
-                EditorGUILayout.HelpBox(m_styles.MissingEntryMessage, MessageType.Warning);
+                EditorGUILayout.Space();
+                EditorGUILayout.HelpBox("Scene reference collection contains entries with missing or invalid data.", MessageType.Warning);
             }
         }
     }

@@ -16,7 +16,7 @@ MonoBehaviour:
     m_first: 6770314146099492426
     m_second: 15748429064266553547
   m_scenes:
-  - m_id:
-      m_first: 8756324068138586151
-      m_second: 12619730582129915706
-    m_address: Assets/UGF.Module.Scenes.Runtime.Tests/Resources/SceneTest.unity
+  - m_guid:
+      m_first: 0
+      m_second: 0
+    m_path: 

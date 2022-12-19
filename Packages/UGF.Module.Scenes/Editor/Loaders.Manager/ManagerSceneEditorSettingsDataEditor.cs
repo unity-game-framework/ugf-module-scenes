@@ -37,7 +37,7 @@ namespace UGF.Module.Scenes.Editor.Loaders.Manager
 
                 if (GUILayout.Button(m_styles.RefreshAllContent))
                 {
-                    ManagerSceneEditorProgress.StartUpdateSceneGroupAll();
+                    ManagerSceneEditorUtility.UpdateSceneGroupAll();
                 }
 
                 EditorGUILayout.Space();
