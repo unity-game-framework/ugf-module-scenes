@@ -24,5 +24,10 @@ namespace UGF.Module.Scenes.Editor
 
             propertyPath.stringValue = AssetDatabase.GUIDToAssetPath(guid);
         }
+
+        public override float GetPropertyHeight(SerializedProperty serializedProperty, GUIContent label)
+        {
+            return EditorGUIUtility.singleLineHeight;
+        }
     }
 }
