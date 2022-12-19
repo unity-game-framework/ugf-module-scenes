@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.0.0-preview.2](https://github.com/unity-game-framework/ugf-module-scenes/releases/tag/4.0.0-preview.2) - 2022-12-19  
+
+### Release Notes
+
+- [Milestone](https://github.com/unity-game-framework/ugf-module-scenes/milestone/22?closed=1)  
+    
+
+### Added
+
+- Add scene reference ([#63](https://github.com/unity-game-framework/ugf-module-scenes/issues/63))  
+    - Update dependencies: `com.ugf.application` to `8.4.0` and `com.ugf.editortools` to `2.14.0` versions.
+    - Update package _Unity_ version to `2022.2`.
+    - Add `SceneReference` structure to define scene reference data with serialization and inspector display support.
+    - Add `SceneReferenceEditorUtility` static class to work with `SceneReference` within editor.
+    - Change `ManagerSceneGroupAsset` class to define scene collection as `SceneReference` collection.
+
 ## [4.0.0-preview.1](https://github.com/unity-game-framework/ugf-module-scenes/releases/tag/4.0.0-preview.1) - 2022-07-27  
 
 ### Release Notes
