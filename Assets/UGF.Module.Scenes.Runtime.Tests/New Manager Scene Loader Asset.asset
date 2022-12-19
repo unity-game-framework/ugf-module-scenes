@@ -12,10 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 869877dcdceb4129bbea1fa939c7b71b, type: 3}
   m_Name: New Manager Scene Loader Asset
   m_EditorClassIdentifier: 
+  m_registerApplication: 1
   m_unloadUnusedAfterUnload: 0
   m_defaultLoadParameters:
     m_addMode: 0
     m_physicsMode: 0
     m_allowActivation: 1
   m_defaultUnloadParameters:
-    m_options: 1
+    m_options: -1

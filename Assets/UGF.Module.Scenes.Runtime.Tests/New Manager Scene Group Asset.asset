@@ -16,11 +16,11 @@ MonoBehaviour:
     m_first: 0
     m_second: 0
   m_scenes:
-  - m_id:
-      m_first: 2932982174971909121
-      m_second: 12345921476630823001
-    m_address: Assets/Scenes/SampleScene.unity
-  - m_id:
+  - m_guid:
       m_first: 8756324068138586151
       m_second: 12619730582129915706
-    m_address: Assets/UGF.Module.Scenes.Runtime.Tests/Resources/SceneTest.unity
+    m_path: Assets/UGF.Module.Scenes.Runtime.Tests/Resources/SceneTest.unity
+  - m_guid:
+      m_first: 8053588856579393153
+      m_second: 12719967830312620376
+    m_path: Assets/UGF.Module.Scenes.Runtime.Tests/New Scene.unity
