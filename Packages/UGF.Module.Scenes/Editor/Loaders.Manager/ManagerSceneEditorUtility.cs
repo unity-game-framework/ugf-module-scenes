@@ -1,39 +1,12 @@
 ﻿using System;
-using UGF.EditorTools.Runtime.Ids;
+using UGF.Module.Scenes.Runtime;
 using UGF.Module.Scenes.Runtime.Loaders.Manager;
 using UnityEditor;
-using Object = UnityEngine.Object;
 
 namespace UGF.Module.Scenes.Editor.Loaders.Manager
 {
     public static class ManagerSceneEditorUtility
     {
-        public static bool IsSceneGroupHasMissingEntries(ManagerSceneGroupAsset group)
-        {
-            if (group == null) throw new ArgumentNullException(nameof(group));
-
-            for (int i = 0; i < group.Scenes.Count; i++)
-            {
-                ManagerSceneGroupAsset.Entry entry = group.Scenes[i];
-
-                if (entry.Id != GlobalId.Empty && !string.IsNullOrEmpty(entry.Address))
-                {
-                    var asset = AssetDatabase.LoadAssetAtPath<Object>(entry.Address);
-
-                    if (asset == null)
-                    {
-                        return true;
-                    }
-                }
-                else
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
         public static void UpdateSceneGroupAll()
         {
             string[] guids = AssetDatabase.FindAssets($"t:{nameof(ManagerSceneGroupAsset)}");
@@ -59,18 +32,11 @@ namespace UGF.Module.Scenes.Editor.Loaders.Manager
 
             for (int i = 0; i < group.Scenes.Count; i++)
             {
-                ManagerSceneGroupAsset.Entry entry = group.Scenes[i];
+                SceneReference reference = group.Scenes[i];
 
-                if (entry.Id != GlobalId.Empty)
+                if (reference.HasGuid && SceneReferenceEditorUtility.TryUpdateScenePath(reference, out string path))
                 {
-                    string path = AssetDatabase.GUIDToAssetPath(entry.Id.ToString());
-
-                    if (!string.IsNullOrEmpty(path))
-                    {
-                        entry.Address = path;
-
-                        group.Scenes[i] = entry;
-                    }
+                    group.Scenes[i] = new SceneReference(reference.Guid, path);
                 }
             }
         }

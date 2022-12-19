@@ -1,6 +1,7 @@
 ﻿using System;
 using UGF.EditorTools.Editor.Ids;
 using UGF.EditorTools.Runtime.Ids;
+using UGF.Module.Scenes.Runtime;
 using UnityEditor;
 
 namespace UGF.Module.Scenes.Editor
@@ -32,6 +33,25 @@ namespace UGF.Module.Scenes.Editor
             return asset != null;
         }
 
+        public static bool TryUpdateScenePath(SceneReference reference, out string path)
+        {
+            path = AssetDatabase.GUIDToAssetPath(reference.Guid.ToString());
+
+            return !string.IsNullOrEmpty(path);
+        }
+
+        public static void UpdateScenePathAll(SerializedProperty serializedProperty)
+        {
+            if (serializedProperty == null) throw new ArgumentNullException(nameof(serializedProperty));
+
+            for (int i = 0; i < serializedProperty.arraySize; i++)
+            {
+                SerializedProperty propertyElement = serializedProperty.GetArrayElementAtIndex(i);
+
+                TryUpdateScenePath(propertyElement, out _);
+            }
+        }
+
         public static bool TryUpdateScenePath(SerializedProperty serializedProperty, out string path)
         {
             if (serializedProperty == null) throw new ArgumentNullException(nameof(serializedProperty));
@@ -43,7 +63,7 @@ namespace UGF.Module.Scenes.Editor
 
             if (guid.IsValid())
             {
-                path = AssetDatabase.GUIDToAssetPath(propertyGuid.stringValue);
+                path = AssetDatabase.GUIDToAssetPath(guid.ToString());
 
                 if (!string.IsNullOrEmpty(path))
                 {
@@ -54,6 +74,30 @@ namespace UGF.Module.Scenes.Editor
 
             path = default;
             return false;
+        }
+
+        public static bool ValidateReferencesAll(SerializedProperty serializedProperty)
+        {
+            if (serializedProperty == null) throw new ArgumentNullException(nameof(serializedProperty));
+
+            for (int i = 0; i < serializedProperty.arraySize; i++)
+            {
+                SerializedProperty propertyElement = serializedProperty.GetArrayElementAtIndex(i);
+
+                if (!ValidateReference(propertyElement))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        public static bool ValidateReference(SerializedProperty serializedProperty)
+        {
+            if (serializedProperty == null) throw new ArgumentNullException(nameof(serializedProperty));
+
+            return TryGetSceneFromProperty(serializedProperty, out _);
         }
     }
 }
