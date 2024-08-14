@@ -9,7 +9,7 @@ namespace UGF.Module.Scenes.Runtime
 {
     public interface ISceneModule : IApplicationModule
     {
-        new ISceneModuleDescription Description { get; }
+        ISceneModuleDescription Description { get; }
         IProvider<GlobalId, ISceneLoader> Loaders { get; }
         IProvider<GlobalId, ISceneInfo> Scenes { get; }
         IProvider<Scene, SceneInstance> Instances { get; }

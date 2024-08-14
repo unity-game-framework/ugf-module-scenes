@@ -1,5 +1,4 @@
 ﻿using System;
-using UGF.EditorTools.Editor.Ids;
 using UGF.EditorTools.Runtime.Ids;
 using UGF.Module.Scenes.Runtime;
 using UnityEditor;
@@ -14,10 +13,12 @@ namespace UGF.Module.Scenes.Editor
             if (asset == null) throw new ArgumentNullException(nameof(asset));
 
             string path = AssetDatabase.GetAssetPath(asset);
+            string guid = AssetDatabase.AssetPathToGUID(path);
+
             SerializedProperty propertyGuid = serializedProperty.FindPropertyRelative("m_guid");
             SerializedProperty propertyPath = serializedProperty.FindPropertyRelative("m_path");
 
-            propertyGuid.stringValue = AssetDatabase.AssetPathToGUID(path);
+            propertyGuid.hash128Value = GlobalId.TryParse(guid, out GlobalId id) ? id : default;
             propertyPath.stringValue = path;
         }
 
@@ -26,10 +27,12 @@ namespace UGF.Module.Scenes.Editor
             if (serializedProperty == null) throw new ArgumentNullException(nameof(serializedProperty));
 
             SerializedProperty propertyGuid = serializedProperty.FindPropertyRelative("m_guid");
-            string guid = GlobalIdEditorUtility.GetGuidFromProperty(propertyGuid);
+
+            string guid = GlobalId.FromHash128(propertyGuid.hash128Value).ToString();
             string path = AssetDatabase.GUIDToAssetPath(guid);
 
             asset = AssetDatabase.LoadAssetAtPath<SceneAsset>(path);
+
             return asset != null;
         }
 
@@ -59,7 +62,7 @@ namespace UGF.Module.Scenes.Editor
             SerializedProperty propertyGuid = serializedProperty.FindPropertyRelative("m_guid");
             SerializedProperty propertyPath = serializedProperty.FindPropertyRelative("m_path");
 
-            GlobalId guid = GlobalIdEditorUtility.GetGlobalIdFromProperty(propertyGuid);
+            GlobalId guid = propertyGuid.hash128Value;
 
             if (guid.IsValid())
             {

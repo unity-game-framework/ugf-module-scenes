@@ -1,6 +1,6 @@
-﻿using UGF.EditorTools.Editor.Ids;
-using UGF.EditorTools.Editor.IMGUI.Attributes;
+﻿using UGF.EditorTools.Editor.IMGUI.Attributes;
 using UGF.EditorTools.Editor.IMGUI.PropertyDrawers;
+using UGF.EditorTools.Runtime.Ids;
 using UGF.Module.Scenes.Runtime;
 using UnityEditor;
 using UnityEngine;
@@ -16,13 +16,8 @@ namespace UGF.Module.Scenes.Editor
             SerializedProperty propertyGuid = serializedProperty.FindPropertyRelative("m_guid");
             SerializedProperty propertyPath = serializedProperty.FindPropertyRelative("m_path");
 
-            string guid = GlobalIdEditorUtility.GetGuidFromProperty(propertyGuid);
-
-            guid = AttributeEditorGUIUtility.DrawAssetGuidField(position, guid, label, typeof(Scene));
-
-            GlobalIdEditorUtility.SetGuidToProperty(propertyGuid, guid);
-
-            propertyPath.stringValue = AssetDatabase.GUIDToAssetPath(guid);
+            propertyGuid.hash128Value = AttributeEditorGUIUtility.DrawAssetHash128Field(position, propertyGuid.hash128Value, label, typeof(Scene));
+            propertyPath.stringValue = AssetDatabase.GUIDToAssetPath(GlobalId.FromHash128(propertyGuid.hash128Value).ToString());
         }
 
         public override float GetPropertyHeight(SerializedProperty serializedProperty, GUIContent label)

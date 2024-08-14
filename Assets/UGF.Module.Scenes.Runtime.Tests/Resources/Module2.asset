@@ -16,11 +16,11 @@ MonoBehaviour:
   m_registerApplicationForScenes: 1
   m_loaders:
   - m_guid:
-      m_first: 6770314146099492426
-      m_second: 15748429064266553547
+      serializedVersion: 2
+      Hash: 4af60f60d8fcf45dcb980b92cba88dda
     m_asset: {fileID: 11400000, guid: 600ff64afcd85df4cb980b92cba88dda, type: 2}
   m_groups:
   - m_guid:
-      m_first: 13291419716718979132
-      m_second: 14560716853400618360
+      serializedVersion: 2
+      Hash: 3c68a8b7cf9b74b878c5fc09d50e12ca
     m_asset: {fileID: 11400000, guid: b7a8683c9bcfb87478c5fc09d50e12ca, type: 2}

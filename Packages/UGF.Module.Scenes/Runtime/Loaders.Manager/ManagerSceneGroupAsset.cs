@@ -9,7 +9,7 @@ namespace UGF.Module.Scenes.Runtime.Loaders.Manager
     public class ManagerSceneGroupAsset : SceneGroupAsset
     {
         [AssetId(typeof(SceneLoaderAsset))]
-        [SerializeField] private GlobalId m_loader;
+        [SerializeField] private Hash128 m_loader;
         [SerializeField] private List<SceneReference> m_scenes = new List<SceneReference>();
 
         public GlobalId Loader { get { return m_loader; } set { m_loader = value; } }
