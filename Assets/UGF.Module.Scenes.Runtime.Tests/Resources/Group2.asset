@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: Group2
   m_EditorClassIdentifier: 
   m_loader:
-    m_first: 6770314146099492426
-    m_second: 15748429064266553547
+    serializedVersion: 2
+    Hash: 4af60f60d8fcf45dcb980b92cba88dda
   m_scenes:
   - m_guid:
-      m_first: 0
-      m_second: 0
-    m_path: 
+      serializedVersion: 2
+      Hash: 27909ad358b684793ab7fc2c1a4a22af
+    m_path: Assets/UGF.Module.Scenes.Runtime.Tests/Resources/SceneTest.unity
