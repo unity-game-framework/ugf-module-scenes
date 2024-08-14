@@ -7,11 +7,11 @@ namespace UGF.Module.Scenes.Runtime
     [Serializable]
     public struct SceneReference
     {
-        [SerializeField] private GlobalId m_guid;
+        [SerializeField] private Hash128 m_guid;
         [SerializeField] private string m_path;
 
-        public GlobalId Guid { get { return m_guid.IsValid() ? m_guid : throw new ArgumentException("Value not specified."); } set { m_guid = value; } }
-        public bool HasGuid { get { return m_guid.IsValid(); } }
+        public GlobalId Guid { get { return m_guid.isValid ? m_guid : throw new ArgumentException("Value not specified."); } set { m_guid = value; } }
+        public bool HasGuid { get { return m_guid.isValid; } }
         public string Path { get { return HasPath ? m_path : throw new ArgumentException("Value not specified."); } set { m_path = value; } }
         public bool HasPath { get { return !string.IsNullOrEmpty(m_path); } }
 
@@ -26,7 +26,7 @@ namespace UGF.Module.Scenes.Runtime
 
         public bool IsValid()
         {
-            return m_guid.IsValid() && !string.IsNullOrEmpty(m_path);
+            return m_guid.isValid && !string.IsNullOrEmpty(m_path);
         }
 
         public bool Equals(SceneReference other)

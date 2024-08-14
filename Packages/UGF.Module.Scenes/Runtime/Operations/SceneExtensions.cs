@@ -20,6 +20,7 @@ namespace UGF.Module.Scenes.Runtime.Operations
         public static void Activate(this Scene scene, bool clearOperation = true)
         {
             var provider = ProviderInstance.Get<IProvider<Scene, AsyncOperation>>();
+
             AsyncOperation operation = provider.Get(scene);
 
             operation.allowSceneActivation = true;

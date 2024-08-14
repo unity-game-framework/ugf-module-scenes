@@ -1,6 +1,7 @@
 ﻿using UGF.EditorTools.Editor.Ids;
 using UGF.EditorTools.Editor.IMGUI.Attributes;
 using UGF.EditorTools.Editor.IMGUI.PropertyDrawers;
+using UGF.EditorTools.Runtime.Ids;
 using UGF.Module.Scenes.Runtime;
 using UnityEditor;
 using UnityEngine;
@@ -16,7 +17,7 @@ namespace UGF.Module.Scenes.Editor
             SerializedProperty propertyGuid = serializedProperty.FindPropertyRelative("m_guid");
             SerializedProperty propertyPath = serializedProperty.FindPropertyRelative("m_path");
 
-            string guid = GlobalIdEditorUtility.GetGuidFromProperty(propertyGuid);
+            string guid = GlobalId.FromHash128(propertyGuid.hash128Value).ToString();
 
             guid = AttributeEditorGUIUtility.DrawAssetGuidField(position, guid, label, typeof(Scene));
 
