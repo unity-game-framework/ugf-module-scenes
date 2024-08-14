@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.0.0-preview](https://github.com/unity-game-framework/ugf-module-scenes/releases/tag/5.0.0-preview) - 2024-08-14  
+
+### Release Notes
+
+- [Milestone](https://github.com/unity-game-framework/ugf-module-scenes/milestone/25?closed=1)  
+    
+
+### Changed
+
+- Update package ([#69](https://github.com/unity-game-framework/ugf-module-scenes/issues/69))  
+    - Update dependencies: `com.ugf.editortools` to `9.0.0-preview` version.
+    - Update package _Unity_ version to `2023.2`.
+    - Update package registry to _UPM Hub_.
+    - Change `ISceneModule` and related classes to work with update _Application_ package.
+
 ## [4.0.0](https://github.com/unity-game-framework/ugf-module-scenes/releases/tag/4.0.0) - 2023-01-04  
 
 ### Release Notes
